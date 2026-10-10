@@ -24,7 +24,9 @@ jobs:
           git diff --exit-code -- L10n.cs android/src/org/leafreader/L10n.java
           if ($LASTEXITCODE -ne 0) { throw 'Generated catalogs are out of date' }
       - name: Build Windows
-        run: ./build.ps1
+        run: |
+          ./build.ps1
+          Copy-Item (Join-Path (Split-Path $PWD -Parent) 'LeafReader.exe') (Join-Path $env:RUNNER_TEMP 'LeafReader.exe')
       - name: Run Windows reader and protocol checks
         run: |
           $app = Join-Path (Split-Path $PWD -Parent) 'LeafReader.exe'
@@ -62,7 +64,7 @@ jobs:
         with:
           name: ci-debug-builds
           path: |
-            ${{ github.workspace }}/../LeafReader.exe
+            ${{ runner.temp }}/LeafReader.exe
             ${{ runner.temp }}/LeafReader-Android-CI-debug.apk
           retention-days: 14
       - uses: actions/upload-artifact@v4
