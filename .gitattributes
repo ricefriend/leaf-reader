@@ -1,0 +1,12 @@
+* text=auto
+*.cs text eol=lf
+*.java text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.dll binary
+*.jar binary
+*.zip binary
+*.ico binary

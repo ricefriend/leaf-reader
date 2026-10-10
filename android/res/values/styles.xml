@@ -1,0 +1,14 @@
+<resources>
+ <style name="LeafTheme" parent="android:style/Theme.Material.NoActionBar">
+  <item name="android:fontFamily">sans-serif</item>
+  <item name="android:colorAccent">#B9DDB6</item>
+  <item name="android:colorControlActivated">#B9DDB6</item>
+  <item name="android:colorButtonNormal">#263B2B</item>
+  <item name="android:textColorPrimary">#E7ECDC</item>
+  <item name="android:textColorSecondary">#96AB98</item>
+  <item name="android:colorBackground">#101813</item>
+  <item name="android:windowBackground">#101813</item>
+  <item name="android:navigationBarColor">#101813</item>
+  <item name="android:statusBarColor">#101813</item>
+ </style>
+</resources>

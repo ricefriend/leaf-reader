@@ -1,0 +1,4054 @@
+{
+  "schema": "leaf-reader-localization-task/v1",
+  "catalog_version": "9bee455de126b060ee7e",
+  "source_language": "zh-CN",
+  "target_language": "en",
+  "entries": [
+    {
+      "id": "msg_0001",
+      "source": "栞 · Leaf Reader",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:29",
+        "android/src/org/leafreader/MainActivity.java:36",
+        "android/src/org/leafreader/MainActivity.java:62"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Leaf Reader"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0002",
+      "source": "阅读记录",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:42"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0003",
+      "source": "栞",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:50"
+      ],
+      "do_not_translate": true,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0004",
+      "source": "留一页，给自己。",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:51"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0005",
+      "source": "导入文件夹",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:53"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0006",
+      "source": "Ctrl+O · 导入母文件夹，递归扫描子文件夹",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:53"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Ctrl+O"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0007",
+      "source": "打开压缩包",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:53"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0008",
+      "source": "直接阅读 ZIP / CBZ",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:53"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "ZIP",
+        "CBZ"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0009",
+      "source": "共享",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0010",
+      "source": "选择授权目录并开启局域网共享",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0011",
+      "source": "服务器",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:54",
+        "android/src/org/leafreader/MainActivity.java:36"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0012",
+      "source": "配对或重新连接另一台电脑",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0013",
+      "source": "切换浅色 / 深色背景",
+      "kind": "label_or_message",
+      "locations": [],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0014",
+      "source": "F1 · 操作说明",
+      "kind": "label_or_message",
+      "locations": [],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "F1"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0015",
+      "source": "我的书架",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:58",
+        "android/src/org/leafreader/MainActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0016",
+      "source": "导入一个文件夹，开始阅读",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:58"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0017",
+      "source": "刷新",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:59",
+        "android/src/org/leafreader/MainActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0018",
+      "source": "F5 · 重新扫描导入位置",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:59"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "F5"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0019",
+      "source": "管理来源",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:59",
+        "SettingsUi.cs:12"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0020",
+      "source": "移除来源只更改书架，不删除图片",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:59"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0021",
+      "source": "按名称排序",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:60"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0022",
+      "source": "最近阅读",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:60",
+        "android/src/org/leafreader/MainActivity.java:51"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0023",
+      "source": "未读优先",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:60"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0024",
+      "source": "创建时间 · 新的在前",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:60",
+        "android/src/org/leafreader/MainActivity.java:51"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0025",
+      "source": "创建时间 · 旧的在前",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:60",
+        "android/src/org/leafreader/MainActivity.java:51"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0026",
+      "source": "文件夹按其创建时间；ZIP / CBZ 按压缩包文件的创建时间",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:60"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "ZIP",
+        "CBZ"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0027",
+      "source": "搜索",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:61"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0028",
+      "source": "搜索书名或文件夹路径 · Ctrl+F",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:61"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Ctrl+F"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0029",
+      "source": " 页",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:62",
+        "ShelfGrid.cs:77",
+        "android/src/org/leafreader/MainActivity.java:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0030",
+      "source": "  ·  读至 ",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:62"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0031",
+      "source": "  ·  未读",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:62"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0032",
+      "source": "‹ 书架",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:64",
+        "android/src/org/leafreader/MainActivity.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0033",
+      "source": "Esc · 返回书架",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:64"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Esc"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0034",
+      "source": "单页 · 标准看图",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:66"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0035",
+      "source": "双页 · 从左至右",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:66"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0036",
+      "source": "双页 · 从右至左",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:66"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0037",
+      "source": "Webtoon · 纵向",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:66"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0038",
+      "source": "适应窗口",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:67"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0039",
+      "source": "适应宽度",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:67"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0040",
+      "source": "原始尺寸",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:67"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0041",
+      "source": "封面独页",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:68"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0042",
+      "source": "双页模式中让第一张图片单独显示",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:68"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0043",
+      "source": "横图独页",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:68"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0044",
+      "source": "双页模式下，宽高比大于 1.18 的整张跨页图单独显示",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:68"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0045",
+      "source": "缩小 · -",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:69"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0046",
+      "source": "放大 · +",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:69"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0047",
+      "source": "重置",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:69"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0048",
+      "source": "0 · 重置缩放和位置",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:69"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0049",
+      "source": "全屏",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:69"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0050",
+      "source": "F11 / 双击画面 · 全屏",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:69"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "F11"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0051",
+      "source": "上一页",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:72",
+        "android/src/org/leafreader/MainActivity.java:42"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0052",
+      "source": "PageUp / 滚轮向上",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:72"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "PageUp"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0053",
+      "source": "下一页",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:72",
+        "android/src/org/leafreader/MainActivity.java:42"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0054",
+      "source": "PageDown / 空格 / 滚轮向下",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:72"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "PageDown"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0055",
+      "source": "配对 −1",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:72"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0056",
+      "source": "[ 或 Shift+← · 起始页前移一张",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:72"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0057",
+      "source": "配对 +1",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:72"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0058",
+      "source": "] 或 Shift+→ · 起始页后移一张",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:72"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0059",
+      "source": "☆ 书签",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:73",
+        "MainWindow.cs:112"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0060",
+      "source": "B · 添加 / 取消当前页书签",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:73"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0061",
+      "source": "书签列表",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:73"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0062",
+      "source": "跳页",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:73"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0063",
+      "source": "Ctrl+G · 输入页码",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:73"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Ctrl+G"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0064",
+      "source": "拖动跳转页码",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:74"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0065",
+      "source": "支持 JPG · PNG · BMP · GIF · TIFF · ZIP / CBZ    |    可直接拖入文件夹或图片",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:76"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "JPG",
+        "PNG",
+        "BMP",
+        "GIF",
+        "TIFF",
+        "ZIP",
+        "CBZ"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0066",
+      "source": "选择母文件夹：将扫描其中所有子文件夹",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:82"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0067",
+      "source": "漫画压缩包|*.cbz;*.zip",
+      "kind": "file_filter",
+      "locations": [
+        "MainWindow.cs:83"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "|*.cbz;*.zip"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0068",
+      "source": "正在处理，请完成后再导入。",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:85"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0069",
+      "source": "局域网共享 · 只读",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:15"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0070",
+      "source": "共享默认关闭。仅授权以下目录；局域网 HTTP，跨网络使用 VPN 或 HTTPS。",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:16"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "HTTP",
+        "VPN",
+        "HTTPS"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0071",
+      "source": "添加共享目录",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:18"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0072",
+      "source": "请先停止共享再更改目录。 ",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:18"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0073",
+      "source": "选择允许远程只读访问的图片目录",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:18"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0074",
+      "source": "移除所选",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:152",
+        "NetworkingUi.cs:19"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0075",
+      "source": "请先停止共享再更改目录。",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:19"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0076",
+      "source": "端口  ",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:20"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0077",
+      "source": "运行中 · ",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:22"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0078",
+      "source": " 个授权目录",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:22"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0079",
+      "source": "共享已停止",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:22"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0080",
+      "source": "配对码：",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:22"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0081",
+      "source": "   ·   10 分钟有效（重新生成会撤销旧授权）",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:22"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0082",
+      "source": "启动后显示可扫码连接信息",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:22"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0083",
+      "source": "开启共享",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:24"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0084",
+      "source": "请输入有效端口",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:24"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0085",
+      "source": "正在扫描授权目录…",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:24"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0086",
+      "source": "启动失败：",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:24"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0087",
+      "source": "；若端口被占用请更换端口。",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:24"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0088",
+      "source": "停止共享",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:25"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0089",
+      "source": "重置配对凭据",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:25"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0090",
+      "source": "刷新共享目录",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:25"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0091",
+      "source": "关闭窗口",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:25"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0092",
+      "source": "连接中 · ",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0093",
+      "source": "已连接 · ",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:29",
+        "NetworkingUi.cs:34",
+        "android/src/org/leafreader/MainActivity.java:49"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0094",
+      "source": " 本 · ",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:91",
+        "NetworkingUi.cs:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0095",
+      "source": "连接失败 · ",
+      "kind": "fragment",
+      "locations": [
+        "NetworkingUi.cs:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0096",
+      "source": "远程服务器",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:32"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0097",
+      "source": "保存服务器，在同一套书架中阅读远程图片。",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:32"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0098",
+      "source": "服务地址或配对链接",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:33"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0099",
+      "source": "电脑上显示的配对码",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:33"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0100",
+      "source": "配对并连接",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:34"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0101",
+      "source": "正在配对…",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:34",
+        "android/src/org/leafreader/MainActivity.java:75"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0102",
+      "source": "重新连接",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:35",
+        "android/src/org/leafreader/MainActivity.java:78"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0103",
+      "source": "已重新连接",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:35"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0104",
+      "source": "移除服务器",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:36",
+        "android/src/org/leafreader/MainActivity.java:78"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0105",
+      "source": "清理远程缓存",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:36"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0106",
+      "source": "远程缓存已清理",
+      "kind": "label_or_message",
+      "locations": [
+        "NetworkingUi.cs:36"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0107",
+      "source": "正在加载…",
+      "kind": "label_or_message",
+      "locations": [
+        "ReaderView.cs:90",
+        "ShelfGrid.cs:76",
+        "android/src/org/leafreader/ReaderCanvas.java:60"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0108",
+      "source": "图片无法显示\n",
+      "kind": "paragraph",
+      "locations": [
+        "ReaderView.cs:90"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 1
+    },
+    {
+      "id": "msg_0109",
+      "source": "封面无法读取",
+      "kind": "label_or_message",
+      "locations": [
+        "ShelfGrid.cs:76"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0110",
+      "source": "\n创建时间：",
+      "kind": "paragraph",
+      "locations": [
+        "ShelfGrid.cs:78"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 1
+    },
+    {
+      "id": "msg_0111",
+      "source": "本地",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:106",
+        "SettingsUi.cs:7",
+        "Sources.cs:20",
+        "android/src/org/leafreader/MainActivity.java:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0112",
+      "source": "地址应为 http://192.168.1.10:8765 或受保护的 HTTPS 服务根地址。",
+      "kind": "label_or_message",
+      "locations": [
+        "Sources.cs:34"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "http://192.168.1.10:8765",
+        "HTTPS"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0113",
+      "source": "HTTP 仅允许局域网、回环或私有 VPN 地址；跨网络请使用 HTTPS。 ",
+      "kind": "fragment",
+      "locations": [
+        "Sources.cs:35"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "HTTP",
+        "VPN",
+        "HTTPS"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0114",
+      "source": "服务返回异常响应",
+      "kind": "label_or_message",
+      "locations": [
+        "Sources.cs:49"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0115",
+      "source": "响应过大，请使用预览图",
+      "kind": "label_or_message",
+      "locations": [
+        "Sources.cs:49"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0116",
+      "source": "连接失败，HTTP ",
+      "kind": "fragment",
+      "locations": [
+        "Sources.cs:50",
+        "android/src/org/leafreader/Api.java:23"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "HTTP"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0117",
+      "source": "无法连接：请检查共享是否开启、地址和端口、电脑休眠或网络连接。",
+      "kind": "label_or_message",
+      "locations": [
+        "Sources.cs:50"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0118",
+      "source": "服务协议版本不兼容",
+      "kind": "label_or_message",
+      "locations": [
+        "Sources.cs:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0119",
+      "source": "该地址的服务器身份已改变，请重新配对。",
+      "kind": "label_or_message",
+      "locations": [
+        "Sources.cs:55"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0120",
+      "source": "远程 · ",
+      "kind": "fragment",
+      "locations": [
+        "Sources.cs:55",
+        "Sources.cs:60",
+        "android/src/org/leafreader/Api.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0121",
+      "source": "远程目录没有可阅读图片，请刷新书架。",
+      "kind": "label_or_message",
+      "locations": [
+        "Sources.cs:56"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0122",
+      "source": "压缩包内的图片已不存在",
+      "kind": "label_or_message",
+      "locations": [
+        "Core.cs:40"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0123",
+      "source": "单张图片超过 200 MB",
+      "kind": "label_or_message",
+      "locations": [
+        "Core.cs:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "MB"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0124",
+      "source": "无效尺寸",
+      "kind": "label_or_message",
+      "locations": [
+        "Core.cs:51"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0125",
+      "source": "无法读取：",
+      "kind": "fragment",
+      "locations": [
+        "Core.cs:52"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0126",
+      "source": "找不到文件夹：",
+      "kind": "fragment",
+      "locations": [
+        "Core.cs:89"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0127",
+      "source": "阅读记录无法读取，已载入空书架；原记录会保留为 .corrupt 文件。",
+      "kind": "label_or_message",
+      "locations": [
+        "Core.cs:136"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0128",
+      "source": "无法保存阅读记录：",
+      "kind": "fragment",
+      "locations": [
+        "Core.cs:142"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0129",
+      "source": "Leaf Reader · 栞",
+      "kind": "label_or_message",
+      "locations": [],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Leaf Reader"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0130",
+      "source": "轻量漫画与图片阅读器",
+      "kind": "label_or_message",
+      "locations": [],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0131",
+      "source": "出现错误：",
+      "kind": "fragment",
+      "locations": [
+        "Program.cs:21"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0132",
+      "source": "\n错误详情：",
+      "kind": "paragraph",
+      "locations": [
+        "Program.cs:21"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 1
+    },
+    {
+      "id": "msg_0133",
+      "source": "阅读器已经运行，请使用现有窗口导入文件或文件夹。",
+      "kind": "label_or_message",
+      "locations": [
+        "Program.cs:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0134",
+      "source": "请求已取消",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Api.java:14"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0135",
+      "source": "请输入完整服务地址，例如 http://192.168.1.10:8765",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Api.java:19"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "http://192.168.1.10:8765"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0136",
+      "source": "HTTP 仅允许局域网或私有 VPN 地址；跨网络使用 HTTPS",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Api.java:19"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "HTTP",
+        "VPN",
+        "HTTPS"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0137",
+      "source": "服务地址格式错误",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Api.java:19"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0138",
+      "source": "；请检查服务地址或重新配对",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Api.java:23"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0139",
+      "source": "单张文件超出缓存上限，请使用兼容预览",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Api.java:26"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0140",
+      "source": "服务器协议版本不兼容",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Api.java:28"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0141",
+      "source": "服务器身份改变，请重新配对",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Api.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0142",
+      "source": "目录已没有图片，请刷新书架",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Api.java:31"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0143",
+      "source": "文件授权失效，请重新选择目录",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Images.java:24"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0144",
+      "source": "压缩包中的图片已删除",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Images.java:25"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0145",
+      "source": "压缩包单张图片超过 200 MB",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:40",
+        "android/src/org/leafreader/Images.java:25"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "MB"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0146",
+      "source": "缓存写入失败",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Images.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0147",
+      "source": "不支持的图片格式：",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/Images.java:36"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0148",
+      "source": "（安卓本地 TIFF 不受支持）",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Images.java:36"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "TIFF"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0149",
+      "source": "图片无法解码：",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/Images.java:41",
+        "android/src/org/leafreader/Images.java:43"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0150",
+      "source": "网络已断开；已缓存图片仍可阅读，恢复网络后点重试。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:26"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0151",
+      "source": "网络可用 · 点重试可恢复远程图片读取",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:26"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0152",
+      "source": "＋ 本地",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:36"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0153",
+      "source": "搜索书名或文件夹",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0154",
+      "source": "排序",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0155",
+      "source": "模式",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0156",
+      "source": "拼前页",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0157",
+      "source": "已经是第一页",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0158",
+      "source": "拼后页",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0159",
+      "source": "已经是最后一页",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0160",
+      "source": "结束拼接",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0161",
+      "source": "书签",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:41",
+        "android/src/org/leafreader/MainActivity.java:61"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0162",
+      "source": "重试",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0163",
+      "source": "正在重新请求图片…",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0164",
+      "source": "导入手机目录，或连接电脑共享",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:43"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0165",
+      "source": "来源与连接状态",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:43"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0166",
+      "source": "关闭",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:13",
+        "android/src/org/leafreader/MainActivity.java:43",
+        "android/src/org/leafreader/MainActivity.java:51",
+        "android/src/org/leafreader/MainActivity.java:52",
+        "android/src/org/leafreader/MainActivity.java:60",
+        "android/src/org/leafreader/MainActivity.java:61",
+        "android/src/org/leafreader/MainActivity.java:78",
+        "android/src/org/leafreader/MainActivity.java:80",
+        "android/src/org/leafreader/SettingsActivity.java:34",
+        "android/src/org/leafreader/SettingsActivity.java:35",
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0167",
+      "source": "目录授权失败，请重新选择目录",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:48"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0168",
+      "source": "正在扫描本地目录和连接已保存服务器…",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:49"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0169",
+      "source": "本地：",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:49"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0170",
+      "source": " 本",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:49",
+        "android/src/org/leafreader/MainActivity.java:54",
+        "android/src/org/leafreader/ShelfLayout.java:49"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0171",
+      "source": "部分来源未连接：",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:49"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0172",
+      "source": "连接中断：检查共享是否开启、地址/端口、电脑休眠或网络，再点刷新重连",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:50"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0173",
+      "source": "名称",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:51"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0174",
+      "source": "书架排序",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:51"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0175",
+      "source": "本地目录管理",
+      "kind": "label_or_message",
+      "locations": [],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0176",
+      "source": "移除本地来源（不删除图片）",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:52"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0177",
+      "source": "我的书架  ·  ",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0178",
+      "source": "  ·  搜索结果",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0179",
+      "source": "远程",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0180",
+      "source": "页，",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:54"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0181",
+      "source": "正在打开 · ",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:56"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0182",
+      "source": "阅读模式",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:60"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0183",
+      "source": "单页",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:10",
+        "android/src/org/leafreader/MainActivity.java:60",
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0184",
+      "source": "双页 · 左至右",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:10",
+        "android/src/org/leafreader/MainActivity.java:60",
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0185",
+      "source": "双页 · 右至左",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:10",
+        "android/src/org/leafreader/MainActivity.java:60",
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0186",
+      "source": "纵向连续 · 默认",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:60"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0187",
+      "source": "双页设置",
+      "kind": "label_or_message",
+      "locations": [],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0188",
+      "source": "完成",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:152"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0189",
+      "source": "取消当前页书签",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:61"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0190",
+      "source": "标记当前页",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:61"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0191",
+      "source": "第 ",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:150",
+        "android/src/org/leafreader/MainActivity.java:61"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0192",
+      "source": " 页 · ",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:61"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0193",
+      "source": "书架 · 阅读进度已保存",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:62"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0194",
+      "source": "二维码不是 Leaf Reader 配对信息",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:73"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Leaf Reader"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0195",
+      "source": "配对码",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:74"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0196",
+      "source": "配对服务器",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:75"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0197",
+      "source": "连接",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:75"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0198",
+      "source": "凭据保存失败，请重试",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:75"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0199",
+      "source": "取消",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:75",
+        "android/src/org/leafreader/SettingsActivity.java:28",
+        "android/src/org/leafreader/SettingsActivity.java:29",
+        "android/src/org/leafreader/SettingsActivity.java:30",
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0200",
+      "source": "＋ 输入地址配对",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:77"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0201",
+      "source": "扫码配对",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:77"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0202",
+      "source": "清理图片缓存（最多 256 MB）",
+      "kind": "label_or_message",
+      "locations": [],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "MB"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0203",
+      "source": "服务器管理",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:78"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0204",
+      "source": "缓存已清理",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:12",
+        "android/src/org/leafreader/SettingsActivity.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0205",
+      "source": "浏览授权目录",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:78"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0206",
+      "source": "凭据保存失败",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:78"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0207",
+      "source": "授权目录 · ",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:80"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0208",
+      "source": "正在浏览 · ",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:80"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0209",
+      "source": "；点刷新恢复全部来源",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:80"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0210",
+      "source": "目录列表已改变，请刷新",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:80"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0211",
+      "source": "图片",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/ReaderCanvas.java:65"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0212",
+      "source": "连接或读取失败，点“重试”或重新授权目录",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/ReaderCanvas.java:65"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0213",
+      "source": "对准电脑共享窗口的二维码。返回取消扫描。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/ScannerActivity.java:18"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0214",
+      "source": "未授权相机，可在服务器管理中手动输入地址和配对码",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/ScannerActivity.java:19"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0215",
+      "source": "无法启动相机，请手动配对",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/ScannerActivity.java:21"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0216",
+      "source": "书架还空着\n导入本地目录，或连接电脑共享",
+      "kind": "paragraph",
+      "locations": [
+        "android/src/org/leafreader/ShelfLayout.java:16"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 1
+    },
+    {
+      "id": "msg_0217",
+      "source": "书架快速滚动条，上下拖动快速定位",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/ShelfLayout.java:33"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0218",
+      "source": "已定位：",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/ShelfLayout.java:41"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0219",
+      "source": "保存的服务器凭据无法解密，请移除应用数据后重新配对",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:28"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0220",
+      "source": "手机本地",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:67",
+        "android/src/org/leafreader/Storage.java:43"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0221",
+      "source": "目录授权不可用，请重新选择文件夹",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:46"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0222",
+      "source": "压缩包不可读取：",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:49"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0223",
+      "source": "；其他书籍仍可阅读。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:49"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0224",
+      "source": "某个本地来源不可用，请在来源管理中重新授权目录。 ",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:55"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0225",
+      "source": "手机本地 · 压缩包",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MainActivity.java:67",
+        "android/src/org/leafreader/Storage.java:57"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0226",
+      "source": "正在扫描文件夹…",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:90"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0227",
+      "source": "扫描完成 · ",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:91"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0228",
+      "source": " 张图片",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:91"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0229",
+      "source": " 个位置未能读取，见“管理来源”",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:91"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0230",
+      "source": "扫描失败：",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:92"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0231",
+      "source": " 本藏书   /   ",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:99"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0232",
+      "source": " 个来源   /   ",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:99"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0233",
+      "source": " 本匹配",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:99"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0234",
+      "source": "把故事，放进书架。",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:102"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0235",
+      "source": "没有找到匹配的漫画",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:102"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0236",
+      "source": "导入母文件夹，自动发现每个子文件夹里的图片。\n第一张图成为封面，下次打开接着读。",
+      "kind": "paragraph",
+      "locations": [
+        "MainWindow.cs:102"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 1
+    },
+    {
+      "id": "msg_0237",
+      "source": "试试其他书名或文件夹关键词。",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:102"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0238",
+      "source": "＋ 导入文件夹",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:102"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0239",
+      "source": "也支持拖放文件夹、图片，以及 ZIP / CBZ。",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:102"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "ZIP",
+        "CBZ"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0240",
+      "source": "正在读取 “",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:105"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0241",
+      "source": "” 的图片尺寸…",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:105"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0242",
+      "source": "闲置 3 秒隐藏工具栏 · 鼠标移至上下边缘或按 Tab 显示 · F11 全屏",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:106"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Tab",
+        "F11"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0243",
+      "source": "部分图片无法解码，可继续翻页；WebP 取决于 Windows 图像解码器。",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:106"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "WebP",
+        "Windows"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0244",
+      "source": "打开失败：",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:106"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0245",
+      "source": "右端为第 1 页，向左推进 · 拖动跳页",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:112"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0246",
+      "source": "左端为第 1 页，向右推进 · 拖动跳页",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:112"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0247",
+      "source": "★ 已标记",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:112"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0248",
+      "source": "书架已更新 · 阅读进度自动保存",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:118"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0249",
+      "source": "跳转页码",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:149"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0250",
+      "source": "输入页码（1–",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:149"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0251",
+      "source": "跳转",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:149"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0252",
+      "source": "书签 · ",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:150"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0253",
+      "source": "还没有书签。按 B 标记当前页。",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:150"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0254",
+      "source": " 页   ·   ",
+      "kind": "fragment",
+      "locations": [
+        "MainWindow.cs:150"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0255",
+      "source": "管理书架来源",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:151"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0256",
+      "source": "移除来源仅从书架移除，不会删除原文件。",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:151"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0257",
+      "source": "扫描详情",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:152"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0258",
+      "source": "没有扫描错误。",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:152"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0259",
+      "source": "操作说明 · Leaf Reader",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:154"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Leaf Reader"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0260",
+      "source": "阅读界面\n闲置 3 秒自动隐藏工具栏；鼠标移至上下边缘或按 Tab 恢复。\n右至左模式的进度条从右向左推进；其他模式从左向右。\n书架可按创建时间升降序排序，并记住选择。\n\n四种阅读模式\n单页：每次显示一张。双页：按所选方向排列与翻页。\nWebtoon：图片连续上下排列，滚轮平滑滚动。\n\n双页配对\n[ / ] 或 Shift+← / →：起始页前移 / 后移一张。\n例：11–12 页按 ] 变为 12–13 页，下一次翻页为 14–15 页。\n“封面独页”让第 1 张单独显示；“横图独页”识别整张跨页图。\n\n翻页与查看\n← / →：跟随阅读方向翻页（右至左模式中 ← 是下一页）。\n↑ / ↓、PageUp / PageDown、滚轮：上一页 / 下一页。\nWebtoon 中 ↑ / ↓ 小幅滚动，PageUp / PageDown 翻一屏。\n空格 / Shift+空格：下一页 / 上一页；Home / End：首尾页。\nCtrl+滚轮、+ / -：缩放；拖动：移动图片；0：重置。\n点击画面左 / 右侧：按阅读方向翻页。\nF11 或双击画面：全屏；Esc：退出全屏，再次按返回书架。\nB：书签；Ctrl+G：跳页；1 / 2 / 3 / 4：切换阅读模式。\n\n书架\nCtrl+O：导入文件夹；Ctrl+F：搜索；F5：重新扫描。\n文件夹递归扫描；每个直接含图片的文件夹独立成册。\n文件名采用自然排序（2 在 10 前）；ZIP / CBZ 可直接阅读。\n图片拖入后打开其所在文件夹。进度、模式、书签自动保存。\nGIF / TIFF 显示第一帧；WebP 依赖系统解码器。暂不支持 PDF / RAR。",
+      "kind": "paragraph",
+      "locations": [
+        "MainWindow.cs:154"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Tab",
+        "PageUp",
+        "PageDown",
+        "Home",
+        "End",
+        "F11",
+        "Esc",
+        "Ctrl+G",
+        "Ctrl+O",
+        "Ctrl+F",
+        "F5",
+        "ZIP",
+        "CBZ",
+        "GIF",
+        "TIFF",
+        "WebP",
+        "PDF",
+        "RAR"
+      ],
+      "newline_count": 29
+    },
+    {
+      "id": "msg_0261",
+      "source": "无效资源标识",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:71"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0262",
+      "source": "配对尝试过多，请一分钟后重试",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:74"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0263",
+      "source": "配对码已过期，请在电脑上重新生成",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:74"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0264",
+      "source": "配对码错误",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:74"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0265",
+      "source": "授权失效，请重新配对",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:76"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0266",
+      "source": "共享服务仅支持只读访问",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:77"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0267",
+      "source": "目录已删除，请刷新书架",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:81"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0268",
+      "source": "资源不存在",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:82"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0269",
+      "source": "文件已删除，请刷新书架",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:82",
+        "ShareServer.cs:88"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0270",
+      "source": "此图片的系统解码器不可用，请转换为 JPG / PNG",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:84"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "JPG",
+        "PNG"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0271",
+      "source": "接口不存在",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:87"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0272",
+      "source": "共享目录已删除",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:88"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0273",
+      "source": "读取失败，请检查文件是否仍可用或重新连接",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:88"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0274",
+      "source": "请求无法处理",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:88"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0275",
+      "source": "文件已更新，请刷新书架后重新打开",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:90"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0276",
+      "source": "设置",
+      "kind": "label_or_message",
+      "locations": [
+        "MainWindow.cs:54",
+        "SettingsUi.cs:8",
+        "android/src/org/leafreader/MainActivity.java:36",
+        "android/src/org/leafreader/SettingsActivity.java:28"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0277",
+      "source": "语言与界面",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:8"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0278",
+      "source": "界面语言",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:8",
+        "android/src/org/leafreader/SettingsActivity.java:28"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0279",
+      "source": "浅色背景",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:9"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0280",
+      "source": "自动隐藏阅读工具栏",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:10",
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0281",
+      "source": "新书默认模式",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:10",
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0282",
+      "source": "纵向连续",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:10",
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0283",
+      "source": "双页模式：封面独页",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:11",
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0284",
+      "source": "双页模式：横图独页",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:11",
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0285",
+      "source": "清理图片缓存",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:12",
+        "android/src/org/leafreader/SettingsActivity.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0286",
+      "source": "操作说明",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:12"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0287",
+      "source": "支持 Leaf Reader  ♡",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:13",
+        "android/src/org/leafreader/SettingsActivity.java:32"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Leaf Reader"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0288",
+      "source": "自愿支持开发；所有阅读功能保持免费。",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:13"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0289",
+      "source": "赞助与支持",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:13"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0290",
+      "source": "赞助主页尚未开放。感谢你的使用、问题反馈和代码贡献！",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:13",
+        "android/src/org/leafreader/SettingsActivity.java:35"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0291",
+      "source": "支持项目",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:13",
+        "android/src/org/leafreader/SettingsActivity.java:35"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0292",
+      "source": "备份密码至少需要 8 个字符",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MigrationBackup.java:19"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0293",
+      "source": "阅读记录过大，无法生成备份",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MigrationBackup.java:20"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0294",
+      "source": "备份文件超过 16 MB",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MigrationBackup.java:25",
+        "android/src/org/leafreader/MigrationBackup.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "MB"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0295",
+      "source": "不是受支持的 Leaf Reader 加密备份",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MigrationBackup.java:26"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Leaf Reader"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0296",
+      "source": "密码错误或备份已损坏；当前数据没有更改",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/MigrationBackup.java:28"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0297",
+      "source": "‹ 返回",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:28"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0298",
+      "source": "语言与阅读",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:28"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0299",
+      "source": "界面语言：",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:28"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0300",
+      "source": "新书默认模式：",
+      "kind": "fragment",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0301",
+      "source": "阅读时保持屏幕常亮",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:29"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0302",
+      "source": "目录与缓存",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0303",
+      "source": "管理本地目录授权",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0304",
+      "source": "清理缓存？",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0305",
+      "source": "不删除漫画、书签或阅读记录。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0306",
+      "source": "清理",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:30"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0307",
+      "source": "备份与迁移",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:31",
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0308",
+      "source": "加密备份包含服务器授权、书签和阅读进度，不包含图片。恢复后请重新选择同一个本地目录。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:31"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0309",
+      "source": "导出加密备份",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:31"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0310",
+      "source": "恢复加密备份",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:31"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0311",
+      "source": "支持与关于",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:32"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0312",
+      "source": "自愿赞助支持开发；所有阅读功能保持免费。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:32"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0313",
+      "source": "移除授权，不删除文件",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:34"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0314",
+      "source": "请牢记密码，没有密码无法恢复。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0315",
+      "source": "合并备份记录；同名记录将覆盖当前记录。目录需重新授权。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0316",
+      "source": "备份密码（至少 8 个字符）",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0317",
+      "source": "再次输入密码",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0318",
+      "source": "导出备份",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0319",
+      "source": "恢复备份",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0320",
+      "source": "继续",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0321",
+      "source": "至少 8 个字符",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0322",
+      "source": "两次密码不一致",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0323",
+      "source": "正在处理备份…",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0324",
+      "source": "备份已保存。换签名前请确认能使用该密码恢复。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0325",
+      "source": "备份已恢复。请重新授权本地目录；远程服务器可直接重连。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0326",
+      "source": "无法读写备份文件，请重新选择文件。",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0327",
+      "source": "请等待备份完成",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/SettingsActivity.java:38"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0328",
+      "source": "不支持的备份版本",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:35"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0329",
+      "source": "备份条目过多",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:35"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0330",
+      "source": "备份中的服务器信息无效",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:36"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0331",
+      "source": "备份中的书籍标识无效",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0332",
+      "source": "备份中的阅读记录无效",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:37"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0333",
+      "source": "备份语言无效",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:38"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0334",
+      "source": "备份设置无效",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:38"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0335",
+      "source": "备份恢复写入失败",
+      "kind": "label_or_message",
+      "locations": [
+        "android/src/org/leafreader/Storage.java:39"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0336",
+      "source": "简体中文",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:8",
+        "android/src/org/leafreader/SettingsActivity.java:28"
+      ],
+      "do_not_translate": true,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0337",
+      "source": "爱发电 / Afdian",
+      "kind": "label_or_message",
+      "locations": [
+        "SettingsUi.cs:13",
+        "android/src/org/leafreader/SettingsActivity.java:35"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0338",
+      "source": "请共享一个具体的图片文件夹，不允许共享整个磁盘。",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:23"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0339",
+      "source": "共享文件夹不存在",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:27"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0340",
+      "source": "不允许共享符号链接或联接点",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:28"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0341",
+      "source": "文件位于共享范围之外",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:31"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0342",
+      "source": "无法验证文件的实际路径，Windows 错误 ",
+      "kind": "fragment",
+      "locations": [
+        "ShareServer.cs:33"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "Windows"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0343",
+      "source": "文件实际位于共享范围之外",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:33"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0344",
+      "source": "请先选择至少一个允许共享的文件夹。",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:64"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0345",
+      "source": "端口应为 1024–65535",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:64"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0346",
+      "source": "请求头过长",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:66",
+        "ShareServer.cs:68"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0347",
+      "source": "无效 HTTP 请求",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:68"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [
+        "HTTP"
+      ],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0348",
+      "source": "无效请求头",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:68"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0349",
+      "source": "不支持分块请求体",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:69"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0350",
+      "source": "无效请求体长度",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:69"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0351",
+      "source": "请求中断",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:69"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    },
+    {
+      "id": "msg_0352",
+      "source": "无效地址",
+      "kind": "label_or_message",
+      "locations": [
+        "ShareServer.cs:70"
+      ],
+      "do_not_translate": false,
+      "protected_tokens": [],
+      "newline_count": 0
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+# Build outputs
+android/build/
+**/bin/
+**/obj/
+*.apk
+*.apk.idsig
+*.exe
+*.pdb
+*.log
+qa*/
+# Local signing keys and configuration
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+.env
+.env.*
+local.properties
+keystore.properties
+# Reader state and temporary pairing fixtures
+state.json
+sharing.json
+fixture.json
+qr-payload.txt
+connection-qr.png
+# Tooling
+.vs/
+.idea/
+
+# Python cache
+__pycache__/
+*.py[cod]
+

@@ -1,0 +1,73 @@
+name: Build and checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows-and-android:
+    runs-on: windows-2025
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check localization and generated catalogs
+        run: |
+          python tools/test-localization.py
+          if ($LASTEXITCODE -ne 0) { throw 'Localization validation failed' }
+          python tools/sync-localization.py
+          if ($LASTEXITCODE -ne 0) { throw 'Catalog generation failed' }
+          git diff --exit-code -- L10n.cs android/src/org/leafreader/L10n.java
+          if ($LASTEXITCODE -ne 0) { throw 'Generated catalogs are out of date' }
+      - name: Build Windows
+        run: ./build.ps1
+      - name: Run Windows reader and protocol checks
+        run: |
+          $app = Join-Path (Split-Path $PWD -Parent) 'LeafReader.exe'
+          foreach ($kind in @('self','protocol')) {
+            $qa = Join-Path $env:RUNNER_TEMP ('leaf-qa-' + $kind)
+            New-Item -ItemType Directory -Force $qa | Out-Null
+            if ($kind -eq 'protocol') {
+              $root = Join-Path $qa 'authorized 中文 # & 空格'
+              $outside = Join-Path $qa 'private'
+              New-Item -ItemType Directory -Force $root,$outside | Out-Null
+              New-Item -ItemType Junction -Path (Join-Path $root 'junction') -Target $outside | Out-Null
+            }
+            $process = Start-Process $app -ArgumentList ('--' + $kind + '-test'),$qa -WindowStyle Hidden -PassThru
+            if (!$process.WaitForExit(180000)) { Stop-Process -Id $process.Id; throw 'Reader checks timed out' }
+            if ($process.ExitCode -ne 0) { Get-ChildItem $qa -Filter '*results.txt' | Get-Content; throw 'Reader checks failed' }
+            Get-ChildItem $qa -Filter '*results.txt' | Get-Content
+          }
+      - name: Build Android debug APK
+        run: |
+          $sdk = $env:ANDROID_HOME
+          $jdk = $env:JAVA_HOME_17_X64
+          if (!$sdk -or !$jdk) { throw 'Windows runner Android SDK / JDK 17 missing' }
+          ./android/build.ps1 -SdkRoot $sdk -JdkHome $jdk -OutputPath (Join-Path $env:RUNNER_TEMP 'LeafReader-Android-CI-debug.apk')
+      - name: Run Android JVM model checks
+        run: |
+          $jar = Join-Path $env:RUNNER_TEMP 'json-20240303.jar'
+          Invoke-WebRequest https://repo.maven.apache.org/maven2/org/json/json/20240303/json-20240303.jar -OutFile $jar
+          $classes = Join-Path $env:RUNNER_TEMP 'leaf-models'
+          New-Item -ItemType Directory -Force $classes | Out-Null
+          & "$env:JAVA_HOME_17_X64/bin/javac.exe" --release 8 -encoding UTF-8 -cp $jar -d $classes android/src/org/leafreader/Models.java android/src/org/leafreader/L10n.java android/tests/ModelTests.java
+          if ($LASTEXITCODE -ne 0) { throw 'Model test compilation failed' }
+          & "$env:JAVA_HOME_17_X64/bin/java.exe" -cp ($classes + ';' + $jar) org.leafreader.ModelTests
+          if ($LASTEXITCODE -ne 0) { throw 'Model tests failed' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ci-debug-builds
+          path: |
+            ${{ github.workspace }}/../LeafReader.exe
+            ${{ runner.temp }}/LeafReader-Android-CI-debug.apk
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-check-results
+          path: ${{ runner.temp }}/leaf-qa-*/*results.txt
+          if-no-files-found: ignore

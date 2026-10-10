@@ -1,0 +1,4 @@
+561acfe4b1a14c837b189fb9fc5c6d3e82440184bbde61912de723d62d6368b3  third-party/QRCoder.dll
+860d50cac7a4d02c0822e0c2e705af99e28a0709611f8e7d4aded8bdd35b2ad9  third-party/QRCoder-1.4.3-source.zip
+8d8064c1636fdaef7189dd9055c7d59950a8940a12f2293956446ec3c109fd82  android/zxing-core-3.5.3.jar
+f983454400d73652ad5236413ba7eba48072e042982a84b10e1468506f4b28ae  third-party/zxing-core-3.5.3-sources.jar
