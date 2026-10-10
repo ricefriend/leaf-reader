@@ -27,6 +27,14 @@ jobs:
         run: |
           ./build.ps1
           Copy-Item (Join-Path (Split-Path $PWD -Parent) 'LeafReader.exe') (Join-Path $env:RUNNER_TEMP 'LeafReader.exe')
+      - name: Run desktop large-photo cache checks
+        run: |
+          $app = Join-Path $env:RUNNER_TEMP 'LeafReader.exe'
+          $qa = Join-Path $env:RUNNER_TEMP 'leaf-qa-photo-cache'
+          $process = Start-Process $app -ArgumentList '--photo-cache-test',$qa -WindowStyle Hidden -PassThru
+          if (!$process.WaitForExit(180000)) { Stop-Process -Id $process.Id; throw 'Photo cache checks timed out' }
+          Get-Content (Join-Path $qa 'photo-cache-results.txt')
+          if ($process.ExitCode -ne 0) { throw 'Photo cache checks failed' }
       - name: Run Windows reader and protocol checks
         run: |
           $app = Join-Path (Split-Path $PWD -Parent) 'LeafReader.exe'

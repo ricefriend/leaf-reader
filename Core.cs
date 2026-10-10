@@ -27,7 +27,7 @@ namespace LeafReader {
  public class Page {
   readonly object decodeGate=new object();
   public IImageSource Source;
-  public string FileId,FileName,Version;
+  public string FileId,FileName,Version;public long EncodedBytes;
   public string Path,Entry; public int Width=800,Height=1200; int rawWidth=800,rawHeight=1200,orientation=1; public string Error;
   public string Name {get{return FileName??Entry??System.IO.Path.GetFileName(Path);}}
   public string Identity {get{return Source is RemoteImageSource?Source.Id+"|"+FileId:Path+"|"+Entry;}}
@@ -46,7 +46,7 @@ namespace LeafReader {
   void ReadInfoCore() {
    if(Source is RemoteImageSource)return;
    Error=null;orientation=1;
-   try {using(var stream=Open()) {var d=BitmapDecoder.Create(stream,BitmapCreateOptions.DelayCreation,BitmapCacheOption.OnDemand); rawWidth=d.Frames[0].PixelWidth;rawHeight=d.Frames[0].PixelHeight;
+   try {if(File.Exists(Path)){var file=new FileInfo(Path);if(Entry==null)EncodedBytes=file.Length;Version=file.LastWriteTimeUtc.Ticks+"-"+file.Length;}using(var stream=Open()) {var d=BitmapDecoder.Create(stream,BitmapCreateOptions.DelayCreation,BitmapCacheOption.OnDemand); rawWidth=d.Frames[0].PixelWidth;rawHeight=d.Frames[0].PixelHeight;
     try{var metadata=d.Frames[0].Metadata as BitmapMetadata;if(metadata!=null){object value=metadata.GetQuery("/app1/ifd/{ushort=274}")??metadata.GetQuery("/ifd/{ushort=274}");if(value!=null)orientation=Convert.ToInt32(value);}}catch{}
     Width=orientation>=5&&orientation<=8?rawHeight:rawWidth;Height=orientation>=5&&orientation<=8?rawWidth:rawHeight;if(Width<1||Height<1)throw new IOException(L10n.T("无效尺寸"));}}
    catch(Exception ex){Error=L10n.T("无法读取：")+ex.Message;}
@@ -100,7 +100,7 @@ namespace LeafReader {
   }
   static void AddArchive(string path,ScanResult result){
    try{using(var zip=ZipFile.OpenRead(path)) {
-    var pages=zip.Entries.Where(e=>!string.IsNullOrEmpty(e.Name)&&IsImage(e.Name)&&!e.FullName.StartsWith("__MACOSX/",StringComparison.OrdinalIgnoreCase)).OrderBy(e=>e.FullName,NaturalOrder.Instance).Select(e=>new Page{Path=path,Entry=e.FullName}).ToList();
+    var pages=zip.Entries.Where(e=>!string.IsNullOrEmpty(e.Name)&&IsImage(e.Name)&&!e.FullName.StartsWith("__MACOSX/",StringComparison.OrdinalIgnoreCase)).OrderBy(e=>e.FullName,NaturalOrder.Instance).Select(e=>new Page{Path=path,Entry=e.FullName,EncodedBytes=e.Length}).ToList();
     if(pages.Count>0)result.Books.Add(new Book{Id=path,Title=System.IO.Path.GetFileNameWithoutExtension(path),Folder=System.IO.Path.GetDirectoryName(path),CreatedUtc=File.GetCreationTimeUtc(path),Pages=pages});
    }}catch(Exception ex){result.Warnings.Add(path+"："+ex.Message);}
   }

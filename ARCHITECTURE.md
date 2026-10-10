@@ -74,3 +74,7 @@ SAF 测试使用系统 DocumentsContract 与受权限保护的测试 DocumentsPr
 ## 2.3 设置、语言与迁移
 
 两个原生前端复用 localization/strings.json，由 Python 生成静态 C# / Java 目录，运行时无 Python 或网络翻译依赖。语言切换重建控件并复用当前阅读视图。SettingsUi.cs / SettingsActivity.java 管理偏好和仅由用户触发的赞助外链。MigrationBackup.java 实现密码派生和加密信封；Storage 校验并在单次提交中合并状态，访问令牌恢复后重新进入新安装的 Android Keystore。授权目录权限不随备份迁移。
+
+## Windows 2.3.1 相机照片加载
+
+ReaderImageCache.cs 分离读取调度和已解码像素缓存；按文件平均体积、像素和实测耗时自动扩大邻页预加载。前后台请求统一使用显示目标分辨率，保持有用在途任务，并按缓存字节预算控制窗口。策略与测试见 DESKTOP-PHOTO-CACHE.md。
