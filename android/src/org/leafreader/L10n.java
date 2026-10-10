@@ -353,4 +353,9 @@ final class L10n {static volatile String language="zh";static String pick(String
  MAP.put("无效请求体长度","Invalid request body length");
  MAP.put("请求中断","Request interrupted");
  MAP.put("无效地址","Invalid address");
+ MAP.put("平铺书架","Flat bookshelf");
+ MAP.put("按来源分组","Group by source");
+ MAP.put("‹ 全部来源","‹ All sources");
+ MAP.put(" 本 · 点击进入"," books · Open folder");
+ MAP.put("书架展示","Bookshelf view");
  }}

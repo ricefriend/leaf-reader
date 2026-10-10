@@ -74,7 +74,7 @@ namespace LeafReader {
    var coverBox=new Grid{Height=box.Height-76,ClipToBounds=true};coverBox.SetResourceReference(Panel.BackgroundProperty,"Panel");
    if(cover!=null&&cover.Image!=null)coverBox.Children.Add(new Image{Source=cover.Image,Stretch=Stretch.UniformToFill});
    else{var placeholder=Label(cover!=null&&cover.Failed?L10n.T("封面无法读取"):L10n.T("正在加载…"),12,"Muted");placeholder.HorizontalAlignment=HorizontalAlignment.Center;placeholder.VerticalAlignment=VerticalAlignment.Center;coverBox.Children.Add(placeholder);}
-   stack.Children.Add(coverBox);var title=Label(book.Title,14,"Fg");title.FontWeight=FontWeights.SemiBold;title.Margin=new Thickness(0,10,0,5);stack.Children.Add(title);stack.Children.Add(Label(Caption==null?book.Pages.Count+L10n.T(" 页"):Caption(book),11,"Muted"));
+   stack.Children.Add(coverBox);var title=Label((book.GroupId!=null?"▸ ":"")+book.Title,14,"Fg");title.FontWeight=FontWeights.SemiBold;title.Margin=new Thickness(0,10,0,5);stack.Children.Add(title);stack.Children.Add(Label(Caption==null?book.Pages.Count+L10n.T(" 页"):Caption(book),11,"Muted"));
    var button=new Button{Content=stack,Width=box.Width,Height=box.Height,Padding=new Thickness(8),Margin=new Thickness(0),Background=Brushes.Transparent,HorizontalContentAlignment=HorizontalAlignment.Stretch,ToolTip=(book.RemoteId==null?book.Id:book.SourceLabel+" · "+book.Folder)+L10n.T("\n创建时间：")+book.CreatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")};
    button.Click+=(s,e)=>{if(BookOpened!=null)BookOpened(book);};return button;
   }

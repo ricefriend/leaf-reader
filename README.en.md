@@ -27,6 +27,8 @@ This screenshot shows the actual Windows application with program-generated exam
 
 ### Bookshelf and local files
 
+Choose a flat library or group books by imported parent folder / authorized remote directory. Open a source cover to browse its books; the view preference is saved.
+
 - **Use your existing folders:** each subfolder directly containing images becomes a book. No repackaging is required.
 - **Uniform covers, continuous scrolling:** no shelf pagination. Columns adapt to the available width; Android has a draggable fast-scroll rail for navigating large shelves.
 - **Natural sorting:** `2.jpg` comes before `10.jpg`. Chinese characters, spaces, and special characters in filenames are supported.

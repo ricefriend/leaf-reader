@@ -64,6 +64,7 @@ namespace LeafReader {
   }
  }
  public class Book {
+  public string SourceKey,SourceName,GroupId;public int GroupCount;
   public string RemoteId,SourceLabel;public int RemotePageCount;
   public int PageCount {get{return RemotePageCount>0?RemotePageCount:Pages.Count;}}
   public string Id,Title,Folder; public DateTime CreatedUtc; public List<Page> Pages=new List<Page>();
@@ -96,6 +97,7 @@ namespace LeafReader {
      }
     } catch(Exception ex){result.Warnings.Add(root+"："+ex.Message);}
    }
+   foreach(var book in result.Books)ShelfGroups.AssignLocal(book,roots);
    result.Books=result.Books.OrderBy(b=>b.Title,NaturalOrder.Instance).ThenBy(b=>b.Id,NaturalOrder.Instance).ToList();return result;
   }
   static void AddArchive(string path,ScanResult result){
@@ -127,6 +129,7 @@ namespace LeafReader {
   [DataMember] public string Language;
   [DataMember] public bool? AutoHide,CoverDefault,WideDefault;
   [DataMember] public int ShelfSort;
+  [DataMember] public bool ShelfGrouped;
   [DataMember] public List<ServerProfile> Servers=new List<ServerProfile>();
   public static string StatePath=System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"LeafReader","library.json");
   public static string LoadWarning;

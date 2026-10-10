@@ -357,4 +357,9 @@ namespace LeafReader { public static class L10n {
  {"无效请求体长度","Invalid request body length"},
  {"请求中断","Request interrupted"},
  {"无效地址","Invalid address"},
+ {"平铺书架","Flat bookshelf"},
+ {"按来源分组","Group by source"},
+ {"‹ 全部来源","‹ All sources"},
+ {" 本 · 点击进入"," books · Open folder"},
+ {"书架展示","Bookshelf view"},
  };}}
