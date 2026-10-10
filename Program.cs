@@ -9,7 +9,7 @@ using System.Windows.Markup;
 [assembly: AssemblyDescription("Lightweight comic and image reader")]
 [assembly: AssemblyCompany("Leaf Reader")]
 [assembly: AssemblyProduct("Leaf Reader")]
-[assembly: AssemblyVersion("2.3.1.0")]
+[assembly: AssemblyVersion("2.3.2.0")]
 namespace LeafReader {
  public static class Program {
   [STAThread] public static int Main(string[] args){

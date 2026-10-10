@@ -68,6 +68,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Model test compilation failed' }
           & "$env:JAVA_HOME_17_X64/bin/java.exe" -cp ($classes + ';' + $jar) org.leafreader.ModelTests
           if ($LASTEXITCODE -ne 0) { throw 'Model tests failed' }
+      - name: Run Android HTTP transport checks
+        run: |
+          ./android/test-transport.ps1 -JdkHome $env:JAVA_HOME_17_X64 -JsonJar (Join-Path $env:RUNNER_TEMP 'json-20240303.jar')
       - uses: actions/upload-artifact@v4
         with:
           name: ci-debug-builds

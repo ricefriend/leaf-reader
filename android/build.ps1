@@ -26,7 +26,7 @@ if ($WithTests) { $manifestText = $manifestText.Replace('<application ','<applic
 [IO.File]::WriteAllText($manifest,$manifestText,[Text.UTF8Encoding]::new($false))
 & (Join-Path $tools 'aapt2.exe') compile --dir (Join-Path $base 'res') -o (Join-Path $build 'resources.zip')
 if ($LASTEXITCODE -ne 0) { throw 'APK 资源编译失败' }
-& (Join-Path $tools 'aapt2.exe') link -I $platform --manifest $manifest (Join-Path $build 'resources.zip') --version-code 20301 --version-name 2.3.1 --min-sdk-version 26 --target-sdk-version 35 -o (Join-Path $build 'unsigned.apk')
+& (Join-Path $tools 'aapt2.exe') link -I $platform --manifest $manifest (Join-Path $build 'resources.zip') --version-code 20302 --version-name 2.3.2 --min-sdk-version 26 --target-sdk-version 35 -o (Join-Path $build 'unsigned.apk')
 if ($LASTEXITCODE -ne 0) { throw 'APK 资源打包失败' }
 $apkZip = [IO.Compression.ZipFile]::Open((Join-Path $build 'unsigned.apk'),[IO.Compression.ZipArchiveMode]::Update)
 try { [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($apkZip,(Join-Path $build 'dex\classes.dex'),'classes.dex') | Out-Null } finally { $apkZip.Dispose() }

@@ -19,7 +19,7 @@ final class Images {
  final Object diskGate=new Object();
  Images(Context c){context=c;directory=new File(c.getCacheDir(),"images");directory.mkdirs();trim();}
  Source source(Page p){return p.server==null?this::localOpen:this::remoteOpen;}
- InputStream remoteOpen(Page p,String variant,int width,Api.Request request)throws Exception{HttpURLConnection c=Api.connect(p.server,Api.imagePath(p,variant,width),null,request);return new FilterInputStream(c.getInputStream()){public void close()throws IOException{try{super.close();}finally{c.disconnect();request.connection=null;}}};}
+ InputStream remoteOpen(Page p,String variant,int width,Api.Request request)throws Exception{HttpURLConnection c=Api.connect(p.server,Api.imagePath(p,variant,width),null,request);return new FilterInputStream(c.getInputStream()){public void close()throws IOException{try{super.close();}finally{c.disconnect();request.release(c);}}};}
  InputStream localOpen(Page p,String variant,int width,Api.Request request)throws Exception{
   request.check();if(p.entry==null){InputStream input=context.getContentResolver().openInputStream(Uri.parse(p.uri));if(input==null)throw new IOException(L10n.t("文件授权失效，请重新选择目录"));return input;}
   Page archive=new Page();archive.id=p.archive;archive.uri=p.uri;archive.version=p.version;File file=original(archive,request);final ZipFile zip=new ZipFile(file);ZipEntry entry=zip.getEntry(p.entry);if(entry==null){zip.close();throw new IOException(L10n.t("压缩包中的图片已删除"));}if(entry.getSize()>200L*1024*1024){zip.close();throw new IOException(L10n.t("压缩包单张图片超过 200 MB"));}return new FilterInputStream(zip.getInputStream(entry)){public void close()throws IOException{try{super.close();}finally{zip.close();}}};

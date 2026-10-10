@@ -358,4 +358,15 @@ final class L10n {static volatile String language="zh";static String pick(String
  MAP.put("‹ 全部来源","‹ All sources");
  MAP.put(" 本 · 点击进入"," books · Open folder");
  MAP.put("书架展示","Bookshelf view");
+ MAP.put(" 秒 · 返回可取消"," s · Back to cancel");
+ MAP.put("等待打开目录","Waiting to open folder");
+ MAP.put("正在读取图片列表，首次打开可能较慢","Reading image list; first open may take longer");
+ MAP.put("正在读取图片尺寸","Reading image dimensions");
+ MAP.put("打开失败 · ","Could not open · ");
+ MAP.put(" · 点此重试"," · Tap to retry");
+ MAP.put("读取超时：目录可能较大或电脑响应缓慢，请重试","Read timed out: the folder may be large or the computer slow. Retry.");
+ MAP.put("已取消打开目录","Folder opening cancelled");
+ MAP.put("图片加载失败 · ","Image failed to load · ");
+ MAP.put("正在加载图片 · ","Loading image · ");
+ MAP.put("共享服务繁忙，请稍后重试","Shared server is busy. Please retry shortly.");
  }}
