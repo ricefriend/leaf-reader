@@ -4,9 +4,9 @@
 
 把现有图片文件夹变成书架，在电脑或手机上阅读；也可以由电脑共享指定目录，让手机或另一台电脑按需读取，不必先下载整本漫画。
 
-[下载安装](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.0-preview) · [English](README.en.md) · [反馈问题](https://github.com/ricefriend/leaf-reader/issues) · [支持开发](https://ko-fi.com/gdbkf)
+[下载安装](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.2-preview) · [English](README.en.md) · [反馈问题](https://github.com/ricefriend/leaf-reader/issues) · [支持开发](https://ko-fi.com/gdbkf)
 
-当前版本：**2.3 公开预览版**。免费使用，采用 [MIT 许可证](LICENSE)，无需注册账号或部署云服务。
+当前版本：**2.3.2 公开预览版**。免费使用，采用 [MIT 许可证](LICENSE)，无需注册账号或部署云服务。
 
 ## 可以用它做什么？
 
@@ -16,6 +16,10 @@
 - **在手机上顺畅翻阅**：纵向惯性滚动、横向滑动与切页动画、双指缩放、放大后拖动。
 - **直接读电脑上的漫画**：电脑开启只读共享，手机扫码或输入地址配对；另一台 Windows 电脑也能作为客户端读取。
 - **接着上次的位置看**：自动保存阅读位置、阅读模式和书签；安卓支持密码加密的备份与恢复。
+
+## 2.3.2 更新
+
+改善 Windows 大照片预加载，新增两端按来源分组的书架，修复安卓远程目录打开的等待与取消逻辑。底部显示加载阶段和耗时，失败后可点击重试。建议两端一起更新；详见 [更新与验证记录](VALIDATION-2.3.2.md)。
 
 ## 界面预览
 
@@ -79,14 +83,16 @@
 
 ## 下载与安装
 
-在 [v2.3.0-preview 下载页](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.0-preview) 获取安装包：
+在 [v2.3.2-preview 下载页](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.2-preview) 获取安装包：
 
 | 平台 | 要下载的文件 | 使用要求 |
 | --- | --- | --- |
-| Windows | `LeafReader-2.3-preview.exe` | Windows 10 / 11，.NET Framework 4.8+；直接运行，无需安装器。 |
-| Android | `LeafReader-Android-2.3-preview.apk` | Android 8.0+；首次安装选择这个 APK。 |
+| Windows | `LeafReader-2.3.2-preview.exe` | Windows 10 / 11，.NET Framework 4.8+；直接运行，无需安装器。 |
+| Android | `LeafReader-Android-2.3.2-preview.apk` | Android 8.0+；首次安装选择这个 APK。 |
 
 发布页同时提供完整源码和 `SHA256SUMS.txt` 校验文件。
+
+已安装官方 2.3／2.3.1 预览 APK 的用户可直接覆盖安装，保留数据，不需重新配对。旧开发证书迁移包在 [首次发布页](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.0-preview)。
 
 **如果此前安装过开发测试版 APK**：先使用 `LeafReader-Android-2.3-migration-debug.apk` 覆盖旧版，导出并验证加密备份，再卸载换装预览版。不要先卸载旧应用；详细步骤见 [安卓迁移说明](MIGRATION.md)。首次使用者无需迁移包。
 
@@ -151,7 +157,7 @@ HTTP 用于可信局域网或私有 VPN；跨网络连接应使用受保护的 H
 - 支持 ZIP / CBZ，暂不支持 PDF、RAR / CBR。安卓本地压缩包需缓存单个压缩包，目前上限为 200 MiB。
 - 当前桌面版支持 Windows；安卓提供本地阅读与远程客户端，不能作为共享服务端。
 - 阅读进度尚不跨设备同步。暂不提供自动发现服务器，也不兼容 Komga、OPDS 或 SMB 协议。
-- 2.3 为公开预览版；具体测试记录及尚未覆盖的设备场景见 [验证记录](VALIDATION-2.3.md)。
+- 2.3.2 为公开预览版；本次检查见 [2.3.2 验证记录](VALIDATION-2.3.2.md)，此前设备测试见 [2.3 验证记录](VALIDATION-2.3.md)。新增手机界面行为尚待真机验收。
 
 ## 开发、反馈与支持
 

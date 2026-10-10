@@ -4,9 +4,13 @@
 
 Turn your existing image folders into a bookshelf and read on your computer or phone. A Windows computer can also share selected folders with a phone or another computer, loading pages on demand without downloading the whole book first.
 
-[Download](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.0-preview) · [简体中文](README.md) · [Report an issue](https://github.com/ricefriend/leaf-reader/issues) · [Support development](https://ko-fi.com/gdbkf)
+[Download](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.2-preview) · [简体中文](README.md) · [Report an issue](https://github.com/ricefriend/leaf-reader/issues) · [Support development](https://ko-fi.com/gdbkf)
 
-Current version: **2.3 public preview**. Free to use under the [MIT license](LICENSE). No account or cloud service required.
+Current version: **2.3.2 public preview**. Free to use under the [MIT license](LICENSE). No account or cloud service required.
+
+## New in 2.3.2
+
+Improved Windows preloading for large photos, source folders in both bookshelves, and Android remote-folder loading and cancellation. The bottom status shows the loading stage and elapsed time; tap failures to retry. Update both apps for the full fix. See [release validation](VALIDATION-2.3.2.md).
 
 ## What can you do with it?
 
@@ -80,14 +84,16 @@ From any reading mode, join the current page with the previous or next page to i
 
 ## Download and install
 
-Get the files from [v2.3.0-preview](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.0-preview):
+Get the files from [v2.3.2-preview](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.2-preview):
 
 | Platform | Download | Requirements |
 | --- | --- | --- |
-| Windows | `LeafReader-2.3-preview.exe` | Windows 10 / 11, .NET Framework 4.8+. Run directly; no installer needed. |
-| Android | `LeafReader-Android-2.3-preview.apk` | Android 8.0+. Use this APK for a new installation. |
+| Windows | `LeafReader-2.3.2-preview.exe` | Windows 10 / 11, .NET Framework 4.8+. Run directly; no installer needed. |
+| Android | `LeafReader-Android-2.3.2-preview.apk` | Android 8.0+. Use this APK for a new installation. |
 
 The release also contains full source code and a `SHA256SUMS.txt` file.
+
+Official 2.3 / 2.3.1 preview APKs can be updated in place without losing data or pairing again. The old-certificate migration APK remains on the [first release page](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.0-preview).
 
 **Previously installed a development test APK?** First install `LeafReader-Android-2.3-migration-debug.apk` over the old app, export and verify an encrypted backup, then uninstall and install the preview APK. Do not uninstall before verifying the backup. See [migration instructions](MIGRATION.md). New users do not need the migration APK.
 
@@ -152,7 +158,7 @@ HTTP is intended for trusted LANs or private VPNs. Cross-network connections sho
 - ZIP / CBZ are supported; PDF and RAR / CBR are not. Android caches a local archive for entry access, with a current limit of 200 MiB per archive.
 - The desktop app currently supports Windows. Android provides local reading and a remote client, without hosting a sharing service.
 - Progress is not synchronized across devices. Automatic server discovery and compatibility with Komga, OPDS, or SMB are not implemented.
-- Version 2.3 is a public preview. See [validation records](VALIDATION-2.3.md) for tested scenarios and remaining coverage limits.
+- Version 2.3.2 is a public preview. See [current validation](VALIDATION-2.3.2.md) and [earlier device coverage](VALIDATION-2.3.md). The new Android UI behavior still needs device acceptance testing.
 
 ## Development, feedback, and support
 
