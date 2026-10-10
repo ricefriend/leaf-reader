@@ -140,7 +140,7 @@ HTTP is intended for trusted LANs or private VPNs. Cross-network connections sho
 - Swipe vertically to scroll. A fast swipe continues with inertia; touch the view to stop it.
 - Swipe horizontally in left/right modes to turn pages with an animation.
 - Pinch to zoom and drag with one finger while zoomed. These gestures are handled separately from ordinary page turns.
-- Use the reading controls for mode selection, bookmarks, and temporary page joins. Tap the view to show or hide controls.
+- Use the reading controls for mode selection, bookmarks, and temporary page joins. Tap the center to show or hide controls; tap the sides to turn pages in the chosen reading direction.
 - System Back exits a temporary join first, then returns from the reader to the shelf.
 
 ## Supported files and current limits
