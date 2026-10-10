@@ -14,7 +14,8 @@ try {
         $relative = $file.FullName.Substring($sourceRoot.Length + 1)
         $parts = $relative.Split([IO.Path]::DirectorySeparatorChar)
         if (@($parts | Where-Object { $_ -in $excludedNames -or $_ -like 'qa*' }).Count -gt 0) { continue }
-        if ($file.Extension -notin $allowed -and $file.Name -notin @('.gitignore','.gitattributes','LICENSE','NOTICE','strings.json','translation-request.json')) { continue }
+        $documentationImage = $file.Extension -eq '.png' -and $relative.StartsWith('docs\images\',[StringComparison]::OrdinalIgnoreCase)
+        if ($file.Extension -notin $allowed -and $file.Name -notin @('.gitignore','.gitattributes','LICENSE','NOTICE','strings.json','translation-request.json') -and !$documentationImage) { continue }
         # Only these vendored distribution archives belong in the public source.
         if ($file.Extension -in @('.zip','.jar','.dll') -and !$relative.StartsWith('third-party\') -and $relative -ne 'android\zxing-core-3.5.3.jar') { continue }
         if ($file.Name -in @('qr-payload.txt') -or $file.Name -like '*results*') { continue }
