@@ -60,6 +60,27 @@ namespace LeafReader {
 
     Check(ShelfTree.Build(new Book[0]).Count==0,"empty library has no roots");
 
+    var progress=new Dictionary<string,Progress>();
+    var grouped=ShelfView.Build(roots,"local:R|",true,"",0,progress);
+    Check(grouped.TotalBooks==6&&grouped.Folders.Count==1&&grouped.Direct.Count==1,"grouped node separates folders and direct books");
+    Check(grouped.Items.Count==2&&grouped.Items[0].GroupId=="local:R|A","folder card precedes direct book");
+    var inside=ShelfView.Build(roots,"local:R|A",true,"",0,progress);
+    Check(inside.Direct.Count==1&&inside.Direct[0].IsCurrentFolderBook,"direct book at a mixed folder is marked as this folder");
+    Check(inside.Folders.Count==2&&inside.Items.Count==3,"mixed folder shows two child folders and its own book");
+    var flat=ShelfView.Build(roots,"local:R|A",false,"",0,progress);
+    Check(flat.TotalBooks==5&&flat.Items.Count==5&&flat.Folders.Count==0,"flat node lists all descendants");
+    var search=ShelfView.Build(roots,"local:R|A",true,"番外",0,progress);
+    Check(search.Items.Count==1&&search.Items[0].Title=="番外 book"&&search.Folders.Count==0,"search hides folder cards and stays in scope");
+    var rootView=ShelfView.Build(roots,null,true,"",0,progress);
+    Check(rootView.Items.Count==1&&rootView.Items[0].GroupId=="local:R|","virtual root shows sources");
+
+    var recent=new Dictionary<string,Progress>();
+    recent["local:R#A/02"]=new Progress{LastRead="2026-10-18T10:00:00Z",Page=0};
+    var recentView=ShelfView.Build(roots,"local:R|A",true,"",1,recent);
+    Check(recentView.Folders.Count==2&&recentView.Folders[0].Name=="02","recent folder sort uses descendant read time");
+    Check(recentView.ContinueBook!=null&&recentView.ContinueBook.Id=="local:R#A/02","continue reading picks the most recent book");
+    Check(recentView.Folders[0].CoverBook!=null,"folder keeps a cover book");
+
     File.WriteAllText(Path.Combine(directory,"tree-results.txt"),string.Join("\r\n",lines)+"\r\nRESULT: ALL TESTS PASSED");
     return 0;
    }catch(Exception ex){lines.Add(ex.Message);File.WriteAllText(Path.Combine(directory,"tree-results.txt"),string.Join("\r\n",lines)+"\r\nRESULT: FAILED");return 1;}
