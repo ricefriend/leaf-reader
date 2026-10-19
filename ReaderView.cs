@@ -74,7 +74,7 @@ namespace LeafReader {
   int Neighbor(int page,int direction){return direction>0?Paging.Next(Book,page,Progress.Mode,Progress.Cover,Progress.Wide,Progress.PairAnchor):Paging.Previous(Book,page,Progress.Mode,Progress.Cover,Progress.Wide,Progress.PairAnchor);}
   internal int PixelsForPage(int page){if(IsToon)return ReaderImageCache.Resolution(Book.Pages[page],DisplayPixels(imageWidth));double w,h,scale=SpreadScale(page,out w,out h);return ReaderImageCache.Resolution(Book.Pages[page],DisplayPixels(Book.Pages[page].Width*h/Book.Pages[page].Height*scale));}
   protected override void OnRender(DrawingContext dc){
-   dc.DrawRectangle(Light?new SolidColorBrush(Color.FromRgb(235,233,228)):new SolidColorBrush(Color.FromRgb(17,19,24)),null,new Rect(0,0,ActualWidth,ActualHeight));
+   dc.DrawRectangle(Light?new SolidColorBrush(Color.FromRgb(243,242,237)):new SolidColorBrush(Color.FromRgb(14,17,22)),null,new Rect(0,0,ActualWidth,ActualHeight));
    if(Book==null||ActualWidth<1||ActualHeight<1)return;
    var wishes=new List<ReaderImageCache.Wish>();
    if(IsToon){
@@ -97,7 +97,7 @@ namespace LeafReader {
   void DrawPage(DrawingContext dc,int index,Rect r){
    var item=images.Get(Book.Pages[index],DisplayPixels(r.Width));
    if(item!=null&&item.Image!=null){dc.DrawImage(item.Image,r);return;}
-   dc.DrawRectangle(new SolidColorBrush(Color.FromRgb(34,37,44)),null,r);
+   dc.DrawRectangle(new SolidColorBrush(Color.FromRgb(21,27,35)),null,r);
    string message=item==null?L10n.T("正在加载…"):(L10n.T("图片无法显示\n")+Book.Pages[index].Name+"\n"+item.Error);
    var t=new FormattedText(message,System.Globalization.CultureInfo.CurrentCulture,FlowDirection.LeftToRight,new Typeface("Microsoft YaHei UI"),14,Brushes.Gray,VisualTreeHelper.GetDpi(this).PixelsPerDip);t.MaxTextWidth=Math.Max(1,Math.Min(440,r.Width-24));t.MaxTextHeight=120;
    dc.DrawText(t,new Point(r.Left+Math.Max(12,(r.Width-t.Width)/2),Math.Max(12,r.Top+(Math.Min(r.Height,ActualHeight)-t.Height)/2)));

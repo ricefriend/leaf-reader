@@ -117,6 +117,7 @@ namespace LeafReader {
     parentRow=row;
    }
    NodeRow target;if(rows.TryGetValue(path[path.Count-1].Key,out target))target.Border.BringIntoView();
+   RefreshActive();
   }
   void RefreshActive(){
    if(active==null)allRow.SetResourceReference(Panel.BackgroundProperty,"AccentSoft");else allRow.Background=Brushes.Transparent;

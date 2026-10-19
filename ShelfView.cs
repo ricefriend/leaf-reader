@@ -8,7 +8,7 @@ namespace LeafReader {
   public List<ShelfNode> Folders=new List<ShelfNode>();
   public List<Book> Direct=new List<Book>();
   public List<Book> Items=new List<Book>();
-  public int TotalBooks,TotalFolders;
+  public int TotalBooks,TotalFolders,TotalPages;
   public Book ContinueBook;
   static string LastRead(Book book,Dictionary<string,Progress> progress){
    Progress p;return progress!=null&&progress.TryGetValue(book.Id,out p)&&p!=null?p.LastRead:null;
@@ -67,6 +67,7 @@ namespace LeafReader {
    else{view.Path=ShelfTree.Path(roots,key);scope=ShelfTree.Descendants(node);}
    foreach(Book book in scope){book.IsCurrentFolderBook=false;SetRead(book,progress);}
    view.TotalBooks=scope.Count;
+   foreach(Book book in scope)view.TotalPages+=book.PageCount;
    string text=query==null?"":query.Trim();
    if(text.Length>0){
     view.Items=scope.Where(b=>Matches(b,text)).ToList();
@@ -97,7 +98,7 @@ namespace LeafReader {
    view.TotalFolders=view.Folders.Count;
    foreach(ShelfNode folder in view.Folders)if(folder.CoverBook!=null)view.Items.Add(Pseudo(folder));
    view.Items.AddRange(view.Direct);
-   if(node!=null&&!node.IsSource){
+   if(node!=null&&!node.IsSource&&node.Children.Count>0){
     foreach(Book book in view.Direct)if(string.Equals(book.RelativePath,node.RelativePath,StringComparison.OrdinalIgnoreCase))book.IsCurrentFolderBook=true;
    }
    view.ContinueBook=FindContinueBook(scope,progress);

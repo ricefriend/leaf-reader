@@ -6,17 +6,19 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace LeafReader {
  // The canvas contains only cards around the viewport; the full library has
  // lightweight rectangles, so scrolling never accumulates thousands of images.
  public sealed class ShelfGrid : Grid {
-  readonly ScrollViewer viewer;readonly Canvas canvas=new Canvas();
+  readonly ScrollViewer viewer;readonly Canvas canvas=new Canvas{VerticalAlignment=VerticalAlignment.Top,HorizontalAlignment=HorizontalAlignment.Left};
   List<Book> books=new List<Book>();Rect[] slots=new Rect[0];
   readonly Dictionary<int,Button> visible=new Dictionary<int,Button>();
   class Cover {public BitmapSource Image;public bool Failed;public long Used;}
   readonly Dictionary<string,Cover> cache=new Dictionary<string,Cover>();
   bool loading,refreshing;int generation;long clock;double layoutWidth;
+  const double CardWidth=168,CardHeight=288,CoverHeight=224,GapX=16,GapY=18;
   public Action<Book> BookOpened;public Func<Book,string> Caption;
   public ScrollViewer Scroller {get{return viewer;}}
   internal int RealizedCount {get{return visible.Count;}}
@@ -25,11 +27,11 @@ namespace LeafReader {
   internal bool VisibleCoversReady {get{return visible.Keys.All(i=>cache.ContainsKey(CoverKey(books[i])));}}
   internal Rect[] CardBounds {get{return slots;}}
   public ShelfGrid(){
-   viewer=new ScrollViewer{Content=canvas,VerticalScrollBarVisibility=ScrollBarVisibility.Visible,HorizontalScrollBarVisibility=ScrollBarVisibility.Disabled,CanContentScroll=false,Padding=new Thickness(0,0,8,10)};
+   viewer=new ScrollViewer{Content=canvas,VerticalScrollBarVisibility=ScrollBarVisibility.Visible,HorizontalScrollBarVisibility=ScrollBarVisibility.Disabled,CanContentScroll=false,Padding=new Thickness(0,0,8,10),VerticalContentAlignment=VerticalAlignment.Top,HorizontalContentAlignment=HorizontalAlignment.Left};
    Children.Add(viewer);viewer.ScrollChanged+=(s,e)=>{if(Math.Abs(viewer.ViewportWidth-layoutWidth)>1)LayoutCards(true);else RefreshVisible();};
    SizeChanged+=(s,e)=>LayoutCards(true);IsVisibleChanged+=(s,e)=>{if(IsVisible)RefreshVisible();};
   }
-  static string CoverKey(Book book){return book.Id+"|"+book.Pages[0].Key;}
+  static string CoverKey(Book book){return book.Id+"|"+(book.Pages.Count>0?book.Pages[0].Key:"");}
   public void SetBooks(List<Book> items,bool reset){
    bool same=books.Select(b=>b.Id).SequenceEqual(items.Select(b=>b.Id));
    generation++;books=items;visible.Clear();canvas.Children.Clear();
@@ -41,13 +43,9 @@ namespace LeafReader {
   void LayoutCards(bool preserve){
    if(refreshing)return;int anchor=preserve?Anchor():-1;double delta=anchor>=0?viewer.VerticalOffset-slots[anchor].Top:0;
    double width=Math.Max(180,viewer.ViewportWidth>0?viewer.ViewportWidth:ActualWidth-26);layoutWidth=viewer.ViewportWidth;
-   const double cardWidth=180,cardHeight=296,gap=18;
-   int columns=Math.Max(1,(int)Math.Floor((width+gap)/(cardWidth+gap)));slots=new Rect[books.Count];
-   for(int i=0;i<books.Count;i++){
-    slots[i]=new Rect((i%columns)*(cardWidth+gap),(i/columns)*(cardHeight+gap),cardWidth,cardHeight);
-   }
-   canvas.Height=books.Count==0?0:Math.Ceiling((double)books.Count/columns)*(cardHeight+gap);canvas.Width=width;
-   // Covers have fixed dimensions. Only the column count changes on resize.
+   int columns=Math.Max(1,(int)Math.Floor((width+GapX)/(CardWidth+GapX)));slots=new Rect[books.Count];
+   for(int i=0;i<books.Count;i++)slots[i]=new Rect((i%columns)*(CardWidth+GapX),(i/columns)*(CardHeight+GapY),CardWidth,CardHeight);
+   canvas.Height=books.Count==0?0:Math.Ceiling((double)books.Count/columns)*(CardHeight+GapY);canvas.Width=width;
    visible.Clear();canvas.Children.Clear();
    if(anchor>=0&&anchor<slots.Length)viewer.ScrollToVerticalOffset(Math.Max(0,slots[anchor].Top+delta));
    RefreshVisible();
@@ -62,21 +60,60 @@ namespace LeafReader {
      Cover cover;cache.TryGetValue(CoverKey(books[i]),out cover);if(cover!=null)cover.Used=++clock;
      if(visible.ContainsKey(i))continue;var button=MakeCard(i,cover);visible[i]=button;canvas.Children.Add(button);Canvas.SetLeft(button,slots[i].X);Canvas.SetTop(button,slots[i].Y);
     }
-    // Keep images near the viewport and a bounded recent cache.
     var pinned=new HashSet<string>(needed.Select(i=>CoverKey(books[i])));
     while(cache.Count>Math.Max(72,pinned.Count)){var oldest=cache.Where(kv=>!pinned.Contains(kv.Key)).OrderBy(kv=>kv.Value.Used).FirstOrDefault();if(oldest.Key==null)break;cache.Remove(oldest.Key);}
    }finally{refreshing=false;}
    LoadNextCover();
   }
-  TextBlock Label(string text,int size,string color){var label=new TextBlock{Text=text,FontSize=size,TextTrimming=TextTrimming.CharacterEllipsis};label.SetResourceReference(TextBlock.ForegroundProperty,color);return label;}
+  static Brush Resource(FrameworkElement element,string key){return (Brush)element.FindResource(key);}
+  TextBlock Label(string text,double size,string color){var label=new TextBlock{Text=text,FontSize=size,TextTrimming=TextTrimming.CharacterEllipsis};label.SetResourceReference(TextBlock.ForegroundProperty,color);return label;}
+  Border Badge(string text,string foreground,string background){
+   var label=Label(text,9.5,foreground);label.Margin=new Thickness(0);
+   var border=new Border{Background=Resource(this,background),CornerRadius=new CornerRadius(5),Padding=new Thickness(6,2,6,2),HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Top,Margin=new Thickness(8),Child=label};
+   return border;
+  }
+  Border CoverShell(){
+   var border=new Border{CornerRadius=new CornerRadius(10),BorderThickness=new Thickness(1),Background=Resource(this,"Card")};
+   border.SetResourceReference(Border.BorderBrushProperty,"Line");return border;
+  }
   Button MakeCard(int index,Cover cover){
-   var book=books[index];var box=slots[index];var stack=new StackPanel();
-   var coverBox=new Grid{Height=box.Height-76,ClipToBounds=true};coverBox.SetResourceReference(Panel.BackgroundProperty,"Panel");
-   if(cover!=null&&cover.Image!=null)coverBox.Children.Add(new Image{Source=cover.Image,Stretch=Stretch.UniformToFill});
-   else{var placeholder=Label(cover!=null&&cover.Failed?L10n.T("封面无法读取"):L10n.T("正在加载…"),12,"Muted");placeholder.HorizontalAlignment=HorizontalAlignment.Center;placeholder.VerticalAlignment=VerticalAlignment.Center;coverBox.Children.Add(placeholder);}
-   stack.Children.Add(coverBox);var title=Label((book.GroupId!=null?"▸ ":"")+book.Title,14,"Fg");title.FontWeight=FontWeights.SemiBold;title.Margin=new Thickness(0,10,0,5);stack.Children.Add(title);stack.Children.Add(Label(Caption==null?book.Pages.Count+L10n.T(" 页"):Caption(book),11,"Muted"));
-   var button=new Button{Content=stack,Width=box.Width,Height=box.Height,Padding=new Thickness(8),Margin=new Thickness(0),Background=Brushes.Transparent,HorizontalContentAlignment=HorizontalAlignment.Stretch,ToolTip=(book.RemoteId==null?book.Id:book.SourceLabel+" · "+book.Folder)+L10n.T("\n创建时间：")+book.CreatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")};
-   button.Click+=(s,e)=>{if(BookOpened!=null)BookOpened(book);};return button;
+   var book=books[index];var box=slots[index];bool folder=book.GroupId!=null;
+   var content=new Grid{Width=box.Width,Height=box.Height};
+   var coverHost=new Grid{Height=CoverHeight,VerticalAlignment=VerticalAlignment.Top};
+   var shell=CoverShell();
+   if(cover!=null&&cover.Image!=null){
+    var rectangle=new Rectangle{RadiusX=10,RadiusY=10,Stretch=Stretch.Fill,Fill=new ImageBrush(cover.Image){Stretch=Stretch.UniformToFill}};
+    shell.Child=rectangle;
+   }else{
+    var placeholder=Label(cover!=null&&cover.Failed?L10n.T("封面无法读取"):L10n.T("正在加载…"),11,"Muted");
+    placeholder.HorizontalAlignment=HorizontalAlignment.Center;placeholder.VerticalAlignment=VerticalAlignment.Center;shell.Child=placeholder;
+   }
+   coverHost.Children.Add(shell);
+   if(folder){
+    var count=book.GroupCount.ToString()+L10n.T(" 本");
+    var pillLabel=Label(count,10,"Fg");pillLabel.FontWeight=FontWeights.SemiBold;
+    var pill=new Border{Background=Resource(this,"Bg"),Opacity=.88,CornerRadius=new CornerRadius(6),Padding=new Thickness(8,3,8,3),HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Bottom,Margin=new Thickness(8),Child=pillLabel};
+    coverHost.Children.Add(Badge(L10n.T("目录"),"Accent","AccentSoft"));
+    coverHost.Children.Add(pill);
+   }else if(book.IsCurrentFolderBook){
+    coverHost.Children.Add(Badge(L10n.T("本目录"),"AccentInk","Accent"));
+   }
+   content.Children.Add(coverHost);
+   var info=new StackPanel{Margin=new Thickness(0,CoverHeight+10,0,0)};
+   var title=Label(book.Title,13,"Fg");title.FontWeight=FontWeights.SemiBold;info.Children.Add(title);
+   var meta=Label(Caption==null?book.PageCount+L10n.T(" 页"):Caption(book),10.5,"Muted");meta.Margin=new Thickness(0,3,0,0);info.Children.Add(meta);
+   if(!folder&&book.ReadPercent>0){
+    var track=new Border{Height=2,Background=Resource(this,"Line"),CornerRadius=new CornerRadius(1),Margin=new Thickness(0,7,0,0),HorizontalAlignment=HorizontalAlignment.Stretch};
+    var fill=new Border{Height=2,Background=Resource(this,"Accent"),CornerRadius=new CornerRadius(1),HorizontalAlignment=HorizontalAlignment.Left,Width=Math.Max(2,(box.Width-2)*Math.Min(100,book.ReadPercent)/100)};
+    var progress=new Grid();progress.Children.Add(track);progress.Children.Add(fill);info.Children.Add(progress);
+   }
+   content.Children.Add(info);
+   var button=new Button{Content=content,Width=box.Width,Height=box.Height,Style=(Style)FindResource("CardButton"),ToolTip=book.Id,Margin=new Thickness(0),Padding=new Thickness(0)};
+   button.RenderTransform=new TranslateTransform(0,0);
+   button.MouseEnter+=(s,e)=>{((TranslateTransform)button.RenderTransform).Y=-2;button.SetResourceReference(Control.BorderBrushProperty,"AccentLine");};
+   button.MouseLeave+=(s,e)=>{((TranslateTransform)button.RenderTransform).Y=0;button.BorderBrush=Brushes.Transparent;};
+   button.Click+=(s,e)=>{if(BookOpened!=null)BookOpened(book);};
+   return button;
   }
   async void LoadNextCover(){
    if(loading||!IsVisible)return;

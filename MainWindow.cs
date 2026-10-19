@@ -17,7 +17,7 @@ namespace LeafReader {
   public readonly ReaderView Reader=new ReaderView();
   Grid root,body,shelf,readerHost;StackPanel shelfHead,readerHead,readerFoot;ShelfGrid cards;Grid shelfSurface;ShelfSidebar sidebar;
   TextBlock message,summary,bookTitle,pageLabel,zoomLabel;
-  string shelfGroup;Button shelfUp;ComboBox shelfView;
+  string shelfGroup;Button shelfUp;ToggleButton flatToggle,groupToggle;StackPanel breadcrumb;TextBlock heroEyebrow,heroTitle;Button continueButton;Book continueBook;
   TextBox search;ComboBox mode,fit,sort;CheckBox cover,wide;ScrollBar scroll;Slider pageSlider;Button bookmark,back,shiftBack,shiftNext;
   List<Book> books=new List<Book>();List<string> warnings=new List<string>();List<ShelfNode> tree=new List<ShelfNode>();ShelfView view;bool treeDirty=true;
   int operation;bool updating,busy,fullscreen;WindowState beforeFull;WindowStyle beforeStyle;ResizeMode beforeResize;
@@ -45,24 +45,46 @@ namespace LeafReader {
   Brush R(string key){return (Brush)FindResource(key);}
   TextBlock Text(string text,double size=13,string resource="Fg"){var t=new TextBlock{Text=text,FontSize=size,VerticalAlignment=VerticalAlignment.Center};t.SetResourceReference(TextBlock.ForegroundProperty,resource);return t;}
   Button Btn(string title,Action action,string tip=null){var b=new Button{Content=title,ToolTip=tip??title};b.Click+=(s,e)=>action();return b;}
+  Button PrimaryBtn(string title,Action action,string tip=null){var b=Btn(title,action,tip);b.Style=(Style)FindResource("PrimaryButton");b.Margin=new Thickness(0,0,8,0);return b;}
   void Build(){
    root=new Grid();root.SetResourceReference(Panel.BackgroundProperty,"Bg");root.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});root.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});root.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});Content=root;
-   var header=new DockPanel{Margin=new Thickness(26,18,20,16)};
-   var mark=new Border{Background=R("Accent"),CornerRadius=new CornerRadius(8),Width=36,Height=36,Margin=new Thickness(0,0,11,0),Child=new TextBlock{Text=L10n.T("栞"),FontSize=23,Foreground=new SolidColorBrush(Color.FromRgb(28,49,37)),HorizontalAlignment=HorizontalAlignment.Center,VerticalAlignment=VerticalAlignment.Center}};header.Children.Add(mark);
-   var brand=new StackPanel{VerticalAlignment=VerticalAlignment.Center,Margin=new Thickness(0,0,30,0)};brand.Children.Add(Text("LEAF READER",15));brand.Children.Add(Text(L10n.T("留一页，给自己。"),10,"Muted"));header.Children.Add(brand);
+   var header=new DockPanel{Margin=new Thickness(26,16,22,14)};
+   var mark=new Border{Background=R("Accent"),CornerRadius=new CornerRadius(10),Width=34,Height=34,Margin=new Thickness(0,0,10,0),Child=new TextBlock{Text=L10n.T("栞"),FontSize=22,Foreground=new SolidColorBrush(Color.FromRgb(16,32,24)),HorizontalAlignment=HorizontalAlignment.Center,VerticalAlignment=VerticalAlignment.Center}};header.Children.Add(mark);
+   var brand=new StackPanel{VerticalAlignment=VerticalAlignment.Center,Margin=new Thickness(0,0,24,0)};brand.Children.Add(Text("LEAF READER",14));brand.Children.Add(Text(L10n.T("留一页，给自己。"),9.5,"Muted"));header.Children.Add(brand);
    var actions=new StackPanel{Orientation=Orientation.Horizontal,HorizontalAlignment=HorizontalAlignment.Right};DockPanel.SetDock(actions,Dock.Right);
-   actions.Children.Add(Btn(L10n.T("导入文件夹"),ChooseFolder,L10n.T("Ctrl+O · 导入母文件夹，递归扫描子文件夹")));actions.Children.Add(Btn(L10n.T("打开压缩包"),ChooseArchive,L10n.T("直接阅读 ZIP / CBZ")));
-   actions.Children.Add(Btn(L10n.T("共享"),SharingDialog,L10n.T("选择授权目录并开启局域网共享")));actions.Children.Add(Btn(L10n.T("服务器"),ServersDialog,L10n.T("配对或重新连接另一台电脑")));actions.Children.Add(Btn(L10n.Pick("设置","Settings"),SettingsDialog));header.Children.Add(actions);header.Children.Add(new Border());root.Children.Add(header);
+   actions.Children.Add(PrimaryBtn(L10n.T("导入文件夹"),ChooseFolder,L10n.T("Ctrl+O · 导入母文件夹，递归扫描子文件夹")));actions.Children.Add(Btn(L10n.T("压缩包"),ChooseArchive,L10n.T("直接阅读 ZIP / CBZ")));
+   actions.Children.Add(Btn(L10n.T("共享"),SharingDialog,L10n.T("选择授权目录并开启局域网共享")));actions.Children.Add(Btn(L10n.T("服务器"),ServersDialog,L10n.T("配对或重新连接另一台电脑")));actions.Children.Add(Btn(L10n.Pick("设置","Settings"),SettingsDialog));header.Children.Add(actions);
+   search=new TextBox{Background=Brushes.Transparent,BorderThickness=new Thickness(0),FontSize=12,Padding=new Thickness(2,0,0,0),VerticalContentAlignment=VerticalAlignment.Center,ToolTip=L10n.T("搜索书名或文件夹路径 · Ctrl+F")};
+   var watermark=new TextBlock{Text=L10n.T("搜索书名或文件夹"),FontSize=12,IsHitTestVisible=false,VerticalAlignment=VerticalAlignment.Center};watermark.SetResourceReference(TextBlock.ForegroundProperty,"Muted");
+   var searchGrid=new Grid();searchGrid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(24)});searchGrid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});searchGrid.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});
+   var glass=Text(L10n.T("⌕"),13,"Muted");glass.HorizontalAlignment=HorizontalAlignment.Center;searchGrid.Children.Add(glass);
+   var searchHost=new Grid();searchHost.Children.Add(watermark);searchHost.Children.Add(search);Grid.SetColumn(searchHost,1);searchGrid.Children.Add(searchHost);
+   var hint=Text("Ctrl F",9.5,"Muted");hint.Margin=new Thickness(8,0,10,0);Grid.SetColumn(hint,2);searchGrid.Children.Add(hint);
+   var searchShell=new Border{Background=R("Card"),BorderBrush=R("Line"),BorderThickness=new Thickness(1),CornerRadius=new CornerRadius(10),Height=38,MinWidth=220,MaxWidth=360,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Center,HorizontalAlignment=HorizontalAlignment.Right,Padding=new Thickness(0)};searchShell.Child=searchGrid;header.Children.Add(searchShell);
+   search.TextChanged+=(s,e)=>{watermark.Visibility=search.Text.Length==0?Visibility.Visible:Visibility.Collapsed;RenderShelf(true);};
+   root.Children.Add(header);
    body=new Grid();body.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});body.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});Grid.SetRow(body,1);root.Children.Add(body);
    sidebar=new ShelfSidebar();sidebar.Selected=key=>{shelfGroup=key;RenderShelf(true);};sidebar.ManageSources=ManageSources;sidebar.Refresh=ScanAfterSources;Grid.SetColumn(sidebar,0);body.Children.Add(sidebar);treeDirty=true;
    shelf=new Grid{Margin=new Thickness(26,0,22,0)};shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});shelf.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});Grid.SetColumn(shelf,1);body.Children.Add(shelf);
-   shelfHead=new StackPanel();var heading=new DockPanel{Margin=new Thickness(0,0,0,16)};
-   var counts=new StackPanel();counts.Children.Add(Text(L10n.T("我的书架"),28));summary=Text(L10n.T("导入一个文件夹，开始阅读"),12,"Muted");summary.Margin=new Thickness(0,6,0,0);counts.Children.Add(summary);heading.Children.Add(counts);
-   var controls=new StackPanel{Orientation=Orientation.Horizontal,HorizontalAlignment=HorizontalAlignment.Right,VerticalAlignment=VerticalAlignment.Bottom};controls.Children.Add(Btn(L10n.T("刷新"),async()=>await Scan(),L10n.T("F5 · 重新扫描导入位置")));controls.Children.Add(Btn(L10n.T("管理来源"),ManageSources,L10n.T("移除来源只更改书架，不删除图片")));heading.Children.Add(controls);shelfHead.Children.Add(heading);
-   var filter=new DockPanel{Margin=new Thickness(0,0,0,17)};sort=new ComboBox{Width=188,ItemsSource=new[]{L10n.T("按名称排序"),L10n.T("最近阅读"),L10n.T("未读优先"),L10n.T("创建时间 · 新的在前"),L10n.T("创建时间 · 旧的在前")},SelectedIndex=Math.Max(0,Math.Min(4,State.ShelfSort)),ToolTip=L10n.T("文件夹按其创建时间；ZIP / CBZ 按压缩包文件的创建时间")};sort.SelectionChanged+=(s,e)=>{State.ShelfSort=sort.SelectedIndex;ScheduleSave();RenderShelf(true);};DockPanel.SetDock(sort,Dock.Right);filter.Children.Add(sort);
-   shelfView=new ComboBox{Width=145,ItemsSource=new[]{L10n.T("平铺书架"),L10n.T("按来源分组")},SelectedIndex=State.ShelfGrouped?1:0};DockPanel.SetDock(shelfView,Dock.Right);filter.Children.Add(shelfView);shelfView.SelectionChanged+=(s,e)=>{State.ShelfGrouped=shelfView.SelectedIndex==1;ScheduleSave();RenderShelf(true);};
-   shelfUp=Btn(L10n.T("‹ 上一级"),()=>GoUpShelf());shelfUp.Visibility=Visibility.Collapsed;filter.Children.Add(shelfUp);
-   var searchLabel=Text(L10n.T("搜索"),12,"Muted");searchLabel.Margin=new Thickness(0,0,12,0);filter.Children.Add(searchLabel);search=new TextBox{ToolTip=L10n.T("搜索书名或文件夹路径 · Ctrl+F"),MaxWidth=510,HorizontalAlignment=HorizontalAlignment.Left,MinWidth=280};search.TextChanged+=(s,e)=>{RenderShelf(true);};filter.Children.Add(search);shelfHead.Children.Add(filter);shelf.Children.Add(shelfHead);
+   shelfHead=new StackPanel();
+   var toolbar=new Grid{Margin=new Thickness(0,0,0,10)};
+   toolbar.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});toolbar.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});toolbar.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});
+   shelfUp=Btn("‹",()=>GoUpShelf(),L10n.T("返回上一级"));shelfUp.Width=30;shelfUp.Height=30;shelfUp.Padding=new Thickness(0);shelfUp.Margin=new Thickness(0,0,8,0);shelfUp.FontSize=16;shelfUp.Visibility=Visibility.Collapsed;toolbar.Children.Add(shelfUp);
+   breadcrumb=new StackPanel{Orientation=Orientation.Horizontal,VerticalAlignment=VerticalAlignment.Center};
+   var crumbScroll=new ScrollViewer{Content=breadcrumb,HorizontalScrollBarVisibility=ScrollBarVisibility.Hidden,VerticalScrollBarVisibility=ScrollBarVisibility.Disabled,Focusable=false,VerticalAlignment=VerticalAlignment.Center};Grid.SetColumn(crumbScroll,1);toolbar.Children.Add(crumbScroll);
+   var rightTools=new StackPanel{Orientation=Orientation.Horizontal,HorizontalAlignment=HorizontalAlignment.Right,VerticalAlignment=VerticalAlignment.Center};
+   sort=new ComboBox{Width=168,ItemsSource=new[]{L10n.T("按名称排序"),L10n.T("最近阅读"),L10n.T("未读优先"),L10n.T("创建时间 · 新的在前"),L10n.T("创建时间 · 旧的在前")},SelectedIndex=Math.Max(0,Math.Min(4,State.ShelfSort)),ToolTip=L10n.T("文件夹按其创建时间；ZIP / CBZ 按压缩包文件的创建时间")};sort.SelectionChanged+=(s,e)=>{State.ShelfSort=sort.SelectedIndex;ScheduleSave();RenderShelf(true);};rightTools.Children.Add(sort);
+   var segment=new Border{Background=R("Card"),BorderBrush=R("Line"),BorderThickness=new Thickness(1),CornerRadius=new CornerRadius(9),Padding=new Thickness(2),Margin=new Thickness(6,0,0,0)};
+   var segmentRow=new StackPanel{Orientation=Orientation.Horizontal};
+   flatToggle=new ToggleButton{Content=L10n.T("平铺"),IsChecked=!State.ShelfGrouped,Style=(Style)FindResource("SegmentButton")};groupToggle=new ToggleButton{Content=L10n.T("分组"),IsChecked=State.ShelfGrouped,Style=(Style)FindResource("SegmentButton")};
+   flatToggle.Click+=(s,e)=>{if(!updating)SetShelfGrouped(false);};groupToggle.Click+=(s,e)=>{if(!updating)SetShelfGrouped(true);};segmentRow.Children.Add(flatToggle);segmentRow.Children.Add(groupToggle);segment.Child=segmentRow;rightTools.Children.Add(segment);
+   Grid.SetColumn(rightTools,2);toolbar.Children.Add(rightTools);shelfHead.Children.Add(toolbar);
+   var hero=new Grid{Margin=new Thickness(0,2,0,16)};hero.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});hero.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});
+   var heroStack=new StackPanel();heroEyebrow=Text("",10,"Muted");heroEyebrow.Margin=new Thickness(0,0,0,6);heroStack.Children.Add(heroEyebrow);
+   heroTitle=Text(L10n.T("我的书架"),26);heroTitle.FontWeight=FontWeights.SemiBold;heroTitle.FontFamily=new FontFamily("Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI");heroStack.Children.Add(heroTitle);
+   summary=Text(L10n.T("导入一个文件夹，开始阅读"),11.5,"Muted");summary.Margin=new Thickness(0,7,0,0);heroStack.Children.Add(summary);hero.Children.Add(heroStack);
+   continueButton=new Button{Content=L10n.T("继续阅读")+"  →",Style=(Style)FindResource("PrimaryButton"),Visibility=Visibility.Collapsed,VerticalAlignment=VerticalAlignment.Bottom,Margin=new Thickness(0,0,0,2)};continueButton.Click+=async(s,e)=>{if(continueBook!=null)await OpenBook(continueBook);};Grid.SetColumn(continueButton,1);hero.Children.Add(continueButton);
+   shelfHead.Children.Add(hero);shelf.Children.Add(shelfHead);
    shelfSurface=new Grid();cards=new ShelfGrid();cards.BookOpened=async b=>{if(b.GroupId!=null){shelfGroup=b.GroupId;RenderShelf(true);}else await OpenBook(b);};cards.Caption=b=>{if(b.GroupId!=null)return b.GroupCount+L10n.T(" 本 · 点击进入");Progress p;State.Books.TryGetValue(b.Id,out p);return b.PageCount+L10n.T(" 页")+(p!=null&&!string.IsNullOrEmpty(p.LastRead)?L10n.T("  ·  读至 ")+Math.Min(b.PageCount,p.Page+1):L10n.T("  ·  未读"));};shelfSurface.Children.Add(cards);Grid.SetRow(shelfSurface,1);shelf.Children.Add(shelfSurface);
    readerHost=new Grid{Visibility=Visibility.Collapsed};readerHost.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});readerHost.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});readerHost.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});Grid.SetColumn(readerHost,1);body.Children.Add(readerHost);
    readerHead=new StackPanel{Margin=new Thickness(22,0,15,12)};var titlebar=new DockPanel();back=Btn(L10n.T("‹ 书架"),Back,L10n.T("Esc · 返回书架"));titlebar.Children.Add(back);bookTitle=Text("",18);bookTitle.TextTrimming=TextTrimming.CharacterEllipsis;bookTitle.Margin=new Thickness(12,0,0,0);titlebar.Children.Add(bookTitle);readerHead.Children.Add(titlebar);
@@ -97,7 +119,6 @@ namespace LeafReader {
    catch(Exception e){Status(L10n.T("扫描失败：")+e.Message);}finally{busy=false;}
   }
   List<Book> FilterBooks(){return view==null?new List<Book>():view.Items;}
-  internal ComboBox ShelfViewControl {get{return shelfView;}}
   internal Button ShelfUpControl {get{return shelfUp;}}
   internal List<Book> ShelfItems {get{return FilterBooks();}}
   internal int ShelfItemCount {get{return view==null?0:view.Items.Count;}}
@@ -105,12 +126,14 @@ namespace LeafReader {
   internal TextBox ShelfSearch {get{return search;}}
   internal string ShelfKey {get{return shelfGroup;}}
   internal bool ShelfCanGoUp {get{return shelfGroup!=null;}}
+  internal bool ShelfContinueVisible {get{return continueButton!=null&&continueButton.Visibility==Visibility.Visible;}}
+  internal string ShelfContinueId {get{return continueBook==null?null:continueBook.Id;}}
   internal bool SidebarVisible {get{return sidebar!=null&&sidebar.Visibility==Visibility.Visible;}}
   internal int SidebarRowCount {get{return sidebar==null?0:sidebar.RowCount;}}
   internal string[] ShelfBreadcrumb {get{var list=new List<string>();list.Add(L10n.T("书架"));if(view!=null)foreach(ShelfNode node in view.Path)list.Add(node.Name);return list.ToArray();}}
   internal void SelectShelfNode(string key){if(treeDirty)RebuildTree();shelfGroup=Nearest(key);RenderShelf(true);}
   internal void GoUpShelf(){if(treeDirty)RebuildTree();List<ShelfNode> path=ShelfTree.Path(tree,shelfGroup);shelfGroup=path.Count>1?path[path.Count-2].Key:null;RenderShelf(true);}
-  internal void SetShelfGrouped(bool grouped){State.ShelfGrouped=grouped;if(shelfView!=null){updating=true;shelfView.SelectedIndex=grouped?1:0;updating=false;}ScheduleSave();RenderShelf(true);}
+  internal void SetShelfGrouped(bool grouped){State.ShelfGrouped=grouped;if(flatToggle!=null){flatToggle.IsChecked=!grouped;groupToggle.IsChecked=grouped;}ScheduleSave();RenderShelf(true);}
   internal bool ShelfGrouped {get{return State.ShelfGrouped;}}
   string Nearest(string key){while(!string.IsNullOrEmpty(key)){if(ShelfTree.Find(tree,key)!=null)return key;int cut=key.LastIndexOf('|');if(cut<=0)break;key=key.Substring(0,cut);}return null;}
   void RebuildTree(){tree=ShelfTree.Build(books);treeDirty=false;if(sidebar!=null)sidebar.SetTree(tree);}
@@ -120,17 +143,39 @@ namespace LeafReader {
    if(shelfGroup!=null&&ShelfTree.Find(tree,shelfGroup)==null)shelfGroup=Nearest(shelfGroup);
    view=ShelfView.Build(tree,shelfGroup,State.ShelfGrouped,search==null?"":search.Text,State.ShelfSort,State.Books);
    var selected=view.Items;if(sidebar!=null)sidebar.SetActive(shelfGroup);
+   UpdateBreadcrumb();UpdateHero();
    shelfUp.Visibility=shelfGroup!=null?Visibility.Visible:Visibility.Collapsed;shelfUp.ToolTip=view.Node==null?null:view.Node.Name;
-   if(summary!=null)summary.Text=SummaryText();
    if(shelfSurface.Children.Count>1)shelfSurface.Children.RemoveAt(1);
    cards.SetBooks(selected,reset);cards.Visibility=selected.Count==0?Visibility.Collapsed:Visibility.Visible;
    if(selected.Count==0){var empty=new StackPanel{Margin=new Thickness(10,65,10,0)};empty.Children.Add(Text(books.Count==0?L10n.T("把故事，放进书架。"):L10n.T("没有找到匹配的漫画"),30));var desc=Text(books.Count==0?L10n.T("导入母文件夹，自动发现每个子文件夹里的图片。\n第一张图成为封面，下次打开接着读。"):L10n.T("试试其他书名或文件夹关键词。"),14,"Muted");desc.LineHeight=26;desc.Margin=new Thickness(0,16,0,24);empty.Children.Add(desc);if(books.Count==0){var add=Btn(L10n.T("＋ 导入文件夹"),ChooseFolder);add.HorizontalAlignment=HorizontalAlignment.Left;empty.Children.Add(add);empty.Children.Add(Text(L10n.T("也支持拖放文件夹、图片，以及 ZIP / CBZ。"),12,"Muted"));}else if(search!=null&&!string.IsNullOrEmpty(search.Text)){var clear=Btn(L10n.T("清空搜索"),()=>search.Clear());clear.HorizontalAlignment=HorizontalAlignment.Left;empty.Children.Add(clear);}shelfSurface.Children.Add(empty);}
+  }
+  void UpdateBreadcrumb(){
+   breadcrumb.Children.Clear();bool root=view==null||view.Path.Count==0;
+   breadcrumb.Children.Add(Crumb(L10n.T("书架"),null,root));
+   if(view!=null)for(int i=0;i<view.Path.Count;i++){
+    breadcrumb.Children.Add(Separator());
+    ShelfNode node=view.Path[i];breadcrumb.Children.Add(Crumb(node.Name,node.Key,i==view.Path.Count-1));
+   }
+  }
+  TextBlock Separator(){var text=Text("›",11,"Muted");text.Margin=new Thickness(3,0,3,0);return text;}
+  FrameworkElement Crumb(string name,string key,bool current){
+   if(current){var label=Text(name,12);label.FontWeight=FontWeights.SemiBold;label.Margin=new Thickness(5,0,5,0);return label;}
+   var button=new Button{Content=name,FontSize=11.5,Padding=new Thickness(6,3,6,3),Margin=new Thickness(0)};button.SetResourceReference(Control.ForegroundProperty,"Muted");
+   button.Click+=(s,e)=>SelectShelfNode(key);return button;
+  }
+  void UpdateHero(){
+   if(heroTitle==null)return;string query=search==null?"":search.Text.Trim();
+   if(query.Length>0){heroEyebrow.Text=L10n.T("搜索");heroTitle.Text=L10n.T("搜索结果");}
+   else if(view==null||view.Node==null){heroEyebrow.Text=State.ShelfGrouped?L10n.T("按来源分组"):L10n.T("全部书籍");heroTitle.Text=L10n.T("我的书架");}
+   else if(view.Node.IsSource){heroEyebrow.Text=L10n.T("来源");heroTitle.Text=view.Node.Name;}
+   else{heroEyebrow.Text=L10n.T("目录");heroTitle.Text=view.Node.Name;}
+   summary.Text=SummaryText();continueBook=view==null?null:view.ContinueBook;continueButton.Visibility=query.Length==0&&continueBook!=null?Visibility.Visible:Visibility.Collapsed;
   }
   string SummaryText(){
    if(view==null)return L10n.T("导入一个文件夹，开始阅读");
    if(search!=null&&!string.IsNullOrEmpty(search.Text.Trim()))return view.Items.Count+L10n.T(" 个结果");
    if(shelfGroup==null)return books.Count+L10n.T(" 本藏书   /   ")+tree.Count+L10n.T(" 个来源")+(State.ShelfGrouped?"   /   "+view.Items.Count+L10n.T(" 个来源"):"");
-   return view.TotalBooks+L10n.T(" 本   /   ")+view.TotalFolders+L10n.T(" 个目录")+(view.Node==null?"":" · "+view.Node.Name);
+   return view.TotalBooks+L10n.T(" 本   /   ")+view.TotalPages+L10n.T(" 页")+(view.TotalFolders>0?"   /   "+view.TotalFolders+L10n.T(" 个目录"):"");
   }
   public async Task OpenBook(Book book){
    if(busy)return;busy=true;Status(L10n.T("正在读取 “")+book.Title+L10n.T("” 的图片尺寸…"));int op=++operation;
