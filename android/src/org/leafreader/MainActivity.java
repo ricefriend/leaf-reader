@@ -93,7 +93,7 @@ public final class MainActivity extends Activity {
   List<Book> scope=source==null?books:Models.descendants(currentNode);
   List<Book> selected=new ArrayList<>();
   if(!query.isEmpty()||!grouped){for(Book b:scope)if(matches(b,query))selected.add(b);}
-  else if(source==null){for(ShelfNode root:treeRoots)selected.add(Models.pseudo(root));}
+  else if(source==null){for(ShelfNode root:treeRoots){Book group=Models.pseudo(root);group.groupRead=Models.descendants(root).stream().anyMatch(x->storage.prefs.contains("progress:"+x.id));selected.add(group);}}
   else{
    List<ShelfNode> folders=new ArrayList<>();List<Book> direct=new ArrayList<>(currentNode.books);
    for(ShelfNode child:currentNode.children){if(!child.children.isEmpty())folders.add(child);else direct.addAll(child.books);}
