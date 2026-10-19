@@ -26,6 +26,7 @@ namespace LeafReader {
    }
    if(args.Length>=2&&args[0]=="--protocol-test"){app.ShutdownMode=ShutdownMode.OnExplicitShutdown;app.Startup+=async(s,e)=>{int result=await ProtocolTests.Run(Path.GetFullPath(args[1]));app.Shutdown(result);};return app.Run();}
    if(args.Length>=2&&args[0]=="--photo-cache-test"){app.ShutdownMode=ShutdownMode.OnExplicitShutdown;app.Startup+=async(s,e)=>{int result=await PhotoCacheTests.Run(Path.GetFullPath(args[1]));app.Shutdown(result);};return app.Run();}
+   if(args.Length>=2&&args[0]=="--tree-test"){app.ShutdownMode=ShutdownMode.OnExplicitShutdown;app.Startup+=(s,e)=>{int result=TreeTests.Run(Path.GetFullPath(args[1]));app.Shutdown(result);};return app.Run();}
    if(args.Length>=2&&args[0]=="--fixture-server"){app.ShutdownMode=ShutdownMode.OnExplicitShutdown;app.Startup+=async(s,e)=>await FixtureHost.Run(Path.GetFullPath(args[1]),app);return app.Run();}
    bool created;using(var mutex=new Mutex(true,"Local\\LeafReader.Desktop.1",out created)){
     if(!created){MessageBox.Show(L10n.T("阅读器已经运行，请使用现有窗口导入文件或文件夹。"),"Leaf Reader");return 0;}
