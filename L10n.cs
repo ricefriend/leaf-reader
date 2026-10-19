@@ -389,4 +389,5 @@ namespace LeafReader { public static class L10n {
  {"分组","Groups"},
  {"返回上一级","Up one level"},
  {"压缩包","Archive"},
+ {"目录树 · 移到左侧展开","Folder tree · move to the left edge"},
  };}}
