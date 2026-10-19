@@ -167,10 +167,10 @@ namespace LeafReader {
   void ShowSidebar(){
    if(!SidebarAvailable||sidebarOpen)return;sidebarOpen=true;if(sidebarHide!=null)sidebarHide.Stop();
    sidebar.Visibility=Visibility.Visible;sidebar.IsHitTestVisible=true;if(sidebarHandle!=null)sidebarHandle.Visibility=Visibility.Collapsed;
-   var move=(TranslateTransform)sidebar.RenderTransform;sidebar.BeginAnimation(OpacityProperty,null);move.BeginAnimation(TranslateTransform.XProperty,null);sidebar.Opacity=0;move.X=-248;
+   var move=(TranslateTransform)sidebar.RenderTransform;sidebar.BeginAnimation(OpacityProperty,null);move.BeginAnimation(TranslateTransform.XProperty,null);double startOpacity=sidebar.Opacity,startX=move.X;
    var ease=new CubicEase{EasingMode=EasingMode.EaseOut};
-   var fade=new DoubleAnimation(1,TimeSpan.FromMilliseconds(150)){EasingFunction=ease};
-   var slide=new DoubleAnimation(0,TimeSpan.FromMilliseconds(190)){EasingFunction=ease};
+   var fade=new DoubleAnimation(startOpacity,1,TimeSpan.FromMilliseconds(150)){EasingFunction=ease};
+   var slide=new DoubleAnimation(startX,0,TimeSpan.FromMilliseconds(190)){EasingFunction=ease};
    slide.Completed+=(s,e)=>{if(sidebarOpen){move.BeginAnimation(TranslateTransform.XProperty,null);move.X=0;sidebar.BeginAnimation(OpacityProperty,null);sidebar.Opacity=1;}};
    sidebar.BeginAnimation(OpacityProperty,fade);move.BeginAnimation(TranslateTransform.XProperty,slide);
   }
@@ -182,8 +182,9 @@ namespace LeafReader {
     if(sidebarHandle!=null&&SidebarAvailable)sidebarHandle.Visibility=Visibility.Visible;return;
    }
    var ease=new CubicEase{EasingMode=EasingMode.EaseIn};
-   var fade=new DoubleAnimation(0,TimeSpan.FromMilliseconds(150)){EasingFunction=ease};
-   var slide=new DoubleAnimation(-248,TimeSpan.FromMilliseconds(190)){EasingFunction=ease};
+   sidebar.BeginAnimation(OpacityProperty,null);move.BeginAnimation(TranslateTransform.XProperty,null);double startOpacity=sidebar.Opacity,startX=move.X;
+   var fade=new DoubleAnimation(startOpacity,0,TimeSpan.FromMilliseconds(150)){EasingFunction=ease};
+   var slide=new DoubleAnimation(startX,-248,TimeSpan.FromMilliseconds(190)){EasingFunction=ease};
    slide.Completed+=(s,e)=>{
     if(!sidebarOpen){move.BeginAnimation(TranslateTransform.XProperty,null);move.X=-248;sidebar.BeginAnimation(OpacityProperty,null);sidebar.Opacity=0;sidebar.Visibility=Visibility.Collapsed;sidebar.IsHitTestVisible=false;if(sidebarHandle!=null&&SidebarAvailable)sidebarHandle.Visibility=Visibility.Visible;}
    };
