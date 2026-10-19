@@ -1,183 +1,76 @@
-# Leaf Reader · 栞
+# Leaf Reader
 
-**A lightweight comic and image reader for Windows and Android.**
+A reader for the manga folders you already have. It runs on Windows and Android, and when the desktop is sharing a folder, your phone can read from it directly instead of downloading a whole book first.
 
-Turn your existing image folders into a bookshelf and read on your computer or phone. A Windows computer can also share selected folders with a phone or another computer, loading pages on demand without downloading the whole book first.
+Current version: **2.4.0**. The Windows preview build is ready; the Android source is updated too, but the APK has not been built on this machine yet.
 
-[Download](https://github.com/ricefriend/leaf-reader/releases) · [简体中文](README.md) · [Report an issue](https://github.com/ricefriend/leaf-reader/issues) · [Support development](https://ko-fi.com/gdbkf)
+![Windows bookshelf with folder tree, breadcrumbs and cover cards](docs/images/windows-bookshelf.png)
 
-Current version: **2.4.0 Windows public preview**. Free to use under the [MIT license](LICENSE). No account or cloud service required.
+## How it works
 
-## New in 2.4.0
+On Windows, choose “Import folder” and pick the parent folder. On Android, choose “Local” and grant access through the system folder picker.
 
-The Windows bookshelf has been redesigned: the folder-tree sidebar starts collapsed, slides in when the pointer reaches the left edge, and retracts after a short delay. Narrow windows switch to breadcrumbs automatically. Drill down into subfolders while grouping by source; the final folder that directly contains images becomes a book, without an extra wrapper level. A `▦` button on each multi-page local folder card opens a thumbnail grid of that folder; click a thumbnail to start reading there, while clicking the cover still opens the reader directly. Folder cards show descendant counts and covers, and mixed folders expose both their own images and their children. Also new: light/dark styling, tree navigation, and Continue reading. The Android tree source, breadcrumbs, flattened leaf folders, long-press action sheet (Start reading / View all as grid), and adaptive icon are synced; the APK is pending. Update Windows independently for now. See [release validation](VALIDATION-2.4.md).
+The scanner walks down through the folder. Every folder that directly contains images becomes a book, with the naturally first image as its cover. ZIP / CBZ files can be read directly as well.
 
-![Thumbnail grid for all images in a folder](docs/images/page-grid.png)
+The shelf can show everything flat, or group books by source. Grouping goes down through subfolders, but it does not add levels just for the sake of it:
 
-Android now uses an adaptive launcher icon without the old white border:
+- a folder that still has subfolders becomes a folder card;
+- the last folder that directly holds images is the book itself, without an extra “folder → book” step;
+- if a folder has its own images and subfolders, its own images appear as a “This folder” book next to the child folders.
 
-![Android adaptive icon](docs/images/android-icon.png)
+![Thumbnail grid of every image in a folder](docs/images/page-grid.png)
 
-## What can you do with it?
+## Reading
 
-- **Browse a local collection:** import a parent folder, scan subfolders recursively, and use each book's first naturally sorted image as its cover. Group by source, then walk down through folder levels.
-- **Choose your reading direction:** single page, left-to-right spreads, right-to-left spreads, or continuous vertical Webtoon reading.
-- **Handle spread alignment:** shift the starting page on Windows; temporarily join the previous or next page on Android, then return to your reading position.
-- **Read comfortably on a phone:** inertial vertical scrolling, horizontal swipe animations, pinch zoom, and dragging while zoomed in.
-- **Read images stored on a computer:** enable read-only sharing on Windows, pair by QR code or address, and stream pages to Android or another Windows computer.
-- **Pick up where you left off:** save reading position, mode, and bookmarks automatically. Android also offers password-encrypted backup and restore.
+Both platforms support single page, left-to-right spreads, right-to-left spreads, and continuous vertical Webtoon reading. Page turning, zoom, panning, jumping to a page, bookmarks, and resume-where-you-left-off work the same way as before.
 
-## Preview
+On Windows, spread mode can shift its starting page with `[` / `]`, and the cover or a wide double-page image can be shown alone. On Android, you can temporarily join the previous or next page while reading, then return to where you were.
 
-![Windows bookshelf with folder-tree sidebar, breadcrumb, folder cards and uniform covers](docs/images/windows-bookshelf.png)
+Windows book cards have a `▦` button in the corner: click the cover to read, or click `▦` to see every image in that folder as a thumbnail grid and start from a specific page. Android does not use a tiny corner button; long-press the card and choose “Start reading” or “View all as grid” from the bottom sheet.
 
-This screenshot shows the actual Windows application with program-generated example images.
+## Reading from a computer
 
-## Features
+The Windows app can share selected image folders, read-only. Turn sharing on, then pair from Android by QR code or address; another Windows computer can connect as a client too.
 
-### Bookshelf and local files
+Sharing is off by default and only exposes the folders you choose. Stopping sharing only stops remote reads; the local shelf keeps working. Images are loaded on demand, not copied to the phone first. For connections outside your home network, use HTTPS or a VPN; the app does not create public port mappings.
 
-Choose a flat library or group books by imported parent folder / authorized remote directory, then drill down through subfolders. The wide-screen tree starts collapsed and slides in from the left edge. Only folders with deeper folders become folder cards; a final folder that directly contains images is shown as a book. A `▦` button on multi-page local folder cards opens a flat thumbnail view of every image; click one to start there. Mixed folders also expose their own images as a book. The view preference is saved.
+## What changed in 2.4.0
 
-- **Use your existing folders:** each subfolder directly containing images becomes a book. No repackaging is required.
-- **Uniform covers, continuous scrolling:** no shelf pagination. Columns adapt to the available width; Android has a draggable fast-scroll rail for navigating large shelves.
-- **Natural sorting:** `2.jpg` comes before `10.jpg`. Chinese characters, spaces, and special characters in filenames are supported.
-- **Search and sort:** search within the current folder by book name, folder path, or source, and sort by name, reading history, or time. Windows also offers unread-first sorting.
-- **Folders and archives:** read image folders and ZIP / CBZ files. Android uses the system folder picker, without requesting all-files access.
+The Windows shelf was rebuilt. Wide windows get a folder-tree sidebar that stays out of the way until the pointer reaches the left edge; narrow windows use breadcrumbs instead. Colours, typography, cards, and folder cards were redrawn for both the dark and light themes.
 
-Time sorting uses the metadata available from the source: Windows local folders and archives use filesystem creation time; Android local folders use modification time reported by the document provider.
+The folder tree is the main feature. After importing a parent folder, grouping by source can continue through subfolders. Leaf folders are books, so a two-level library stays two levels. The flat shelf, search, sorting, reading progress, and bookmarks are all still there.
 
-### Four reading modes
+The reading controls now fade and move slightly when they hide, and fade back in when they return.
 
-| Mode | How it works |
-| --- | --- |
-| Single page | One image at a time for ordinary image viewing or page-by-page reading. |
-| Left-to-right spreads | Two pages side by side, arranged and navigated from left to right. |
-| Right-to-left spreads | Two pages side by side, arranged and navigated from right to left. |
-| Continuous vertical / Webtoon | Images stacked vertically for comics and long images. This is the default for new books on Android. |
+On Android, the source now has the folder tree, breadcrumbs, flattened leaf folders, the long-press action sheet, the thumbnail grid, and a new adaptive launcher icon. **No Android APK was built this time** because the machine has no JDK or Android SDK. The existing 2.3.2 APK still uses the old interface.
 
-Zoom, pan, jump to a page, add bookmarks, and resume your saved position. Reading controls can hide when idle, and the progress bar follows the reading direction. Preferences are available in Settings.
+Details and test notes are in [VALIDATION-2.4.md](VALIDATION-2.4.md).
 
-### Handling spreads
+## Download
 
-**Windows: shift the spread's starting page.**
+The Windows build is on the [Releases](https://github.com/ricefriend/leaf-reader/releases) page as `LeafReader-2.4.0-preview.exe`. It runs on Windows 10 / 11 with .NET Framework 4.8 or newer.
 
-If a spread belongs to pages **12–13**, but the cover has left you viewing **11–12**, shift the starting page forward by one. You will see **12–13**, followed by **14–15** on the next turn. Use the toolbar, `[` / `]`, or `Shift + ←` / `Shift + →`.
+The Android 2.4.0 APK is not built yet. Build instructions are in [BUILDING.md](BUILDING.md) and [android/README.md](android/README.md). Until it is ready, the 2.3.2 APK is still usable.
 
-You can also keep the cover on its own and display wide images alone, so an image already containing a full spread is not forced into a pair.
+## Not there yet
 
-**Android: temporarily join adjacent pages.**
+- PDF, RAR and CBR are not supported; image folders and ZIP / CBZ are.
+- The desktop app is Windows-only. There is no macOS or Linux build.
+- Android is a client only; it cannot act as a sharing server.
+- Reading progress is not synced between devices.
+- WebP support on Windows depends on the system decoder; GIF / TIFF show the first frame.
+- Android has to cache a local archive before reading it; the current limit is 200 MiB per archive.
 
-From any reading mode, join the current page with the previous or next page to inspect a spread. End the join, or press the system Back button, to return to your original reading position.
+## Development and feedback
 
-### Share from Windows, read on a phone or computer
-
-- Windows can read locally, host a sharing service, or connect to another Windows instance as a client.
-- Sharing is **off by default**. Choose the folders to expose; local reading continues after sharing stops.
-- Android can scan the pairing QR code. Android and Windows clients can also pair by entering the service address and code.
-- Save multiple servers, reconnect, remove profiles, and browse authorized folders.
-- Load thumbnails for covers and suitable previews while reading; request higher-resolution content when zooming. There is no requirement to copy the whole remote folder first.
-- Prefetch nearby pages, cancel outdated requests, and use bounded caches with a cleanup action. Android reads visible regions of very long images when the format supports region decoding.
-- Sharing is read-only, with no remote upload, delete, or file-edit endpoints.
-
-### Settings and saved state
-
-- Chinese / English interface.
-- Default mode for new books, spread rules, automatic control hiding, and cache management.
-- Android options for keeping the screen awake while reading and managing local folder permissions.
-- Reading positions and bookmarks saved independently on each client.
-- Encrypted Android backups include server authorizations, bookmarks, progress, and preferences, but no images. Local folders need fresh permission after migration.
-
-## Download and install
-
-Get the files from [Releases](https://github.com/ricefriend/leaf-reader/releases):
-
-| Platform | Download | Requirements |
-| --- | --- | --- |
-| Windows | `LeafReader-2.4.0-preview.exe` | Windows 10 / 11, .NET Framework 4.8+. Run directly; no installer needed. |
-| Android | `LeafReader-Android-2.4.0-preview.apk` | Android 8.0+. The tree source is synced; no APK was built in this environment. |
-
-Android 2.4.0 source includes folder-tree drill-down, breadcrumbs, flattened leaf folders, and the new adaptive icon. No APK was produced here because the Android SDK/JDK is unavailable.
-
-The release also contains full source code and a `SHA256SUMS.txt` file.
-
-Official 2.3 / 2.3.1 preview APKs can be updated in place without losing data or pairing again. The old-certificate migration APK remains on the [first release page](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.0-preview).
-
-**Previously installed a development test APK?** First install `LeafReader-Android-2.3-migration-debug.apk` over the old app, export and verify an encrypted backup, then uninstall and install the preview APK. Do not uninstall before verifying the backup. See [migration instructions](MIGRATION.md). New users do not need the migration APK.
-
-## Getting started
-
-### Read local images
-
-1. Choose **Import folder** on Windows, or **Local** on Android and grant access through the system folder picker.
-2. Select the parent folder containing your books and wait for the scan.
-3. Open a book and choose a reading mode. New Android books default to vertical scrolling; you can change the default in Settings.
-
-For example, importing `Comics` creates separate books for `Book A` and `Book B`:
-
-```text
-Comics/
-├── Book A/
-│   ├── 001.jpg
-│   ├── 002.jpg
-│   └── 003.jpg
-└── Book B/
-    ├── 01.png
-    └── 02.png
-```
-
-### Read images shared by a computer
-
-1. Connect the phone and computer, or both computers, to the same local network.
-2. On the Windows computer storing the images, open **Sharing**, choose folders, and start the service.
-3. Scan the QR code from **Servers** on Android, or enter the address and pairing code on Android or another Windows computer.
-4. Browse the shelf and open a book. The sharing computer must keep the application running and stay awake.
-
-HTTP is intended for trusted LANs or private VPNs. Cross-network connections should use protected HTTPS or a VPN. Leaf Reader does not automatically map public ports.
-
-## Controls
-
-### Windows
-
-| Action | Control |
-| --- | --- |
-| Turn pages | Mouse wheel, arrow keys, `PageUp` / `PageDown`, or click the sides of the image. Left/right arrows follow the reading direction. |
-| Next / previous page | `Space` / `Shift + Space`. |
-| Shift a spread | `[` / `]` or `Shift + ←` / `Shift + →`. |
-| Zoom and pan | `Ctrl + mouse wheel`, `+` / `-`; drag the image, or press `0` to reset. |
-| First / last page or jump | `Home` / `End`; `Ctrl + G` to jump. |
-| Fullscreen / back | `F11` or double-click; `Esc` exits fullscreen, then returns to the shelf. |
-| Bookmark / mode | `B` toggles a bookmark; `1` / `2` / `3` / `4` select the four reading modes. |
-| Shelf and help | `Ctrl + O` to import, `Ctrl + F` to search, `F5` to rescan, `F1` for help. |
-| Reveal hidden controls | Move to the upper/lower edge or press `Tab`. |
-
-### Android
-
-- Swipe vertically to scroll. A fast swipe continues with inertia; touch the view to stop it.
-- Swipe horizontally in left/right modes to turn pages with an animation.
-- Pinch to zoom and drag with one finger while zoomed. These gestures are handled separately from ordinary page turns.
-- Use the reading controls for mode selection, bookmarks, and temporary page joins. Tap the center to show or hide controls; tap the sides to turn pages in the chosen reading direction.
-- System Back exits a temporary join first, then returns from the reader to the shelf.
-
-## Supported files and current limits
-
-- Windows supports JPG / JPEG, PNG, BMP, GIF, and TIFF. GIF / TIFF display the first frame; WebP depends on the system decoder.
-- Android uses system decoders for common image formats. Some local formats, such as TIFF, may not decode; the Windows service can generate compatible previews for remote reading.
-- ZIP / CBZ are supported; PDF and RAR / CBR are not. Android caches a local archive for entry access, with a current limit of 200 MiB per archive.
-- The desktop app currently supports Windows. Android provides local reading and a remote client, without hosting a sharing service.
-- Progress is not synchronized across devices. Automatic server discovery and compatibility with Komga, OPDS, or SMB are not implemented.
-- Version 2.4.0 is a Windows public preview. See [current validation](VALIDATION-2.4.md) and [earlier device coverage](VALIDATION-2.3.md). The Android tree source is synced; the APK and device acceptance are still pending.
-
-## Development, feedback, and support
-
-Windows uses WPF / C# and Android uses native Java. They communicate through the Leaf Share v1 protocol.
+Windows is WPF / C#; Android is native Java. Both use the [Leaf Share v1 protocol](protocol/leaf-share-v1.md).
 
 - [Build and test](BUILDING.md) · [Android build](android/README.md)
-- [Architecture](ARCHITECTURE.md) · [Sharing protocol](protocol/leaf-share-v1.md)
+- [Architecture](ARCHITECTURE.md)
 - [Issues](https://github.com/ricefriend/leaf-reader/issues) · [Contributing](CONTRIBUTING.md)
 - [Security](SECURITY.md) · [Privacy](PRIVACY.md)
-- [MIT license](LICENSE) · [Third-party notices](THIRD-PARTY-NOTICES.md)
+- [MIT licence](LICENSE)
 
-Issues and contributions are welcome. Maintenance is on a best-effort basis, without guaranteed response or merge times. Remove personal paths, comics, pairing codes, and access tokens before posting public reports.
+If Leaf Reader is useful to you, you can support development through [Ko-fi](https://ko-fi.com/gdbkf). Reading features stay free.
 
-If Leaf Reader is useful to you, you can support development through [Ko-fi](https://ko-fi.com/gdbkf). All reading features remain free.
+![Android adaptive icon](docs/images/android-icon.png)
