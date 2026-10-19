@@ -16,7 +16,7 @@ sdkmanager --sdk_root=C:\Android\Sdk "platforms;android-35" "build-tools;35.0.0"
 & .\build.ps1 -SdkRoot C:\Android\Sdk -JdkHome C:\Java\jdk-17
 ```
 
-也可设置 `ANDROID_HOME` 与 `JAVA_HOME` 后直接执行 `build.ps1`。构建产物在整个源码目录的上级：`LeafReader-Android-2.3-migration-debug.apk`。构建步骤为 javac → D8 → aapt2 → zipalign → apksigner，脚本验证 v2 / v3 签名。
+也可设置 `ANDROID_HOME` 与 `JAVA_HOME` 后直接执行 `build.ps1`。构建产物在整个源码目录的上级：`LeafReader-Android-2.4.0-migration-debug.apk`。构建步骤为 javac → D8 → aapt2 → zipalign → apksigner，脚本验证 v2 / v3 签名。
 
 脚本使用本地已有的 `debug.keystore`，不存在时生成标准开发证书（密码 android）；公开源码不包含任何签名密钥。该证书只适合测试，不能作为正式发布密钥。请保留开发证书以便后续 APK 覆盖安装保留应用数据。正式发行应换成自己管理的签名密钥。
 

@@ -15,6 +15,13 @@ public final class ModelTests {
   Page a=new Page();a.id="same";a.version="v1";Server one=new Server();one.id="one";a.server=one;Page c=new Page();c.id="same";c.version="v1";Server two=new Server();two.id="two";c.server=two;check(!a.key().equals(c.key()),"source identity isolates equal filenames");c.server=one;c.version="v2";check(!a.key().equals(c.key()),"file version invalidates cached image key");
   Book g1=book(1);g1.name="10";g1.rootId="uri-one";g1.rootName="中文 # &";Book g2=book(1);g2.name="2";g2.rootId="uri-one";g2.rootName=g1.rootName;Book g3=book(1);g3.name="3";g3.rootId="uri-two";g3.rootName=g1.rootName;
   List<Book> grouped=Models.groups(Arrays.asList(g1,g2,g3));check(grouped.size()==2&&grouped.stream().mapToInt(g->g.groupCount).sum()==3,"SAF source groups preserve books and distinguish same folder names");check(grouped.stream().filter(g->g.groupCount==2).findFirst().get().pages==g2.pages,"source cover uses naturally first child without copying images");g1.server=one;g2.server=two;g2.rootId=g1.rootId;check(Models.groups(Arrays.asList(g1,g2)).size()==2,"remote server identity separates equal authorized root ids");check(!Models.sourceKey(g1).equals(Models.sourceKey(g3)),"local and remote group identities are separate");
+  Book t1=book(2);t1.id="t1";t1.name="作品A";t1.rootId="tree";t1.rootName="库";t1.relativePath="作品A";
+  Book t2=book(2);t2.id="t2";t2.name="第01卷";t2.rootId="tree";t2.rootName="库";t2.relativePath="作品A/第01卷";
+  Book t3=book(2);t3.id="t3";t3.name="番外";t3.rootId="tree";t3.rootName="库";t3.relativePath="作品A/第01卷/番外";
+  List<ShelfNode> roots=Models.tree(Arrays.asList(t1,t2,t3));
+  check(roots.size()==1&&roots.get(0).count==3&&roots.get(0).children.size()==1&&roots.get(0).children.get(0).children.size()==1,"tree counts mixed descendants and builds folder depth");
+  check(Models.path(roots,"local:tree|作品A/第01卷").size()==3&&Models.descendants(roots.get(0)).size()==3,"path and descendants follow the source tree");
+  check(Models.find(roots,"missing")==null,"unknown tree key returns null");
   check(Models.image("中文 # & 2.WebP")&&Models.zip("漫画.CBZ")&&!Models.image("secret.txt"),"format classification");System.out.println("ALL "+checks+" MODEL TESTS PASSED");
  }
 }

@@ -39,22 +39,30 @@ final class Storage {
   JSONArray encryptedProfiles=new JSONArray();for(Server server:merged.values())encryptedProfiles.put(server.json());editor.putString("servers",encrypt(encryptedProfiles.toString()));if(!editor.commit())throw new IOException(L10n.pick("备份恢复写入失败","Cannot save restored backup"));
  }
  List<Book> scanLocal(Images images,Api.Request request)throws Exception{scanWarnings.clear();List<Book> result=new ArrayList<>();Set<String> visited=new HashSet<>();for(String root:trees()){try{
-  Uri tree=Uri.parse(root);String rootName=DocumentsContract.getTreeDocumentId(tree);try(Cursor c=context.getContentResolver().query(DocumentsContract.buildDocumentUriUsingTree(tree,rootName),new String[]{DocumentsContract.Document.COLUMN_DISPLAY_NAME},null,null,null)){if(c!=null&&c.moveToFirst())rootName=c.getString(0);}ArrayDeque<String> pending=new ArrayDeque<>();pending.add(DocumentsContract.getTreeDocumentId(tree));
-  while(!pending.isEmpty()){request.check();String directory=pending.remove();String key=root+"|"+directory;if(!visited.add(key))continue;Uri doc=DocumentsContract.buildDocumentUriUsingTree(tree,directory);Book book=new Book();book.id="local:"+key;book.name=directory.substring(directory.lastIndexOf('/')+1);book.source=L10n.t("手机本地");book.rootId=root;book.rootName=rootName;
+  Uri tree=Uri.parse(root);String rootDocId=DocumentsContract.getTreeDocumentId(tree);String rootName=rootDocId;try(Cursor c=context.getContentResolver().query(DocumentsContract.buildDocumentUriUsingTree(tree,rootDocId),new String[]{DocumentsContract.Document.COLUMN_DISPLAY_NAME},null,null,null)){if(c!=null&&c.moveToFirst())rootName=c.getString(0);}ArrayDeque<String> pending=new ArrayDeque<>();pending.add(rootDocId);
+  while(!pending.isEmpty()){request.check();String directory=pending.remove();String key=root+"|"+directory;if(!visited.add(key))continue;String relative=relativePath(directory,rootDocId);Uri doc=DocumentsContract.buildDocumentUriUsingTree(tree,directory);Book book=new Book();book.id="local:"+key;book.name=directory.substring(directory.lastIndexOf('/')+1);book.source=L10n.t("手机本地");book.rootId=root;book.rootName=rootName;book.relativePath=relative;
    Uri children=DocumentsContract.buildChildDocumentsUriUsingTree(tree,directory);String[] columns={DocumentsContract.Document.COLUMN_DOCUMENT_ID,DocumentsContract.Document.COLUMN_DISPLAY_NAME,DocumentsContract.Document.COLUMN_MIME_TYPE,DocumentsContract.Document.COLUMN_LAST_MODIFIED,DocumentsContract.Document.COLUMN_SIZE};
    try(Cursor cursor=context.getContentResolver().query(children,columns,null,null,null)){
     if(cursor==null)throw new IOException(L10n.t("目录授权不可用，请重新选择文件夹"));
     while(cursor.moveToNext()){request.check();String id=cursor.getString(0),name=cursor.getString(1),mime=cursor.getString(2);Uri uri=DocumentsContract.buildDocumentUriUsingTree(tree,id);
      if(DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)){pending.add(id);continue;}
-     String version=cursor.getLong(3)+"-"+cursor.getLong(4);if(Models.image(name)){Page p=new Page();p.uri=uri.toString();p.id=root+"|"+id;p.name=name;p.version=version;book.pages.add(p);}else if(Models.zip(name)){try{Book archive=zipBook(root,uri,name,version,images,request);archive.rootName=rootName;if(!archive.pages.isEmpty())result.add(archive);}catch(InterruptedIOException ex){throw ex;}catch(Exception ex){scanWarnings.add(L10n.t("压缩包不可读取：")+name+L10n.t("；其他书籍仍可阅读。"));}}
+     String version=cursor.getLong(3)+"-"+cursor.getLong(4);if(Models.image(name)){Page p=new Page();p.uri=uri.toString();p.id=root+"|"+id;p.name=name;p.version=version;book.pages.add(p);}else if(Models.zip(name)){try{Book archive=zipBook(root,uri,name,version,images,request,relative);archive.rootName=rootName;if(!archive.pages.isEmpty())result.add(archive);}catch(InterruptedIOException ex){throw ex;}catch(Exception ex){scanWarnings.add(L10n.t("压缩包不可读取：")+name+L10n.t("；其他书籍仍可阅读。"));}}
     }
    }
    try(Cursor c=context.getContentResolver().query(doc,new String[]{DocumentsContract.Document.COLUMN_DISPLAY_NAME,DocumentsContract.Document.COLUMN_LAST_MODIFIED},null,null,null)){if(c!=null&&c.moveToFirst()){book.name=c.getString(0);book.created=c.getLong(1);}}
    book.pages.sort((a,b)->NATURAL.compare(a.name,b.name));book.count=book.pages.size();if(!book.pages.isEmpty())result.add(book);
   }
  }catch(InterruptedIOException ex){throw ex;}catch(Exception ex){scanWarnings.add(L10n.t("某个本地来源不可用，请在来源管理中重新授权目录。 "));}}result.sort((a,b)->NATURAL.compare(a.name,b.name));return result;}
- Book zipBook(String root,Uri uri,String name,String version,Images images,Api.Request request)throws Exception{
-  Page archive=new Page();archive.uri=uri.toString();archive.id=root+"|"+uri;archive.version=version;File file=images.original(archive,request);Book b=new Book();b.id="local-zip:"+archive.id;b.name=name;b.source=L10n.t("手机本地 · 压缩包");b.rootId=root;
+ static String relativePath(String directory,String root){
+  if(directory==null||root==null||directory.equals(root))return "";
+  String value=directory.length()>root.length()?directory.substring(root.length()):"";
+  value=value.replace('\\','/');
+  while(value.startsWith("/"))value=value.substring(1);
+  while(value.endsWith("/"))value=value.substring(0,value.length()-1);
+  return value;
+ }
+ Book zipBook(String root,Uri uri,String name,String version,Images images,Api.Request request,String relativePath)throws Exception{
+  Page archive=new Page();archive.uri=uri.toString();archive.id=root+"|"+uri;archive.version=version;File file=images.original(archive,request);Book b=new Book();b.id="local-zip:"+archive.id;b.name=name;b.source=L10n.t("手机本地 · 压缩包");b.rootId=root;b.relativePath=relativePath==null?"":relativePath;
   try(ZipFile zip=new ZipFile(file)){Enumeration<? extends ZipEntry> entries=zip.entries();while(entries.hasMoreElements()){ZipEntry e=entries.nextElement();if(!e.isDirectory()&&Models.image(e.getName())&&!e.getName().startsWith("__MACOSX/")){Page p=new Page();p.id=archive.id+"|"+e.getName();p.uri=archive.uri;p.archive=archive.id;p.entry=e.getName();p.name=e.getName();p.version=version;b.pages.add(p);}}}b.pages.sort((a,c)->NATURAL.compare(a.name,c.name));b.count=b.pages.size();return b;
  }
 }

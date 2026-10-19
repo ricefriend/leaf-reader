@@ -10,9 +10,13 @@ Current version: **2.4.0 Windows public preview**. Free to use under the [MIT li
 
 ## New in 2.4.0
 
-The Windows bookshelf has been redesigned: the folder-tree sidebar starts collapsed, slides in when the pointer reaches the left edge, and retracts after a short delay. Narrow windows switch to breadcrumbs automatically. Drill down into subfolders while grouping by source; the final folder that directly contains images becomes a book, without an extra wrapper level. A `▦` button on each multi-page local folder card opens a thumbnail grid of that folder; click a thumbnail to start reading there, while clicking the cover still opens the reader directly. Folder cards show descendant counts and covers, and mixed folders expose both their own images and their children. Also new: light/dark styling, tree navigation, and Continue reading. The Android tree update follows; update Windows independently for now. See [release validation](VALIDATION-2.4.md).
+The Windows bookshelf has been redesigned: the folder-tree sidebar starts collapsed, slides in when the pointer reaches the left edge, and retracts after a short delay. Narrow windows switch to breadcrumbs automatically. Drill down into subfolders while grouping by source; the final folder that directly contains images becomes a book, without an extra wrapper level. A `▦` button on each multi-page local folder card opens a thumbnail grid of that folder; click a thumbnail to start reading there, while clicking the cover still opens the reader directly. Folder cards show descendant counts and covers, and mixed folders expose both their own images and their children. Also new: light/dark styling, tree navigation, and Continue reading. The Android tree source, breadcrumbs, flattened leaf folders, and adaptive icon are synced; the APK is pending. Update Windows independently for now. See [release validation](VALIDATION-2.4.md).
 
 ![Thumbnail grid for all images in a folder](docs/images/page-grid.png)
+
+Android now uses an adaptive launcher icon without the old white border:
+
+![Android adaptive icon](docs/images/android-icon.png)
 
 ## What can you do with it?
 
@@ -91,7 +95,9 @@ Get the files from [Releases](https://github.com/ricefriend/leaf-reader/releases
 | Platform | Download | Requirements |
 | --- | --- | --- |
 | Windows | `LeafReader-2.4.0-preview.exe` | Windows 10 / 11, .NET Framework 4.8+. Run directly; no installer needed. |
-| Android | `LeafReader-Android-2.3.2-preview.apk` | Android 8.0+. The folder-tree update follows; the current APK remains usable. |
+| Android | `LeafReader-Android-2.4.0-preview.apk` | Android 8.0+. The tree source is synced; no APK was built in this environment. |
+
+Android 2.4.0 source includes folder-tree drill-down, breadcrumbs, flattened leaf folders, and the new adaptive icon. No APK was produced here because the Android SDK/JDK is unavailable.
 
 The release also contains full source code and a `SHA256SUMS.txt` file.
 
@@ -160,7 +166,7 @@ HTTP is intended for trusted LANs or private VPNs. Cross-network connections sho
 - ZIP / CBZ are supported; PDF and RAR / CBR are not. Android caches a local archive for entry access, with a current limit of 200 MiB per archive.
 - The desktop app currently supports Windows. Android provides local reading and a remote client, without hosting a sharing service.
 - Progress is not synchronized across devices. Automatic server discovery and compatibility with Komga, OPDS, or SMB are not implemented.
-- Version 2.4.0 is a Windows public preview. See [current validation](VALIDATION-2.4.md) and [earlier device coverage](VALIDATION-2.3.md). Android folder-tree drill-down and new device acceptance follow in the next update.
+- Version 2.4.0 is a Windows public preview. See [current validation](VALIDATION-2.4.md) and [earlier device coverage](VALIDATION-2.3.md). The Android tree source is synced; the APK and device acceptance are still pending.
 
 ## Development, feedback, and support
 

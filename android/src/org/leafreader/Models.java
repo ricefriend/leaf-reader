@@ -11,9 +11,67 @@ final class Models {
  static class Page {String id,name,version,uri,entry,archive;int width=800,height=1200;Server server;boolean metadata;
   String key(){return (server==null?"local":server.id)+"|"+id+"|"+version;}
  }
- static class Book {String id,name,source,rootId,rootName,groupId;int groupCount;long created;Server server;int count;List<Page> pages=new ArrayList<>();}
+ static class Book {String id,name,source,rootId,rootName,groupId,relativePath="";int groupCount;long created;Server server;int count;boolean groupRead;List<Page> pages=new ArrayList<>();}
+ static class ShelfNode {
+  String key,name,sourceKey,relativePath="";boolean source;ShelfNode parent;
+  List<Book> books=new ArrayList<>();List<ShelfNode> children=new ArrayList<>();
+  int count;long created;Book cover;
+ }
  static String sourceKey(Book b){return b.server==null?"local:"+b.rootId:"remote:"+b.server.id+":"+b.rootId;}
- static List<Book> groups(List<Book> books){Map<String,List<Book>> grouped=new LinkedHashMap<>();for(Book b:books)grouped.computeIfAbsent(sourceKey(b),k->new ArrayList<>()).add(b);List<Book> result=new ArrayList<>();for(Map.Entry<String,List<Book>> entry:grouped.entrySet()){List<Book> children=entry.getValue();children.sort((a,b)->NATURAL.compare(a.name,b.name));Book first=children.get(0),g=new Book();g.id="group:"+entry.getKey();g.groupId=entry.getKey();g.groupCount=children.size();g.name=first.server==null?first.rootName:first.server.name+" / "+first.rootName;if(g.name==null||g.name.isEmpty())g.name=first.source;g.source=first.source;g.server=first.server;g.pages=first.pages;for(Book b:children)g.created=Math.max(g.created,b.created);result.add(g);}result.sort((a,b)->NATURAL.compare(a.name,b.name));return result;}
+ static String normRelative(String value){if(value==null)return "";return value.replace('\\','/').replaceAll("^/+","").replaceAll("/+$","");}
+ static String nodeKey(String source,String relative){
+  boolean local=source!=null&&source.startsWith("local:");
+  return source+"|"+(local?relative.toUpperCase(Locale.ROOT):relative);
+ }
+ static String key(String source,String relative){return nodeKey(source,relative);}
+ static String sourceName(Book b){String root=b.rootName==null?"":b.rootName;return b.server==null?root:b.server.name+" / "+root;}
+ static List<ShelfNode> tree(List<Book> books){
+  Map<String,ShelfNode> roots=new LinkedHashMap<>();
+  for(Book b:books){
+   String source=sourceKey(b);ShelfNode root=roots.get(source);
+   if(root==null){root=new ShelfNode();root.key=source+"|";root.name=sourceName(b);if(root.name.isEmpty())root.name=source;root.sourceKey=source;root.source=true;roots.put(source,root);}
+   String relative=normRelative(b.relativePath);ShelfNode node=root;
+   if(!relative.isEmpty()){
+    String accumulated="";for(String part:relative.split("/")){if(part.isEmpty())continue;accumulated=accumulated.isEmpty()?part:accumulated+"/"+part;String key=nodeKey(source,accumulated);ShelfNode child=null;for(ShelfNode candidate:node.children)if(candidate.key.equalsIgnoreCase(key)){child=candidate;break;}if(child==null){child=new ShelfNode();child.key=key;child.name=part;child.sourceKey=source;child.relativePath=accumulated;child.parent=node;node.children.add(child);}node=child;}
+   }
+   node.books.add(b);
+  }
+  List<ShelfNode> result=new ArrayList<>(roots.values());for(ShelfNode root:result)compute(root);
+  result.sort((a,b)->{int c=NATURAL.compare(a.name,b.name);return c!=0?c:a.key.compareTo(b.key);});
+  return result;
+ }
+ static void compute(ShelfNode node){
+  node.books.sort((a,b)->{int c=NATURAL.compare(a.name,b.name);return c!=0?c:a.id.compareTo(b.id);});
+  node.children.sort((a,b)->{int c=NATURAL.compare(a.name,b.name);return c!=0?c:a.key.compareTo(b.key);});
+  int count=node.books.size();long created=0;Book cover=node.books.isEmpty()?null:node.books.get(0);
+  for(Book book:node.books)created=Math.max(created,book.created);
+  for(ShelfNode child:node.children){compute(child);count+=child.count;created=Math.max(created,child.created);if(cover==null||(child.cover!=null&&compareBooks(child.cover,cover)<0))cover=child.cover;}
+  node.count=count;node.created=created;node.cover=cover;
+ }
+ static int compareBooks(Book a,Book b){int c=NATURAL.compare(a.name,b.name);return c!=0?c:a.id.compareTo(b.id);}
+ static ShelfNode find(List<ShelfNode> roots,String key){
+  if(key==null||key.isEmpty())return null;
+  for(ShelfNode root:roots){ShelfNode found=find(root,key);if(found!=null)return found;}return null;
+ }
+ static ShelfNode find(ShelfNode node,String key){
+  if(node.key.equalsIgnoreCase(key))return node;
+  for(ShelfNode child:node.children){ShelfNode found=find(child,key);if(found!=null)return found;}return null;
+ }
+ static List<ShelfNode> path(List<ShelfNode> roots,String key){
+  List<ShelfNode> path=new ArrayList<>();ShelfNode node=find(roots,key);
+  while(node!=null){path.add(0,node);node=node.parent;}return path;
+ }
+ static List<Book> descendants(ShelfNode node){
+  List<Book> result=new ArrayList<>();collect(node,result);return result;
+ }
+ static void collect(ShelfNode node,List<Book> result){
+  result.addAll(node.books);for(ShelfNode child:node.children)collect(child,result);
+ }
+ static Book pseudo(ShelfNode node){
+  Book book=new Book();book.id="group:"+node.key;book.groupId=node.key;book.groupCount=node.count;book.name=node.name;book.source=node.sourceKey;book.created=node.created;
+  if(node.cover!=null){book.pages=node.cover.pages;book.server=node.cover.server;}return book;
+ }
+ static List<Book> groups(List<Book> books){List<Book> result=new ArrayList<>();for(ShelfNode root:tree(books))result.add(pseudo(root));return result;}
  static class Progress {int page,anchor,mode=3;float fraction;String pageId="",anchorId="";Set<String> bookmarks=new HashSet<>();
   JSONObject json()throws JSONException{ return new JSONObject().put("page",page).put("pageId",pageId).put("mode",mode).put("anchor",anchor).put("anchorId",anchorId).put("fraction",fraction).put("bookmarks",new JSONArray(bookmarks));}
   static Progress parse(String text){Progress p=new Progress();try{JSONObject o=new JSONObject(text);p.page=o.optInt("page");p.pageId=o.optString("pageId");p.mode=o.optInt("mode",3);p.anchor=o.optInt("anchor");p.anchorId=o.optString("anchorId");p.fraction=(float)o.optDouble("fraction");JSONArray b=o.optJSONArray("bookmarks");if(b!=null)for(int i=0;i<b.length();i++)p.bookmarks.add(b.getString(i));}catch(Exception ignored){}return p;}

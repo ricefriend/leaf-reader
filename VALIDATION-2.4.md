@@ -76,10 +76,23 @@ README 截图已更新为 `docs/images/windows-bookshelf.png`（`13-tree-wide.pn
 - 中英文切换后书架与阅读页布局。
 - 阅读器打开时侧栏和书架工具栏隐藏，返回书架恢复当前目录。
 
+## Android 源码同步
+
+本次同步了 Android 源码，但本机没有 JDK / Android SDK，**没有编译 APK，也没有跑模拟器或真机测试**：
+
+- `Models.java`：`Book.relativePath`、`ShelfNode`、`tree/find/path/descendants/pseudo`，`groups` 改为基于树。
+- `Storage.java`：SAF document id 相对来源根计算 `relativePath`，压缩包记录所在目录。
+- `Api.java`：远程书读取 `relativePath`。
+- `MainActivity.java`：`shelfSource + shelfPath` 状态、面包屑、逐级返回、叶子目录直接作为书、目录卡下钻；系统返回键先退一层目录。
+- `AndroidManifest.xml` + `res/mipmap-anydpi-v26/ic_launcher.xml`：自适应图标，背景满幅，去掉旧版白边；同时提供 monochrome 图层。
+- `android/build.ps1`：版本改为 2.4.0 / 20400；因为本机没有 SDK，未执行。
+
+这些改动需要后续在有 Android SDK/JDK 的环境编译并做真机验收。**平铺按钮暂未加到安卓**，先按讨论确定入口。
+
 ## 限制
 
 - 当前目录和侧栏展开状态不持久化；侧栏默认收起，选中目录后仍可继续浏览，移开鼠标延迟收起。重新扫描后保留仍存在的目录，否则退回最近祖先。
 - 窄屏阈值为 1120px；窗口更窄时侧栏隐藏，用面包屑导航。
 - 英文复数仍沿用简单拼接（例如 `1 pages`），不影响功能。
 - 平铺按钮只对本地、多页、非压缩包文件夹显示；单页、CBZ 和远程书卡暂不提供该入口。缩略图网格一次性创建当前书的全部图片控件，超大单本（数百页以上）仍建议直接在阅读器内翻页。
-- Android 仅同步了由 `localization/strings.json` 生成的 `L10n.java`；目录树、面包屑和目录卡尚未落实到安卓，本机没有 Android SDK/JDK，未构建 APK。
+- Android 目录树源码已同步，但当前环境没有 Android SDK/JDK，未构建 APK、未跑模拟器/真机测试；平铺按钮暂未加到安卓，等待 UI 方案确认。
