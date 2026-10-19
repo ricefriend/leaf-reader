@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using Microsoft.Win32;
 
@@ -15,14 +17,17 @@ namespace LeafReader {
  public sealed partial class MainWindow:Window {
   public readonly Settings State;
   public readonly ReaderView Reader=new ReaderView();
-  Grid root,body,shelf,readerHost;StackPanel shelfHead,readerHead,readerFoot;ShelfGrid cards;Grid shelfSurface;ShelfSidebar sidebar;
+  Grid root,body,shelf,readerHost;StackPanel shelfHead,readerHead,readerFoot;ShelfGrid cards;Grid shelfSurface;ShelfSidebar sidebar;Border sidebarEdge,sidebarHandle;FrameworkElement headerBar;
   TextBlock message,summary,bookTitle,pageLabel,zoomLabel;
   string shelfGroup;Button shelfUp;ToggleButton flatToggle,groupToggle;StackPanel breadcrumb;TextBlock heroEyebrow,heroTitle;Button continueButton;Book continueBook;
+  bool sidebarOpen;
+  DispatcherTimer sidebarHide;
   TextBox search;ComboBox mode,fit,sort;CheckBox cover,wide;ScrollBar scroll;Slider pageSlider;Button bookmark,back,shiftBack,shiftNext;
   List<Book> books=new List<Book>();List<string> warnings=new List<string>();List<ShelfNode> tree=new List<ShelfNode>();ShelfView view;bool treeDirty=true;
   int operation;bool updating,busy,fullscreen;WindowState beforeFull;WindowStyle beforeStyle;ResizeMode beforeResize;
   DispatcherTimer saveTimer,idleTimer;bool testMode,uiHidden,progressDragging;string[] startup;Point? lastPointer;
   internal bool ReadingUiHidden {get{return uiHidden;}}
+  internal bool ReadingChromeVisible {get{return readerHead!=null&&readerHead.Visibility==Visibility.Visible;}}
   internal Slider PageProgressControl {get{return pageSlider;}}
   internal ComboBox ShelfSortControl {get{return sort;}}
   public MainWindow(bool testing,string[] args){
@@ -33,6 +38,7 @@ namespace LeafReader {
    Build();ApplyTheme();SizeChanged+=(s,e)=>UpdateResponsive();
    saveTimer=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(650)};saveTimer.Tick+=(s,e)=>{saveTimer.Stop();Save();};
    idleTimer=new DispatcherTimer{Interval=TimeSpan.FromSeconds(3)};idleTimer.Tick+=(s,e)=>HideIdleUi();
+   sidebarHide=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(420)};sidebarHide.Tick+=(s,e)=>{sidebarHide.Stop();HideSidebar(false);};
    PreviewMouseMove+=PointerMoved;PreviewMouseWheel+=(s,e)=>ReadingActivity(false);
    PreviewMouseDown+=(s,e)=>ReadingActivity(false);PreviewMouseUp+=(s,e)=>ReadingActivity(false);
    Activated+=(s,e)=>ReadingActivity(true);Deactivated+=(s,e)=>{progressDragging=false;idleTimer.Stop();SetReadingUiHidden(false);};
@@ -62,10 +68,14 @@ namespace LeafReader {
    var hint=Text("Ctrl F",9.5,"Muted");hint.Margin=new Thickness(8,0,10,0);Grid.SetColumn(hint,2);searchGrid.Children.Add(hint);
    var searchShell=new Border{Height=38,MinWidth=220,MaxWidth=360,Margin=new Thickness(0,0,16,0),VerticalAlignment=VerticalAlignment.Center,HorizontalAlignment=HorizontalAlignment.Right,Padding=new Thickness(0),BorderThickness=new Thickness(1),CornerRadius=new CornerRadius(10)};searchShell.SetResourceReference(Border.BackgroundProperty,"Card");searchShell.SetResourceReference(Border.BorderBrushProperty,"Line");searchShell.Child=searchGrid;header.Children.Add(searchShell);
    search.TextChanged+=(s,e)=>{watermark.Visibility=search.Text.Length==0?Visibility.Visible:Visibility.Collapsed;RenderShelf(true);};
-   root.Children.Add(header);
-   body=new Grid();body.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});body.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});Grid.SetRow(body,1);root.Children.Add(body);
-   sidebar=new ShelfSidebar();sidebar.Selected=key=>{shelfGroup=key;RenderShelf(true);};sidebar.ManageSources=ManageSources;sidebar.Refresh=ScanAfterSources;Grid.SetColumn(sidebar,0);body.Children.Add(sidebar);treeDirty=true;
-   shelf=new Grid{Margin=new Thickness(26,0,22,0)};shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});shelf.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});Grid.SetColumn(shelf,1);body.Children.Add(shelf);
+   root.Children.Add(header);headerBar=header;
+   body=new Grid();Grid.SetRow(body,1);root.Children.Add(body);
+   shelf=new Grid{Margin=new Thickness(26,0,22,0)};shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});shelf.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});body.Children.Add(shelf);
+   readerHost=new Grid{Visibility=Visibility.Collapsed};readerHost.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});readerHost.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});readerHost.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});body.Children.Add(readerHost);
+   sidebar=new ShelfSidebar{HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Stretch,Visibility=Visibility.Collapsed,Opacity=0};sidebar.RenderTransform=new TranslateTransform(-248,0);sidebar.Effect=new DropShadowEffect{BlurRadius=26,ShadowDepth=0,Opacity=.42,Color=Colors.Black};sidebar.MouseEnter+=(s,e)=>{if(sidebarHide!=null)sidebarHide.Stop();};sidebar.MouseLeave+=(s,e)=>DelaySidebarHide();Panel.SetZIndex(sidebar,30);body.Children.Add(sidebar);
+   sidebarEdge=new Border{Width=10,HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Stretch,Background=Brushes.Transparent,ToolTip=L10n.T("目录树 · 移到左侧展开")};sidebarEdge.MouseEnter+=(s,e)=>ShowSidebar();sidebarEdge.MouseLeave+=(s,e)=>DelaySidebarHide();Panel.SetZIndex(sidebarEdge,29);body.Children.Add(sidebarEdge);
+   sidebarHandle=new Border{Width=3,Height=76,CornerRadius=new CornerRadius(0,2,2,0),HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Center,IsHitTestVisible=false,Opacity=.42};sidebarHandle.SetResourceReference(Border.BackgroundProperty,"Accent");Panel.SetZIndex(sidebarHandle,28);body.Children.Add(sidebarHandle);
+   sidebar.Selected=key=>{shelfGroup=key;RenderShelf(true);};sidebar.ManageSources=ManageSources;sidebar.Refresh=ScanAfterSources;treeDirty=true;
    shelfHead=new StackPanel();
    var toolbar=new Grid{Margin=new Thickness(0,0,0,10)};
    toolbar.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});toolbar.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});toolbar.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});
@@ -86,7 +96,6 @@ namespace LeafReader {
    continueButton=new Button{Content=L10n.T("继续阅读")+"  →",Style=(Style)FindResource("PrimaryButton"),Visibility=Visibility.Collapsed,VerticalAlignment=VerticalAlignment.Bottom,Margin=new Thickness(0,0,0,2)};continueButton.Click+=async(s,e)=>{if(continueBook!=null)await OpenBook(continueBook);};Grid.SetColumn(continueButton,1);hero.Children.Add(continueButton);
    shelfHead.Children.Add(hero);shelf.Children.Add(shelfHead);
    shelfSurface=new Grid();cards=new ShelfGrid();cards.BookOpened=async b=>{if(b.GroupId!=null){shelfGroup=b.GroupId;RenderShelf(true);}else await OpenBook(b);};cards.Caption=b=>{if(b.GroupId!=null)return b.GroupCount+L10n.T(" 本 · 点击进入");if(search!=null&&!string.IsNullOrEmpty(search.Text.Trim()))return (b.SourceName??"")+(string.IsNullOrEmpty(b.RelativePath)?"":" / "+b.RelativePath);Progress p;State.Books.TryGetValue(b.Id,out p);return b.PageCount+L10n.T(" 页")+(p!=null&&!string.IsNullOrEmpty(p.LastRead)?L10n.T("  ·  读至 ")+Math.Min(b.PageCount,p.Page+1):L10n.T("  ·  未读"));};shelfSurface.Children.Add(cards);Grid.SetRow(shelfSurface,1);shelf.Children.Add(shelfSurface);
-   readerHost=new Grid{Visibility=Visibility.Collapsed};readerHost.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});readerHost.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});readerHost.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});Grid.SetColumn(readerHost,1);body.Children.Add(readerHost);
    readerHead=new StackPanel{Margin=new Thickness(22,0,15,12)};var titlebar=new DockPanel();back=Btn(L10n.T("‹ 书架"),Back,L10n.T("Esc · 返回书架"));titlebar.Children.Add(back);bookTitle=Text("",18);bookTitle.TextTrimming=TextTrimming.CharacterEllipsis;bookTitle.Margin=new Thickness(12,0,0,0);titlebar.Children.Add(bookTitle);readerHead.Children.Add(titlebar);
    var options=new StackPanel{Orientation=Orientation.Horizontal,Margin=new Thickness(0,12,0,0)};
    mode=new ComboBox{Width=156,ItemsSource=new[]{L10n.T("单页 · 标准看图"),L10n.T("双页 · 从左至右"),L10n.T("双页 · 从右至左"),L10n.T("Webtoon · 纵向")}};mode.SelectionChanged+=(s,e)=>{if(!updating&&Reader.Book!=null){Reader.SetMode(mode.SelectedIndex);Reader.Focus();}};options.Children.Add(mode);
@@ -134,7 +143,6 @@ namespace LeafReader {
   internal bool ShelfCanGoUp {get{return shelfGroup!=null;}}
   internal bool ShelfContinueVisible {get{return continueButton!=null&&continueButton.Visibility==Visibility.Visible;}}
   internal string ShelfContinueId {get{return continueBook==null?null:continueBook.Id;}}
-  internal bool SidebarVisible {get{return sidebar!=null&&sidebar.Visibility==Visibility.Visible;}}
   internal int SidebarRowCount {get{return sidebar==null?0:sidebar.RowCount;}}
   internal string[] ShelfBreadcrumb {get{var list=new List<string>();list.Add(L10n.T("书架"));if(view!=null)foreach(ShelfNode node in view.Path)list.Add(node.Name);return list.ToArray();}}
   internal void SelectShelfNode(string key){if(treeDirty)RebuildTree();shelfGroup=Nearest(key);RenderShelf(true);}
@@ -143,7 +151,44 @@ namespace LeafReader {
   internal bool ShelfGrouped {get{return State.ShelfGrouped;}}
   string Nearest(string key){while(!string.IsNullOrEmpty(key)){if(ShelfTree.Find(tree,key)!=null)return key;int cut=key.LastIndexOf('|');if(cut<=0)break;key=key.Substring(0,cut);}return null;}
   void RebuildTree(){tree=ShelfTree.Build(books);treeDirty=false;if(sidebar!=null)sidebar.SetTree(tree);}
-  void UpdateResponsive(){if(sidebar==null)return;bool reading=readerHost!=null&&readerHost.Visibility==Visibility.Visible;sidebar.Visibility=!reading&&ActualWidth>=1120?Visibility.Visible:Visibility.Collapsed;}
+  internal bool SidebarVisible {get{return SidebarAvailable;}}
+  internal bool SidebarOpen {get{return sidebarOpen;}}
+  internal double SidebarOffset {get{return sidebar==null?0:((TranslateTransform)sidebar.RenderTransform).X;}}
+  bool SidebarAvailable {get{return sidebarEdge!=null&&ActualWidth>=1120&&(readerHost==null||readerHost.Visibility!=Visibility.Visible);}}
+  internal void RevealSidebar(){ShowSidebar();}
+  internal void CollapseSidebar(){HideSidebar(true);}
+  void DelaySidebarHide(){if(sidebarHide!=null){sidebarHide.Stop();sidebarHide.Start();}}
+  void UpdateResponsive(){
+   if(sidebar==null)return;bool available=SidebarAvailable;
+   if(sidebarEdge!=null)sidebarEdge.Visibility=available?Visibility.Visible:Visibility.Collapsed;
+   if(!available){if(sidebarHandle!=null)sidebarHandle.Visibility=Visibility.Collapsed;HideSidebar(true);}
+   else if(sidebarHandle!=null)sidebarHandle.Visibility=sidebarOpen?Visibility.Collapsed:Visibility.Visible;
+  }
+  void ShowSidebar(){
+   if(!SidebarAvailable||sidebarOpen)return;sidebarOpen=true;if(sidebarHide!=null)sidebarHide.Stop();
+   sidebar.Visibility=Visibility.Visible;sidebar.IsHitTestVisible=true;if(sidebarHandle!=null)sidebarHandle.Visibility=Visibility.Collapsed;
+   var move=(TranslateTransform)sidebar.RenderTransform;sidebar.BeginAnimation(OpacityProperty,null);move.BeginAnimation(TranslateTransform.XProperty,null);sidebar.Opacity=0;move.X=-248;
+   var ease=new CubicEase{EasingMode=EasingMode.EaseOut};
+   var fade=new DoubleAnimation(1,TimeSpan.FromMilliseconds(150)){EasingFunction=ease};
+   var slide=new DoubleAnimation(0,TimeSpan.FromMilliseconds(190)){EasingFunction=ease};
+   slide.Completed+=(s,e)=>{if(sidebarOpen){move.BeginAnimation(TranslateTransform.XProperty,null);move.X=0;sidebar.BeginAnimation(OpacityProperty,null);sidebar.Opacity=1;}};
+   sidebar.BeginAnimation(OpacityProperty,fade);move.BeginAnimation(TranslateTransform.XProperty,slide);
+  }
+  void HideSidebar(bool immediate){
+   sidebarOpen=false;if(sidebarHide!=null)sidebarHide.Stop();if(sidebar==null)return;
+   var move=(TranslateTransform)sidebar.RenderTransform;
+   if(immediate){
+    move.BeginAnimation(TranslateTransform.XProperty,null);sidebar.BeginAnimation(OpacityProperty,null);move.X=-248;sidebar.Opacity=0;sidebar.Visibility=Visibility.Collapsed;sidebar.IsHitTestVisible=false;
+    if(sidebarHandle!=null&&SidebarAvailable)sidebarHandle.Visibility=Visibility.Visible;return;
+   }
+   var ease=new CubicEase{EasingMode=EasingMode.EaseIn};
+   var fade=new DoubleAnimation(0,TimeSpan.FromMilliseconds(150)){EasingFunction=ease};
+   var slide=new DoubleAnimation(-248,TimeSpan.FromMilliseconds(190)){EasingFunction=ease};
+   slide.Completed+=(s,e)=>{
+    if(!sidebarOpen){move.BeginAnimation(TranslateTransform.XProperty,null);move.X=-248;sidebar.BeginAnimation(OpacityProperty,null);sidebar.Opacity=0;sidebar.Visibility=Visibility.Collapsed;sidebar.IsHitTestVisible=false;if(sidebarHandle!=null&&SidebarAvailable)sidebarHandle.Visibility=Visibility.Visible;}
+   };
+   sidebar.BeginAnimation(OpacityProperty,fade);move.BeginAnimation(TranslateTransform.XProperty,slide);
+  }
   void RenderShelf(bool reset=false){
    if(cards==null)return;if(treeDirty)RebuildTree();
    if(shelfGroup!=null&&ShelfTree.Find(tree,shelfGroup)==null)shelfGroup=Nearest(shelfGroup);
@@ -192,25 +237,51 @@ namespace LeafReader {
   void ReadingChanged(){
    if(Reader.Book==null)return;updating=true;var p=Reader.Progress;mode.SelectedIndex=p.Mode;fit.SelectedIndex=Reader.Fit;cover.IsChecked=p.Cover;wide.IsChecked=p.Wide;bool spread=p.Mode==1||p.Mode==2;cover.IsEnabled=wide.IsEnabled=shiftBack.IsEnabled=shiftNext.IsEnabled=spread;fit.IsEnabled=!Reader.IsToon;
    int n=Reader.VisibleCount;pageLabel.Text=(p.Page+1)+(n==2?"–"+(p.Page+2):"")+" / "+Reader.Book.Pages.Count;zoomLabel.Text=Math.Round(Reader.Zoom*100)+"%";pageSlider.IsDirectionReversed=p.Mode==2;pageSlider.ToolTip=p.Mode==2?L10n.T("右端为第 1 页，向左推进 · 拖动跳页"):L10n.T("左端为第 1 页，向右推进 · 拖动跳页");pageSlider.Maximum=Reader.Book.Pages.Count;pageSlider.Value=p.Page+1;bookmark.Content=p.Bookmarks.Contains(p.Page)?L10n.T("★ 已标记"):L10n.T("☆ 书签");
-   scroll.Visibility=Reader.IsToon?Visibility.Visible:Visibility.Collapsed;scroll.Maximum=Math.Max(0,Reader.Extent-Reader.ActualHeight);scroll.ViewportSize=Reader.ActualHeight;scroll.LargeChange=Math.Max(80,Reader.ActualHeight*.85);scroll.Value=Reader.Offset;updating=false;Remember();ScheduleSave();
+   scroll.Visibility=Reader.IsToon&&!uiHidden?Visibility.Visible:Visibility.Collapsed;scroll.Maximum=Math.Max(0,Reader.Extent-Reader.ActualHeight);scroll.ViewportSize=Reader.ActualHeight;scroll.LargeChange=Math.Max(80,Reader.ActualHeight*.85);scroll.Value=Reader.Offset;updating=false;Remember();ScheduleSave();
   }
   void ScheduleSave(){if(saveTimer==null)return;saveTimer.Stop();saveTimer.Start();}
   void Save(){string error=State.Save();if(error!=null)Status(error);}
   void Status(string text){message.Text=text;message.ToolTip=text;}
   void Back(){if(busy)return;if(fullscreen)ToggleFull();idleTimer.Stop();SetReadingUiHidden(false);Remember();Save();Reader.CloseBook();readerHost.Visibility=Visibility.Collapsed;shelf.Visibility=Visibility.Visible;UpdateResponsive();RenderShelf();Status(L10n.T("书架已更新 · 阅读进度自动保存"));}
   void ToggleFull(){if(Reader.Book==null)return;fullscreen=!fullscreen;if(fullscreen){beforeFull=WindowState;beforeStyle=WindowStyle;beforeResize=ResizeMode;WindowState=WindowState.Normal;WindowStyle=WindowStyle.None;ResizeMode=ResizeMode.NoResize;WindowState=WindowState.Maximized;}else{WindowState=WindowState.Normal;WindowStyle=beforeStyle;ResizeMode=beforeResize;WindowState=beforeFull;}SetReadingUiHidden(fullscreen);ReadingActivity(false);Reader.Focus();}
+  void AnimateChrome(FrameworkElement element,bool show,double offset,int milliseconds){
+   if(element==null)return;
+   var move=element.RenderTransform as TranslateTransform;
+   if(move==null){move=new TranslateTransform(0,0);element.RenderTransform=move;}
+   element.BeginAnimation(UIElement.OpacityProperty,null);move.BeginAnimation(TranslateTransform.YProperty,null);
+   if(show){
+    element.Visibility=Visibility.Visible;element.Opacity=0;move.Y=offset;
+    var ease=new CubicEase{EasingMode=EasingMode.EaseOut};
+    var fade=new DoubleAnimation(1,TimeSpan.FromMilliseconds(milliseconds)){EasingFunction=ease};
+    var slide=new DoubleAnimation(0,TimeSpan.FromMilliseconds(milliseconds)){EasingFunction=ease};
+    slide.Completed+=(s,e)=>{if(!uiHidden){element.BeginAnimation(UIElement.OpacityProperty,null);element.Opacity=1;move.BeginAnimation(TranslateTransform.YProperty,null);move.Y=0;}};
+    element.BeginAnimation(UIElement.OpacityProperty,fade);move.BeginAnimation(TranslateTransform.YProperty,slide);
+   }else{
+    element.Opacity=1;move.Y=0;
+    var ease=new CubicEase{EasingMode=EasingMode.EaseIn};
+    var fade=new DoubleAnimation(0,TimeSpan.FromMilliseconds(milliseconds)){EasingFunction=ease};
+    var slide=new DoubleAnimation(offset,TimeSpan.FromMilliseconds(milliseconds)){EasingFunction=ease};
+    slide.Completed+=(s,e)=>{if(uiHidden){element.BeginAnimation(UIElement.OpacityProperty,null);element.Opacity=0;move.BeginAnimation(TranslateTransform.YProperty,null);move.Y=0;element.Visibility=Visibility.Collapsed;}};
+    element.BeginAnimation(UIElement.OpacityProperty,fade);move.BeginAnimation(TranslateTransform.YProperty,slide);
+   }
+  }
   void SetReadingUiHidden(bool hidden){
    hidden=hidden&&Reader.Book!=null;if(uiHidden==hidden)return;uiHidden=hidden;
-   var visibility=hidden?Visibility.Collapsed:Visibility.Visible;
-   readerHead.Visibility=readerFoot.Visibility=root.Children[0].Visibility=message.Visibility=visibility;
-   scroll.Opacity=hidden?0:1;scroll.IsHitTestVisible=!hidden;
-   if(hidden)Reader.Focus();
+   if(hidden){
+    readerHead.IsHitTestVisible=false;readerFoot.IsHitTestVisible=false;scroll.IsHitTestVisible=false;
+    AnimateChrome(headerBar,false,-8,170);AnimateChrome(readerHead,false,-8,170);AnimateChrome(readerFoot,false,8,190);AnimateChrome(message,false,8,150);AnimateChrome(scroll,false,0,150);
+    Reader.Focus();
+   }else{
+    readerHead.IsHitTestVisible=true;readerFoot.IsHitTestVisible=true;scroll.IsHitTestVisible=true;
+    AnimateChrome(headerBar,true,-8,190);AnimateChrome(readerHead,true,-8,190);AnimateChrome(readerFoot,true,8,200);AnimateChrome(message,true,8,170);
+    if(Reader.IsToon)AnimateChrome(scroll,true,0,170);else scroll.Visibility=Visibility.Collapsed;
+   }
   }
   internal void ReadingActivity(bool reveal){
    if(Reader.Book==null||idleTimer==null)return;if(reveal)SetReadingUiHidden(false);
    idleTimer.Stop();if(!uiHidden)idleTimer.Start();
   }
-  bool UsingReadingControls(){return progressDragging||mode.IsDropDownOpen||fit.IsDropDownOpen||Mouse.Captured!=null||readerHead.IsMouseOver||readerFoot.IsMouseOver||root.Children[0].IsMouseOver||scroll.IsMouseOver;}
+  bool UsingReadingControls(){return progressDragging||mode.IsDropDownOpen||fit.IsDropDownOpen||Mouse.Captured!=null||readerHead.IsMouseOver||readerFoot.IsMouseOver||headerBar.IsMouseOver||scroll.IsMouseOver;}
   void HideIdleUi(){
    if(State.AutoHide==false){idleTimer.Stop();SetReadingUiHidden(false);return;}
    if(Reader.Book==null){idleTimer.Stop();return;}

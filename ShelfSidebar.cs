@@ -37,6 +37,7 @@ namespace LeafReader {
    actions.Children.Add(Link(L10n.T("管理来源"),delegate{if(ManageSources!=null)ManageSources();}));
    actions.Children.Add(Link(L10n.T("刷新"),delegate{if(Refresh!=null)Refresh();}));
    footer.Children.Add(actions);Grid.SetRow(footer,2);Children.Add(footer);
+   var edge=new Border{Width=1,HorizontalAlignment=HorizontalAlignment.Right,IsHitTestVisible=false};edge.SetResourceReference(Border.BackgroundProperty,"Line");Grid.SetRowSpan(edge,3);Children.Add(edge);
    SetTree(new List<ShelfNode>());
   }
   static Brush Res(FrameworkElement element,string key){return (Brush)element.FindResource(key);}
