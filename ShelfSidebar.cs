@@ -72,11 +72,12 @@ namespace LeafReader {
    foreach(ShelfNode root in roots)AddNode(root,0,content);
    if(active!=null)SetActive(active);else RefreshActive();
   }
+  static bool HasFolders(ShelfNode node){foreach(ShelfNode child in node.Children)if(child.Children.Count>0)return true;return false;}
   Border AddNode(ShelfNode node,int depth,Panel parent){
    var border=new Border{Height=32,CornerRadius=new CornerRadius(8),Margin=new Thickness(8,0,8,0),BorderThickness=new Thickness(2,0,0,0),BorderBrush=Brushes.Transparent,Cursor=Cursors.Hand,ToolTip=node.RelativePath};
    border.Background=Brushes.Transparent;
    var grid=new Grid();grid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(16)});grid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});grid.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});
-   var caret=new TextBlock{Text=node.Children.Count>0?"›":"",FontSize=11,VerticalAlignment=VerticalAlignment.Center,HorizontalAlignment=HorizontalAlignment.Center};
+   var caret=new TextBlock{Text=HasFolders(node)?"›":"",FontSize=11,VerticalAlignment=VerticalAlignment.Center,HorizontalAlignment=HorizontalAlignment.Center};
    caret.SetResourceReference(TextBlock.ForegroundProperty,"Muted");grid.Children.Add(caret);
    var label=new TextBlock{Text=node.Name,FontSize=12,VerticalAlignment=VerticalAlignment.Center,TextTrimming=TextTrimming.CharacterEllipsis,Margin=new Thickness(2,0,8,0),FontWeight=node.IsSource?FontWeights.SemiBold:FontWeights.Normal};
    label.SetResourceReference(TextBlock.ForegroundProperty,"Fg");Grid.SetColumn(label,1);grid.Children.Add(label);
@@ -92,14 +93,14 @@ namespace LeafReader {
    parent.Children.Add(children);
    var row=new NodeRow{Node=node,Border=border,Children=children,Caret=caret,Depth=depth};
    rows[node.Key]=row;rowCount++;
-   if(node.Children.Count>0){
+   if(HasFolders(node)){
     caret.MouseLeftButtonUp+=(s,e)=>{e.Handled=true;Toggle(row);};
     caret.Cursor=Cursors.Hand;
    }
    return border;
   }
   void Toggle(NodeRow row){
-   if(!row.Built){foreach(ShelfNode child in row.Node.Children)AddNode(child,row.Depth+1,row.Children);row.Built=true;}
+   if(!row.Built){foreach(ShelfNode child in row.Node.Children)if(child.Children.Count>0)AddNode(child,row.Depth+1,row.Children);row.Built=true;}
    row.Expanded=!row.Expanded;row.Children.Visibility=row.Expanded?Visibility.Visible:Visibility.Collapsed;
    row.Caret.Text=row.Expanded?"⌄":"›";
   }

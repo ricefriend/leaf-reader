@@ -42,7 +42,7 @@ namespace LeafReader {
   int Anchor(){for(int i=0;i<slots.Length;i++)if(slots[i].Bottom>viewer.VerticalOffset&&slots[i].Top<viewer.VerticalOffset+Math.Max(1,viewer.ViewportHeight))return i;return -1;}
   void LayoutCards(bool preserve){
    if(refreshing)return;int anchor=preserve?Anchor():-1;double delta=anchor>=0?viewer.VerticalOffset-slots[anchor].Top:0;
-   double width=Math.Max(180,viewer.ViewportWidth>0?viewer.ViewportWidth:ActualWidth-26);layoutWidth=viewer.ViewportWidth;
+   double width=Math.Max(180,viewer.ViewportWidth>0?viewer.ViewportWidth:ActualWidth);layoutWidth=viewer.ViewportWidth;
    int columns=Math.Max(1,(int)Math.Floor((width+GapX)/(CardWidth+GapX)));slots=new Rect[books.Count];
    for(int i=0;i<books.Count;i++)slots[i]=new Rect((i%columns)*(CardWidth+GapX),(i/columns)*(CardHeight+GapY),CardWidth,CardHeight);
    canvas.Height=books.Count==0?0:Math.Ceiling((double)books.Count/columns)*(CardHeight+GapY);canvas.Width=width;

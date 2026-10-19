@@ -65,8 +65,8 @@ namespace LeafReader {
     Check(grouped.TotalBooks==6&&grouped.Folders.Count==1&&grouped.Direct.Count==1,"grouped node separates folders and direct books");
     Check(grouped.Items.Count==2&&grouped.Items[0].GroupId=="local:R|A","folder card precedes direct book");
     var inside=ShelfView.Build(roots,"local:R|A",true,"",0,progress);
-    Check(inside.Direct.Count==1&&inside.Direct[0].IsCurrentFolderBook,"direct book at a mixed folder is marked as this folder");
-    Check(inside.Folders.Count==2&&inside.Items.Count==3,"mixed folder shows two child folders and its own book");
+    Check(inside.Direct.Any(b=>b.IsCurrentFolderBook),"direct book at a mixed folder is marked as this folder");
+    Check(inside.Folders.Count==1&&inside.Direct.Count==3&&inside.Items.Count==4,"mixed folder keeps one child folder and flattens leaf folders into books");
     var flat=ShelfView.Build(roots,"local:R|A",false,"",0,progress);
     Check(flat.TotalBooks==5&&flat.Items.Count==5&&flat.Folders.Count==0,"flat node lists all descendants");
     var search=ShelfView.Build(roots,"local:R|A",true,"番外",0,progress);
@@ -77,9 +77,18 @@ namespace LeafReader {
     var recent=new Dictionary<string,Progress>();
     recent["local:R#A/02"]=new Progress{LastRead="2026-10-18T10:00:00Z",Page=0};
     var recentView=ShelfView.Build(roots,"local:R|A",true,"",1,recent);
-    Check(recentView.Folders.Count==2&&recentView.Folders[0].Name=="02","recent folder sort uses descendant read time");
     Check(recentView.ContinueBook!=null&&recentView.ContinueBook.Id=="local:R#A/02","continue reading picks the most recent book");
-    Check(recentView.Folders[0].CoverBook!=null,"folder keeps a cover book");
+    var folderTree=ShelfTree.Build(new[]{
+     B("local:F","A/01","a"),B("local:F","A/01/x","x"),
+     B("local:F","A/02","b"),B("local:F","A/02/y","y")
+    });
+    var folderRecent=new Dictionary<string,Progress>();folderRecent["local:F#A/02/y"]=new Progress{LastRead="2026-10-18T11:00:00Z",Page=0};
+    var folderView=ShelfView.Build(folderTree,"local:F|A",true,"",1,folderRecent);
+    Check(folderView.Folders.Count==2&&folderView.Folders[0].Name=="02","recent folder sort uses descendant read time");
+    Check(folderView.Folders[0].CoverBook!=null,"folder keeps a cover book");
+    var twoLevel=ShelfTree.Build(new[]{B("local:T","A","A"),B("local:T","B","B")});
+    var twoView=ShelfView.Build(twoLevel,"local:T|",true,"",0,new Dictionary<string,Progress>());
+    Check(twoView.Folders.Count==0&&twoView.Items.Count==2&&twoView.Items.All(b=>b.GroupId==null),"two-level folders become books without an extra level");
 
     File.WriteAllText(Path.Combine(directory,"tree-results.txt"),string.Join("\r\n",lines)+"\r\nRESULT: ALL TESTS PASSED");
     return 0;

@@ -70,11 +70,16 @@ namespace LeafReader {
    search.TextChanged+=(s,e)=>{watermark.Visibility=search.Text.Length==0?Visibility.Visible:Visibility.Collapsed;RenderShelf(true);};
    root.Children.Add(header);headerBar=header;
    body=new Grid();Grid.SetRow(body,1);root.Children.Add(body);
-   shelf=new Grid{Margin=new Thickness(26,0,22,0)};shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});shelf.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});body.Children.Add(shelf);
+   shelf=new Grid{Margin=new Thickness(34,0,22,0)};shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});shelf.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});shelf.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});body.Children.Add(shelf);
    readerHost=new Grid{Visibility=Visibility.Collapsed};readerHost.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});readerHost.RowDefinitions.Add(new RowDefinition{Height=new GridLength(1,GridUnitType.Star)});readerHost.RowDefinitions.Add(new RowDefinition{Height=GridLength.Auto});body.Children.Add(readerHost);
    sidebar=new ShelfSidebar{HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Stretch,Visibility=Visibility.Collapsed,Opacity=0};sidebar.RenderTransform=new TranslateTransform(-248,0);sidebar.Effect=new DropShadowEffect{BlurRadius=26,ShadowDepth=0,Opacity=.42,Color=Colors.Black};sidebar.MouseEnter+=(s,e)=>{if(sidebarHide!=null)sidebarHide.Stop();};sidebar.MouseLeave+=(s,e)=>DelaySidebarHide();Panel.SetZIndex(sidebar,30);body.Children.Add(sidebar);
    sidebarEdge=new Border{Width=10,HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Stretch,Background=Brushes.Transparent,ToolTip=L10n.T("目录树 · 移到左侧展开")};sidebarEdge.MouseEnter+=(s,e)=>ShowSidebar();sidebarEdge.MouseLeave+=(s,e)=>DelaySidebarHide();Panel.SetZIndex(sidebarEdge,29);body.Children.Add(sidebarEdge);
-   sidebarHandle=new Border{Width=3,Height=76,CornerRadius=new CornerRadius(0,2,2,0),HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Center,IsHitTestVisible=false,Opacity=.42};sidebarHandle.SetResourceReference(Border.BackgroundProperty,"Accent");Panel.SetZIndex(sidebarHandle,28);body.Children.Add(sidebarHandle);
+   sidebarHandle=new Border{Width=28,Height=96,CornerRadius=new CornerRadius(0,8,8,0),HorizontalAlignment=HorizontalAlignment.Left,VerticalAlignment=VerticalAlignment.Center,Cursor=Cursors.Hand,ToolTip=L10n.T("目录树 · 移到左侧展开"),BorderThickness=new Thickness(0,1,1,0)};
+   sidebarHandle.SetResourceReference(Border.BackgroundProperty,"Accent");sidebarHandle.SetResourceReference(Border.BorderBrushProperty,"AccentLine");
+   var handleStack=new StackPanel{VerticalAlignment=VerticalAlignment.Center,HorizontalAlignment=HorizontalAlignment.Center};
+   var handleIcon=Text("≡",17,"AccentInk");handleIcon.HorizontalAlignment=HorizontalAlignment.Center;handleStack.Children.Add(handleIcon);
+   var handleLabel=Text(L10n.T("目录"),9.5,"AccentInk");handleLabel.HorizontalAlignment=HorizontalAlignment.Center;handleLabel.Margin=new Thickness(0,4,0,0);handleLabel.LayoutTransform=new RotateTransform(90);handleStack.Children.Add(handleLabel);
+   sidebarHandle.Child=handleStack;sidebarHandle.MouseEnter+=(s,e)=>ShowSidebar();sidebarHandle.MouseLeftButtonUp+=(s,e)=>{ShowSidebar();e.Handled=true;};Panel.SetZIndex(sidebarHandle,28);body.Children.Add(sidebarHandle);
    sidebar.Selected=key=>{shelfGroup=key;RenderShelf(true);};sidebar.ManageSources=ManageSources;sidebar.Refresh=ScanAfterSources;treeDirty=true;
    shelfHead=new StackPanel();
    var toolbar=new Grid{Margin=new Thickness(0,0,0,10)};

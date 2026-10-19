@@ -83,7 +83,12 @@ namespace LeafReader {
     return view;
    }
    List<ShelfNode> folders=node==null?roots:node.Children;
-   view.Folders=new List<ShelfNode>(folders);
+   view.Folders=new List<ShelfNode>();
+   var leafBooks=new List<Book>();
+   foreach(ShelfNode child in folders){
+    if(child.Children.Count>0)view.Folders.Add(child);
+    else leafBooks.AddRange(child.Books);
+   }
    var latest=new Dictionary<string,string>();var read=new Dictionary<string,bool>();
    foreach(ShelfNode folder in view.Folders){
     string last=null;bool any=false;
@@ -94,6 +99,7 @@ namespace LeafReader {
    }
    view.Folders.Sort((a,b)=>CompareFolders(a,b,sort,progress,latest,read));
    view.Direct=node==null?new List<Book>():new List<Book>(node.Books);
+   view.Direct.AddRange(leafBooks);
    view.Direct.Sort((a,b)=>CompareBooks(a,b,sort,progress));
    view.TotalFolders=view.Folders.Count;
    foreach(ShelfNode folder in view.Folders)if(folder.CoverBook!=null)view.Items.Add(Pseudo(folder));
