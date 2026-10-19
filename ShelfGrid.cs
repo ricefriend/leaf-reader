@@ -78,6 +78,7 @@ namespace LeafReader {
    border.SetResourceReference(Border.BorderBrushProperty,"Line");return border;
   }
   static bool HasGridButton(Book book){return book.GroupId==null&&book.RemoteId==null&&book.Pages.Count>1&&book.Pages[0].Entry==null;}
+  internal static bool ShowsGridButton(Book book){return HasGridButton(book);}
   FrameworkElement MakeCard(int index,Cover cover){
    var book=books[index];var box=slots[index];bool folder=book.GroupId!=null;
    var content=new Grid{Width=box.Width,Height=box.Height};
