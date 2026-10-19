@@ -28,6 +28,9 @@ namespace LeafReader {
   DispatcherTimer saveTimer,idleTimer;bool testMode,uiHidden,progressDragging;string[] startup;Point? lastPointer;
   internal bool ReadingUiHidden {get{return uiHidden;}}
   internal bool ReadingChromeVisible {get{return readerHead!=null&&readerHead.Visibility==Visibility.Visible;}}
+  internal bool ReadingProgressDragging {get{return progressDragging;}}
+  internal bool ReadingIdleTimerActive {get{return idleTimer!=null&&idleTimer.IsEnabled;}}
+  internal void HideReadingChromeForTest(){if(Reader.Book!=null)SetReadingUiHidden(true);}
   internal Slider PageProgressControl {get{return pageSlider;}}
   internal ComboBox ShelfSortControl {get{return sort;}}
   public MainWindow(bool testing,string[] args){
