@@ -388,4 +388,8 @@ final class L10n {static volatile String language="zh";static String pick(String
  MAP.put("目录树 · 移到左侧展开","Folder tree · move to the left edge");
  MAP.put("平铺查看","View as grid");
  MAP.put("无法读取","Cannot read");
+ MAP.put("开始阅读","Start reading");
+ MAP.put("平铺查看全部","View all as grid");
+ MAP.put("张图"," images");
+ MAP.put("页面","Pages");
  }}

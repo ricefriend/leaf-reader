@@ -84,10 +84,11 @@ README 截图已更新为 `docs/images/windows-bookshelf.png`（`13-tree-wide.pn
 - `Storage.java`：SAF document id 相对来源根计算 `relativePath`，压缩包记录所在目录。
 - `Api.java`：远程书读取 `relativePath`。
 - `MainActivity.java`：`shelfSource + shelfPath` 状态、面包屑、逐级返回、叶子目录直接作为书、目录卡下钻；系统返回键先退一层目录。
+- 书架卡片长按打开底部操作表（`开始阅读` / `平铺查看全部 N 张图` / `取消`）；平铺网格用 `GridView` 异步加载缩略图，点图从该页开始阅读。
 - `AndroidManifest.xml` + `res/mipmap-anydpi-v26/ic_launcher.xml`：自适应图标，背景满幅，去掉旧版白边；同时提供 monochrome 图层。
 - `android/build.ps1`：版本改为 2.4.0 / 20400；因为本机没有 SDK，未执行。
 
-这些改动需要后续在有 Android SDK/JDK 的环境编译并做真机验收。**平铺按钮暂未加到安卓**，先按讨论确定入口。
+这些改动需要后续在有 Android SDK/JDK 的环境编译并做真机验收。安卓平铺入口采用整卡长按 + 底部操作表，避免 24dp 小按钮的误触问题。
 
 ## 限制
 
@@ -95,4 +96,4 @@ README 截图已更新为 `docs/images/windows-bookshelf.png`（`13-tree-wide.pn
 - 窄屏阈值为 1120px；窗口更窄时侧栏隐藏，用面包屑导航。
 - 英文复数仍沿用简单拼接（例如 `1 pages`），不影响功能。
 - 平铺按钮只对本地、多页、非压缩包文件夹显示；单页、CBZ 和远程书卡暂不提供该入口。缩略图网格一次性创建当前书的全部图片控件，超大单本（数百页以上）仍建议直接在阅读器内翻页。
-- Android 目录树源码已同步，但当前环境没有 Android SDK/JDK，未构建 APK、未跑模拟器/真机测试；平铺按钮暂未加到安卓，等待 UI 方案确认。
+- Android 目录树、面包屑、长按操作表和平铺网格源码已同步，但当前环境没有 Android SDK/JDK，未构建 APK、未跑模拟器/真机测试。

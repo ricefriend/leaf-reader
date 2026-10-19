@@ -392,4 +392,8 @@ namespace LeafReader { public static class L10n {
  {"目录树 · 移到左侧展开","Folder tree · move to the left edge"},
  {"平铺查看","View as grid"},
  {"无法读取","Cannot read"},
+ {"开始阅读","Start reading"},
+ {"平铺查看全部","View all as grid"},
+ {"张图"," images"},
+ {"页面","Pages"},
  };}}
