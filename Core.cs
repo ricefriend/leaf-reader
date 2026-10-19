@@ -66,6 +66,7 @@ namespace LeafReader {
  public class Book {
   public string SourceKey,SourceName,GroupId;public int GroupCount;
   public string RemoteId,SourceLabel;public int RemotePageCount;
+  public string RelativePath;public int ReadPercent;public bool IsCurrentFolderBook;
   public int PageCount {get{return RemotePageCount>0?RemotePageCount:Pages.Count;}}
   public string Id,Title,Folder; public DateTime CreatedUtc; public List<Page> Pages=new List<Page>();
  }
