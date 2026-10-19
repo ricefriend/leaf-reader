@@ -1,4 +1,4 @@
-param([string]$SdkRoot = $env:ANDROID_HOME, [string]$JdkHome = $env:JAVA_HOME, [switch]$WithTests, [string]$SigningKeystore, [string]$SigningAlias = 'leafreader', [string]$OutputPath)
+﻿param([string]$SdkRoot = $env:ANDROID_HOME, [string]$JdkHome = $env:JAVA_HOME, [switch]$WithTests, [string]$SigningKeystore, [string]$SigningAlias = 'leafreader', [string]$OutputPath)
 $ErrorActionPreference = 'Stop'
 if (!$SdkRoot -or !$JdkHome) { throw '请设置 ANDROID_HOME（含 android-35 和 build-tools 35.0.0）及 JAVA_HOME（JDK 17）。' }
 $base = $PSScriptRoot
