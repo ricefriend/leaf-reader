@@ -10,7 +10,9 @@ Current version: **2.4.0 Windows public preview**. Free to use under the [MIT li
 
 ## New in 2.4.0
 
-The Windows bookshelf has been redesigned: the folder-tree sidebar starts collapsed, slides in when the pointer reaches the left edge, and retracts after a short delay. Narrow windows switch to breadcrumbs automatically. Drill down into subfolders while grouping by source; the final folder that directly contains images becomes a book, without an extra wrapper level. Folder cards show descendant counts and covers, and mixed folders expose both their own images and their children. Also new: light/dark styling, tree navigation, and Continue reading. The Android tree update follows; update Windows independently for now. See [release validation](VALIDATION-2.4.md).
+The Windows bookshelf has been redesigned: the folder-tree sidebar starts collapsed, slides in when the pointer reaches the left edge, and retracts after a short delay. Narrow windows switch to breadcrumbs automatically. Drill down into subfolders while grouping by source; the final folder that directly contains images becomes a book, without an extra wrapper level. A `▦` button on each multi-page local folder card opens a thumbnail grid of that folder; click a thumbnail to start reading there, while clicking the cover still opens the reader directly. Folder cards show descendant counts and covers, and mixed folders expose both their own images and their children. Also new: light/dark styling, tree navigation, and Continue reading. The Android tree update follows; update Windows independently for now. See [release validation](VALIDATION-2.4.md).
+
+![Thumbnail grid for all images in a folder](docs/images/page-grid.png)
 
 ## What can you do with it?
 
@@ -31,7 +33,7 @@ This screenshot shows the actual Windows application with program-generated exam
 
 ### Bookshelf and local files
 
-Choose a flat library or group books by imported parent folder / authorized remote directory, then drill down through subfolders. The wide-screen tree starts collapsed and slides in from the left edge. Only folders with deeper folders become folder cards; a final folder that directly contains images is shown as a book. Mixed folders also expose their own images as a book. The view preference is saved.
+Choose a flat library or group books by imported parent folder / authorized remote directory, then drill down through subfolders. The wide-screen tree starts collapsed and slides in from the left edge. Only folders with deeper folders become folder cards; a final folder that directly contains images is shown as a book. A `▦` button on multi-page local folder cards opens a flat thumbnail view of every image; click one to start there. Mixed folders also expose their own images as a book. The view preference is saved.
 
 - **Use your existing folders:** each subfolder directly containing images becomes a book. No repackaging is required.
 - **Uniform covers, continuous scrolling:** no shelf pagination. Columns adapt to the available width; Android has a draggable fast-scroll rail for navigating large shelves.

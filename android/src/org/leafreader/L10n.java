@@ -386,4 +386,6 @@ final class L10n {static volatile String language="zh";static String pick(String
  MAP.put("返回上一级","Up one level");
  MAP.put("压缩包","Archive");
  MAP.put("目录树 · 移到左侧展开","Folder tree · move to the left edge");
+ MAP.put("平铺查看","View as grid");
+ MAP.put("无法读取","Cannot read");
  }}

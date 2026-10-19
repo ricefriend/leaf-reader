@@ -14,15 +14,16 @@ namespace LeafReader {
  public sealed class ShelfGrid : Grid {
   readonly ScrollViewer viewer;readonly Canvas canvas=new Canvas{VerticalAlignment=VerticalAlignment.Top,HorizontalAlignment=HorizontalAlignment.Left};
   List<Book> books=new List<Book>();Rect[] slots=new Rect[0];
-  readonly Dictionary<int,Button> visible=new Dictionary<int,Button>();
+  readonly Dictionary<int,FrameworkElement> visible=new Dictionary<int,FrameworkElement>();
   class Cover {public BitmapSource Image;public bool Failed;public long Used;}
   readonly Dictionary<string,Cover> cache=new Dictionary<string,Cover>();
-  bool loading,refreshing;int generation;long clock;double layoutWidth;
+  bool loading,refreshing;int generation;int gridButtons;long clock;double layoutWidth;
   const double CardWidth=164,CardHeight=284,CoverHeight=220,GapX=14,GapY=18;
-  public Action<Book> BookOpened;public Func<Book,string> Caption;
+  public Action<Book> BookOpened;public Action<Book> BookGridOpened;public Func<Book,string> Caption;
   public ScrollViewer Scroller {get{return viewer;}}
   internal int RealizedCount {get{return visible.Count;}}
   internal int BookCount {get{return books.Count;}}
+  internal int VisibleGridButtons {get{return gridButtons;}}
   internal int[] RealizedIndices {get{return visible.Keys.OrderBy(i=>i).ToArray();}}
   internal bool VisibleCoversReady {get{return visible.Keys.All(i=>cache.ContainsKey(CoverKey(books[i])));}}
   internal Rect[] CardBounds {get{return slots;}}
@@ -46,7 +47,7 @@ namespace LeafReader {
    int columns=Math.Max(1,(int)Math.Floor((width+GapX)/(CardWidth+GapX)));slots=new Rect[books.Count];
    for(int i=0;i<books.Count;i++)slots[i]=new Rect((i%columns)*(CardWidth+GapX),(i/columns)*(CardHeight+GapY),CardWidth,CardHeight);
    canvas.Height=books.Count==0?0:Math.Ceiling((double)books.Count/columns)*(CardHeight+GapY);canvas.Width=width;
-   visible.Clear();canvas.Children.Clear();
+   visible.Clear();canvas.Children.Clear();gridButtons=0;
    if(anchor>=0&&anchor<slots.Length)viewer.ScrollToVerticalOffset(Math.Max(0,slots[anchor].Top+delta));
    RefreshVisible();
   }
@@ -76,7 +77,8 @@ namespace LeafReader {
    var border=new Border{CornerRadius=new CornerRadius(10),BorderThickness=new Thickness(1),Background=Resource(this,"Card")};
    border.SetResourceReference(Border.BorderBrushProperty,"Line");return border;
   }
-  Button MakeCard(int index,Cover cover){
+  static bool HasGridButton(Book book){return book.GroupId==null&&book.RemoteId==null&&book.Pages.Count>1&&book.Pages[0].Entry==null;}
+  FrameworkElement MakeCard(int index,Cover cover){
    var book=books[index];var box=slots[index];bool folder=book.GroupId!=null;
    var content=new Grid{Width=box.Width,Height=box.Height};
    var coverHost=new Grid{Height=CoverHeight,VerticalAlignment=VerticalAlignment.Top};
@@ -113,7 +115,14 @@ namespace LeafReader {
    button.MouseEnter+=(s,e)=>{((TranslateTransform)button.RenderTransform).Y=-2;button.SetResourceReference(Control.BorderBrushProperty,"AccentLine");};
    button.MouseLeave+=(s,e)=>{((TranslateTransform)button.RenderTransform).Y=0;button.BorderBrush=Brushes.Transparent;};
    button.Click+=(s,e)=>{if(BookOpened!=null)BookOpened(book);};
-   return button;
+   var host=new Grid{Width=box.Width,Height=box.Height};host.Children.Add(button);
+   if(HasGridButton(book)){
+    var gridButton=new Button{Content="▦",Width=24,Height=24,FontSize=12,Padding=new Thickness(0),HorizontalAlignment=HorizontalAlignment.Right,VerticalAlignment=VerticalAlignment.Top,Margin=new Thickness(8),ToolTip=L10n.T("平铺查看"),Opacity=.9};
+    gridButton.SetResourceReference(Control.BackgroundProperty,"Bg");gridButton.SetResourceReference(Control.ForegroundProperty,"Accent");gridButton.SetResourceReference(Control.BorderBrushProperty,"Line");gridButton.BorderThickness=new Thickness(1);
+    gridButton.Click+=(s,e)=>{e.Handled=true;if(BookGridOpened!=null)BookGridOpened(book);};
+    Panel.SetZIndex(gridButton,4);host.Children.Add(gridButton);gridButtons++;
+   }
+   return host;
   }
   async void LoadNextCover(){
    if(loading||!IsVisible)return;
@@ -125,7 +134,7 @@ namespace LeafReader {
    finally{loading=false;}
    if(Dispatcher.HasShutdownStarted)return;
    if(gen==generation){cover.Used=++clock;cache[CoverKey(book)]=cover;
-    Button old;if(visible.TryGetValue(index,out old)){canvas.Children.Remove(old);visible.Remove(index);}RefreshVisible();
+    FrameworkElement old;if(visible.TryGetValue(index,out old)){canvas.Children.Remove(old);visible.Remove(index);}RefreshVisible();
    }
    else RefreshVisible();
   }

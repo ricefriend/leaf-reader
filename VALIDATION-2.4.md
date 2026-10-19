@@ -41,6 +41,7 @@ D:\AI\LeafReader.exe --self-test D:\LeafQA\2.4-desktop
 - 当前目录内搜索及清空。
 - 混合目录同时显示“本目录”书卡和子目录卡。
 - “继续阅读”选择当前范围内最近阅读的书。
+- 多页本地文件夹书卡显示 `▦` 按钮；平铺窗口按页加载 16 张缩略图并正确显示页码。
 - 卡片尺寸 164×284，行距 302，连续网格、滚动保持、窄宽度列数。
 - 浅色主题、英文界面、空书架截图。
 
@@ -63,6 +64,7 @@ D:\AI\LeafReader.exe --protocol-test D:\LeafQA\2.4-protocol
 | `10-english.png` | 英文界面 | 侧栏、面包屑、按钮、搜索占位符均英文 |
 | `09-continuous-grid-narrow.png` | 960px 窄屏 | 侧栏隐藏，列数自适应 |
 | `12-empty.png` | 空书架 | 空状态与导入按钮正常 |
+| `14-page-grid.png` | 平铺图片网格 | 16 张缩略图、页码、加载占位均正常 |
 
 README 截图已更新为 `docs/images/windows-bookshelf.png`（`13-tree-wide.png`）。
 
@@ -79,4 +81,5 @@ README 截图已更新为 `docs/images/windows-bookshelf.png`（`13-tree-wide.pn
 - 当前目录和侧栏展开状态不持久化；侧栏默认收起，选中目录后仍可继续浏览，移开鼠标延迟收起。重新扫描后保留仍存在的目录，否则退回最近祖先。
 - 窄屏阈值为 1120px；窗口更窄时侧栏隐藏，用面包屑导航。
 - 英文复数仍沿用简单拼接（例如 `1 pages`），不影响功能。
+- 平铺按钮只对本地、多页、非压缩包文件夹显示；单页、CBZ 和远程书卡暂不提供该入口。缩略图网格一次性创建当前书的全部图片控件，超大单本（数百页以上）仍建议直接在阅读器内翻页。
 - Android 仅同步了由 `localization/strings.json` 生成的 `L10n.java`；目录树、面包屑和目录卡尚未落实到安卓，本机没有 Android SDK/JDK，未构建 APK。
