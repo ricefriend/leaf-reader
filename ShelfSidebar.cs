@@ -67,7 +67,7 @@ namespace LeafReader {
    content.Children.Add(allRow);rowCount++;
    var total=(TextBlock)((Grid)allRow.Child).Children[2];total.Text=roots.Sum(r=>r.Count).ToString();
    var section=new TextBlock{Text=L10n.T("来源"),FontSize=9.5,FontWeight=FontWeights.SemiBold,Margin=new Thickness(20,16,12,6)};
-   section.SetResourceReference(TextBlock.ForegroundProperty,"Muted");content.Children.Add(section);
+   section.SetResourceReference(TextBlock.ForegroundProperty,"Muted");if(roots.Count>0)content.Children.Add(section);
    foreach(ShelfNode root in roots)AddNode(root,0,content);
    if(active!=null)SetActive(active);else RefreshActive();
   }
@@ -75,7 +75,7 @@ namespace LeafReader {
    var border=new Border{Height=32,CornerRadius=new CornerRadius(8),Margin=new Thickness(8,0,8,0),BorderThickness=new Thickness(2,0,0,0),BorderBrush=Brushes.Transparent,Cursor=Cursors.Hand,ToolTip=node.RelativePath};
    border.Background=Brushes.Transparent;
    var grid=new Grid();grid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(16)});grid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});grid.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});
-   var caret=new TextBlock{Text=node.Children.Count>0?"▸":"",FontSize=8,VerticalAlignment=VerticalAlignment.Center,HorizontalAlignment=HorizontalAlignment.Center};
+   var caret=new TextBlock{Text=node.Children.Count>0?"›":"",FontSize=11,VerticalAlignment=VerticalAlignment.Center,HorizontalAlignment=HorizontalAlignment.Center};
    caret.SetResourceReference(TextBlock.ForegroundProperty,"Muted");grid.Children.Add(caret);
    var label=new TextBlock{Text=node.Name,FontSize=12,VerticalAlignment=VerticalAlignment.Center,TextTrimming=TextTrimming.CharacterEllipsis,Margin=new Thickness(2,0,8,0),FontWeight=node.IsSource?FontWeights.SemiBold:FontWeights.Normal};
    label.SetResourceReference(TextBlock.ForegroundProperty,"Fg");Grid.SetColumn(label,1);grid.Children.Add(label);
@@ -100,7 +100,7 @@ namespace LeafReader {
   void Toggle(NodeRow row){
    if(!row.Built){foreach(ShelfNode child in row.Node.Children)AddNode(child,row.Depth+1,row.Children);row.Built=true;}
    row.Expanded=!row.Expanded;row.Children.Visibility=row.Expanded?Visibility.Visible:Visibility.Collapsed;
-   row.Caret.Text=row.Expanded?"▾":"▸";
+   row.Caret.Text=row.Expanded?"⌄":"›";
   }
   void Choose(string key){
    active=key;SetActive(key);if(Selected!=null)Selected(key);

@@ -18,7 +18,7 @@ namespace LeafReader {
   class Cover {public BitmapSource Image;public bool Failed;public long Used;}
   readonly Dictionary<string,Cover> cache=new Dictionary<string,Cover>();
   bool loading,refreshing;int generation;long clock;double layoutWidth;
-  const double CardWidth=168,CardHeight=288,CoverHeight=224,GapX=16,GapY=18;
+  const double CardWidth=164,CardHeight=284,CoverHeight=220,GapX=14,GapY=18;
   public Action<Book> BookOpened;public Func<Book,string> Caption;
   public ScrollViewer Scroller {get{return viewer;}}
   internal int RealizedCount {get{return visible.Count;}}

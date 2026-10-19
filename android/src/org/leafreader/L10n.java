@@ -170,7 +170,7 @@ final class L10n {static volatile String language="zh";static String pick(String
  MAP.put("目录授权失败，请重新选择目录","Folder authorization failed, please choose the folder again");
  MAP.put("正在扫描本地目录和连接已保存服务器…","Scanning local folders and connecting saved servers…");
  MAP.put("本地：","Local: ");
- MAP.put(" 本"," items");
+ MAP.put(" 本"," books");
  MAP.put("部分来源未连接：","Some sources are not connected: ");
  MAP.put("连接中断：检查共享是否开启、地址/端口、电脑休眠或网络，再点刷新重连","Connection lost: check that sharing is on, the address/port, and whether the computer is asleep or the network is down, then tap Refresh to reconnect");
  MAP.put("名称","Name");
@@ -356,7 +356,7 @@ final class L10n {static volatile String language="zh";static String pick(String
  MAP.put("平铺书架","Flat bookshelf");
  MAP.put("按来源分组","Group by source");
  MAP.put("‹ 全部来源","‹ All sources");
- MAP.put(" 本 · 点击进入"," books · Open folder");
+ MAP.put(" 本 · 点击进入"," books · click to open");
  MAP.put("书架展示","Bookshelf view");
  MAP.put(" 秒 · 返回可取消"," s · Back to cancel");
  MAP.put("等待打开目录","Waiting to open folder");
@@ -369,4 +369,20 @@ final class L10n {static volatile String language="zh";static String pick(String
  MAP.put("图片加载失败 · ","Image failed to load · ");
  MAP.put("正在加载图片 · ","Loading image · ");
  MAP.put("共享服务繁忙，请稍后重试","Shared server is busy. Please retry shortly.");
+ MAP.put(" 本   /   "," books   /   ");
+ MAP.put(" 个目录"," folders");
+ MAP.put(" 个来源"," sources");
+ MAP.put(" 个结果"," results");
+ MAP.put("书架","Library");
+ MAP.put("全部书籍","All books");
+ MAP.put("来源","Sources");
+ MAP.put("目录","Folder");
+ MAP.put("本目录","This folder");
+ MAP.put("继续阅读","Continue reading");
+ MAP.put("搜索结果","Search results");
+ MAP.put("清空搜索","Clear search");
+ MAP.put("平铺","Grid");
+ MAP.put("分组","Groups");
+ MAP.put("返回上一级","Up one level");
+ MAP.put("压缩包","Archive");
  }}

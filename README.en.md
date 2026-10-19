@@ -4,17 +4,17 @@
 
 Turn your existing image folders into a bookshelf and read on your computer or phone. A Windows computer can also share selected folders with a phone or another computer, loading pages on demand without downloading the whole book first.
 
-[Download](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.2-preview) · [简体中文](README.md) · [Report an issue](https://github.com/ricefriend/leaf-reader/issues) · [Support development](https://ko-fi.com/gdbkf)
+[Download](https://github.com/ricefriend/leaf-reader/releases) · [简体中文](README.md) · [Report an issue](https://github.com/ricefriend/leaf-reader/issues) · [Support development](https://ko-fi.com/gdbkf)
 
-Current version: **2.3.2 public preview**. Free to use under the [MIT license](LICENSE). No account or cloud service required.
+Current version: **2.4.0 Windows public preview**. Free to use under the [MIT license](LICENSE). No account or cloud service required.
 
-## New in 2.3.2
+## New in 2.4.0
 
-Improved Windows preloading for large photos, source folders in both bookshelves, and Android remote-folder loading and cancellation. The bottom status shows the loading stage and elapsed time; tap failures to retry. Update both apps for the full fix. See [release validation](VALIDATION-2.3.2.md).
+The Windows bookshelf has been redesigned: a persistent folder-tree sidebar on wide screens, an automatic breadcrumb layout on narrow screens, and drill-down into subfolders while grouping by source. Folder cards show descendant counts and covers; mixed folders expose both their own images and their children. Also new: light/dark styling, tree navigation, and Continue reading. The Android tree update follows; update Windows independently for now. See [release validation](VALIDATION-2.4.md).
 
 ## What can you do with it?
 
-- **Browse a local collection:** import a parent folder, scan subfolders recursively, and use each book's first naturally sorted image as its cover.
+- **Browse a local collection:** import a parent folder, scan subfolders recursively, and use each book's first naturally sorted image as its cover. Group by source, then walk down through folder levels.
 - **Choose your reading direction:** single page, left-to-right spreads, right-to-left spreads, or continuous vertical Webtoon reading.
 - **Handle spread alignment:** shift the starting page on Windows; temporarily join the previous or next page on Android, then return to your reading position.
 - **Read comfortably on a phone:** inertial vertical scrolling, horizontal swipe animations, pinch zoom, and dragging while zoomed in.
@@ -23,7 +23,7 @@ Improved Windows preloading for large photos, source folders in both bookshelves
 
 ## Preview
 
-![Windows bookshelf with uniform covers, search, sorting and continuous scrolling](docs/images/windows-bookshelf.png)
+![Windows bookshelf with folder-tree sidebar, breadcrumb, folder cards and uniform covers](docs/images/windows-bookshelf.png)
 
 This screenshot shows the actual Windows application with program-generated example images.
 
@@ -31,12 +31,12 @@ This screenshot shows the actual Windows application with program-generated exam
 
 ### Bookshelf and local files
 
-Choose a flat library or group books by imported parent folder / authorized remote directory. Open a source cover to browse its books; the view preference is saved.
+Choose a flat library or group books by imported parent folder / authorized remote directory, then drill down through subfolders. Folder cards show descendant counts; mixed folders also expose their own images as a book. The view preference is saved.
 
 - **Use your existing folders:** each subfolder directly containing images becomes a book. No repackaging is required.
 - **Uniform covers, continuous scrolling:** no shelf pagination. Columns adapt to the available width; Android has a draggable fast-scroll rail for navigating large shelves.
 - **Natural sorting:** `2.jpg` comes before `10.jpg`. Chinese characters, spaces, and special characters in filenames are supported.
-- **Search and sort:** search by book name or folder, and sort by name, reading history, or time. Windows also offers unread-first sorting.
+- **Search and sort:** search within the current folder by book name, folder path, or source, and sort by name, reading history, or time. Windows also offers unread-first sorting.
 - **Folders and archives:** read image folders and ZIP / CBZ files. Android uses the system folder picker, without requesting all-files access.
 
 Time sorting uses the metadata available from the source: Windows local folders and archives use filesystem creation time; Android local folders use modification time reported by the document provider.
@@ -84,12 +84,12 @@ From any reading mode, join the current page with the previous or next page to i
 
 ## Download and install
 
-Get the files from [v2.3.2-preview](https://github.com/ricefriend/leaf-reader/releases/tag/v2.3.2-preview):
+Get the files from [Releases](https://github.com/ricefriend/leaf-reader/releases):
 
 | Platform | Download | Requirements |
 | --- | --- | --- |
-| Windows | `LeafReader-2.3.2-preview.exe` | Windows 10 / 11, .NET Framework 4.8+. Run directly; no installer needed. |
-| Android | `LeafReader-Android-2.3.2-preview.apk` | Android 8.0+. Use this APK for a new installation. |
+| Windows | `LeafReader-2.4.0-preview.exe` | Windows 10 / 11, .NET Framework 4.8+. Run directly; no installer needed. |
+| Android | `LeafReader-Android-2.3.2-preview.apk` | Android 8.0+. The folder-tree update follows; the current APK remains usable. |
 
 The release also contains full source code and a `SHA256SUMS.txt` file.
 
@@ -158,7 +158,7 @@ HTTP is intended for trusted LANs or private VPNs. Cross-network connections sho
 - ZIP / CBZ are supported; PDF and RAR / CBR are not. Android caches a local archive for entry access, with a current limit of 200 MiB per archive.
 - The desktop app currently supports Windows. Android provides local reading and a remote client, without hosting a sharing service.
 - Progress is not synchronized across devices. Automatic server discovery and compatibility with Komga, OPDS, or SMB are not implemented.
-- Version 2.3.2 is a public preview. See [current validation](VALIDATION-2.3.2.md) and [earlier device coverage](VALIDATION-2.3.md). The new Android UI behavior still needs device acceptance testing.
+- Version 2.4.0 is a Windows public preview. See [current validation](VALIDATION-2.4.md) and [earlier device coverage](VALIDATION-2.3.md). Android folder-tree drill-down and new device acceptance follow in the next update.
 
 ## Development, feedback, and support
 
