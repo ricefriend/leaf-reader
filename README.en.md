@@ -2,7 +2,7 @@
 
 A reader for the manga folders you already have. It runs on Windows and Android, and when the desktop is sharing a folder, your phone can read from it directly instead of downloading a whole book first.
 
-Current version: **2.4.0**. The Windows preview build is ready; the Android source is updated too, but the APK has not been built on this machine yet.
+Current version: **2.4.1**.
 
 ![Windows bookshelf with folder tree, breadcrumbs and cover cards](docs/images/windows-bookshelf.png)
 
@@ -42,15 +42,23 @@ The folder tree is the main feature. After importing a parent folder, grouping b
 
 The reading controls now fade and move slightly when they hide, and fade back in when they return.
 
-On Android, the source now has the folder tree, breadcrumbs, flattened leaf folders, the long-press action sheet, the thumbnail grid, and a new adaptive launcher icon. **No Android APK was built this time** because the machine has no JDK or Android SDK. The existing 2.3.2 APK still uses the old interface.
+Android now has the folder tree, breadcrumbs, flattened leaf folders, the long-press action sheet, the thumbnail grid, and a new adaptive launcher icon.
 
-Details and test notes are in [VALIDATION-2.4.md](VALIDATION-2.4.md).
+Details and test notes are in [VALIDATION-2.4.md](VALIDATION-2.4.md) and [VALIDATION-2.4.1.md](VALIDATION-2.4.1.md).
+
+## What changed in 2.4.1
+
+- Added a visible Refresh button directly on the Windows bookshelf toolbar (available at all window widths), and allowed `F5` to trigger a refresh even while the search box is focused.
+- Added debounced `FileSystemWatcher` monitoring on imported Windows folders so newly added, renamed, or removed folders update the bookshelf automatically without restarting; changes detected while reading are deferred until returning to the bookshelf.
+- Replaced the old tree-only Windows folder dialog in both "Import folder" and "Add shared folder" with the native Explorer folder picker (`IFileOpenDialog` with `FOS_PICKFOLDERS`), supporting editable address bar navigation and search.
+- Pre-populated Windows LAN sharing with valid folders already imported into the library by default, while letting you remove any default folder and remembering dismissed defaults across reopens.
+- Android now quietly checks authorized local folders when returning to the bookshelf from the background and refreshes automatically if folders changed.
 
 ## Download
 
-The Windows build is on the [Releases](https://github.com/ricefriend/leaf-reader/releases) page as `LeafReader-2.4.0-preview.exe`. It runs on Windows 10 / 11 with .NET Framework 4.8 or newer.
+The Windows build is on the [Releases](https://github.com/ricefriend/leaf-reader/releases) page as `LeafReader-2.4.1-preview.exe`. It runs on Windows 10 / 11 with .NET Framework 4.8 or newer.
 
-The Android 2.4.0 APK is not built yet. Build instructions are in [BUILDING.md](BUILDING.md) and [android/README.md](android/README.md). Until it is ready, the 2.3.2 APK is still usable.
+The Android package is `LeafReader-Android-2.4.1-preview.apk`, for Android 8.0 or newer.
 
 ## Not there yet
 

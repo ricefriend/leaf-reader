@@ -2,7 +2,7 @@
 
 把现成的漫画文件夹当书架用。Windows 和 Android 都有客户端；电脑开着共享时，手机也能直接翻电脑上的图，不用先把整本拷过去。
 
-当前版本 **2.4.0**。Windows 预览包已经构建；Android 源码也跟上了这一版，但 APK 还没在这台机器上编译。
+当前版本 **2.4.1**。
 
 ![Windows 书架：目录树、面包屑和封面卡片](docs/images/windows-bookshelf.png)
 
@@ -42,15 +42,23 @@ Windows 书架整体重做了一版：宽屏用自动收起的目录树侧栏，
 
 阅读界面的自动隐藏改成了淡出加轻微位移，唤出时反向淡入，不再是瞬间出现/消失。
 
-安卓端源码同步了目录树、面包屑、叶子目录还原、长按操作表、平铺网格和新的自适应启动图标。**这次没有构建 Android APK**，因为本机没有 JDK / Android SDK；已有的 2.3.2 APK 仍然是旧界面。
+安卓端同步了目录树、面包屑、叶子目录还原、长按操作表、平铺网格和新的自适应启动图标。
 
-更细的测试记录在 [VALIDATION-2.4.md](VALIDATION-2.4.md)。
+更细的测试记录在 [VALIDATION-2.4.md](VALIDATION-2.4.md) 与 [VALIDATION-2.4.1.md](VALIDATION-2.4.1.md)。
+
+## 2.4.1 改进
+
+- Windows 书架工具栏直接保留可见的“刷新”按钮（不再仅藏在窄屏不可见的侧栏底部），搜索框聚焦时按 `F5` 也可触发刷新。
+- Windows 打开软件后自动监听已导入目录的新增、删除与重命名变动并防抖刷新；若正在阅读中新增文件夹，不会打断当前阅读，返回书架时自动同步更新。
+- Windows “导入文件夹”与“添加共享目录”改用系统资源管理器文件夹选择器（支持地址栏输入/粘贴路径导航与搜索），取代旧版纯目录树弹窗。
+- 无线“共享”弹窗打开时自动把软件已导入的有效本地文件夹加入默认共享列表，无需再重新逐一选择；同时支持随时“移除所选”，且已移除的默认项不会在下次打开时被自动加回。
+- Android 从后台切回书架时静默检查本地授权目录变化，有新增文件夹时自动更新书架。
 
 ## 下载
 
-Windows 包在 [Releases](https://github.com/ricefriend/leaf-reader/releases) 里，文件名是 `LeafReader-2.4.0-preview.exe`，Windows 10 / 11，.NET Framework 4.8 以上，双击就能运行。
+Windows 包在 [Releases](https://github.com/ricefriend/leaf-reader/releases) 里，文件名是 `LeafReader-2.4.1-preview.exe`，Windows 10 / 11，.NET Framework 4.8 以上，双击就能运行。
 
-Android 2.4.0 APK 还没构建；构建方法和依赖见 [BUILDING.md](BUILDING.md) 与 [android/README.md](android/README.md)。在 APK 出来之前，现有 2.3.2 APK 仍可继续使用。
+Android 包是 `LeafReader-Android-2.4.1-preview.apk`，Android 8.0 以上。
 
 ## 目前还不支持
 

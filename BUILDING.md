@@ -31,7 +31,7 @@ Get-Content (Join-Path $qa 'protocol-results.txt')
 
 ## Android
 
-详见 [android/README.md](android/README.md)。本次生成的是开发签名、可安装测试 APK。Android 原生客户端的依赖和源码都在现有源码树的 android 目录中。
+详见 [android/README.md](android/README.md)。默认构建使用开发签名；2.4.0 发布 APK 使用维护者原私密证书。Android 原生客户端的依赖和源码都在现有源码树的 android 目录中。
 
 ## 第三方依赖
 

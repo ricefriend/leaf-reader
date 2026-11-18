@@ -1,4 +1,4 @@
-param([string]$JdkHome = $env:JAVA_HOME, [Parameter(Mandatory=$true)][string]$JsonJar)
+﻿param([string]$JdkHome = $env:JAVA_HOME, [Parameter(Mandatory=$true)][string]$JsonJar)
 $ErrorActionPreference = 'Stop'
 if (!$JdkHome -or !(Test-Path -LiteralPath $JsonJar)) { throw '需要 JDK 17 与 org.json 测试 JAR。' }
 $classes=Join-Path $PSScriptRoot 'build/transport-tests'

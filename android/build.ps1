@@ -26,7 +26,7 @@ if ($WithTests) { $manifestText = $manifestText.Replace('<application ','<applic
 [IO.File]::WriteAllText($manifest,$manifestText,[Text.UTF8Encoding]::new($false))
 & (Join-Path $tools 'aapt2.exe') compile --dir (Join-Path $base 'res') -o (Join-Path $build 'resources.zip')
 if ($LASTEXITCODE -ne 0) { throw 'APK 资源编译失败' }
-& (Join-Path $tools 'aapt2.exe') link -I $platform --manifest $manifest (Join-Path $build 'resources.zip') --version-code 20400 --version-name 2.4.0 --min-sdk-version 26 --target-sdk-version 35 -o (Join-Path $build 'unsigned.apk')
+& (Join-Path $tools 'aapt2.exe') link -I $platform --manifest $manifest (Join-Path $build 'resources.zip') --version-code 20401 --version-name 2.4.1 --min-sdk-version 26 --target-sdk-version 35 -o (Join-Path $build 'unsigned.apk')
 if ($LASTEXITCODE -ne 0) { throw 'APK 资源打包失败' }
 $apkZip = [IO.Compression.ZipFile]::Open((Join-Path $build 'unsigned.apk'),[IO.Compression.ZipArchiveMode]::Update)
 try { [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($apkZip,(Join-Path $build 'dex\classes.dex'),'classes.dex') | Out-Null } finally { $apkZip.Dispose() }
@@ -35,7 +35,7 @@ if ($LASTEXITCODE -ne 0) { throw 'APK 对齐失败' }
 $keystore = Join-Path $base 'debug.keystore'
 if ($SigningKeystore) { if (!(Test-Path -LiteralPath $SigningKeystore) -or !$env:LEAF_SIGNING_PASSWORD) { throw '发布签名需要现有 SigningKeystore 和 LEAF_SIGNING_PASSWORD 环境变量。' }; $keystore = $SigningKeystore }
 elseif (!(Test-Path -LiteralPath $keystore)) { & (Join-Path $JdkHome 'bin\keytool.exe') -genkeypair -keystore $keystore -storepass android -keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -dname 'CN=Leaf Reader Debug,O=Leaf Reader,C=CN'; if ($LASTEXITCODE -ne 0) { throw '开发密钥生成失败' } }
-$output = Join-Path (Split-Path (Split-Path $base -Parent) -Parent) 'LeafReader-Android-2.4.0-migration-debug.apk'
+$output = Join-Path (Split-Path (Split-Path $base -Parent) -Parent) 'LeafReader-Android-2.4.1-migration-debug.apk'
 if ($WithTests) { $output = Join-Path $build 'LeafReader-instrumented.apk' }
 if ($OutputPath) { $output = [IO.Path]::GetFullPath($OutputPath) }
 if ($SigningKeystore) { & $java -jar (Join-Path $tools 'lib\apksigner.jar') sign --ks $keystore --ks-key-alias $SigningAlias --ks-pass env:LEAF_SIGNING_PASSWORD --key-pass env:LEAF_SIGNING_PASSWORD --out $output (Join-Path $build 'aligned.apk') }

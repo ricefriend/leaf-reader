@@ -1,7 +1,7 @@
 # Leaf Reader 2.4.0 验证记录
 
 日期：2026-10-19  
-范围：Windows 桌面端目录树书架与 UI 重做。Android 应用代码未在本次修改，未构建 APK。
+范围：Windows 桌面端目录树书架与 UI 重做，以及 Android 源码同步。Android 补编译结果见末尾。
 
 ## 自动化
 
@@ -78,7 +78,7 @@ README 截图已更新为 `docs/images/windows-bookshelf.png`（`13-tree-wide.pn
 
 ## Android 源码同步
 
-本次同步了 Android 源码，但本机没有 JDK / Android SDK，**没有编译 APK，也没有跑模拟器或真机测试**：
+移交机器同步了 Android 源码，当时没有编译 APK，也没有运行设备测试。下面是移交时的修改记录，补编译结果见末尾：
 
 - `Models.java`：`Book.relativePath`、`ShelfNode`、`tree/find/path/descendants/pseudo`，`groups` 改为基于树。
 - `Storage.java`：SAF document id 相对来源根计算 `relativePath`，压缩包记录所在目录。
@@ -88,7 +88,7 @@ README 截图已更新为 `docs/images/windows-bookshelf.png`（`13-tree-wide.pn
 - `AndroidManifest.xml` + `res/mipmap-anydpi-v26/ic_launcher.xml`：自适应图标，背景满幅，去掉旧版白边；同时提供 monochrome 图层。
 - `android/build.ps1`：版本改为 2.4.0 / 20400；因为本机没有 SDK，未执行。
 
-这些改动需要后续在有 Android SDK/JDK 的环境编译并做真机验收。安卓平铺入口采用整卡长按 + 底部操作表，避免 24dp 小按钮的误触问题。
+这些改动已补编译，仍需真机验收。安卓平铺入口采用整卡长按 + 底部操作表，避免 24dp 小按钮的误触问题。
 
 ## 限制
 
@@ -96,4 +96,14 @@ README 截图已更新为 `docs/images/windows-bookshelf.png`（`13-tree-wide.pn
 - 窄屏阈值为 1120px；窗口更窄时侧栏隐藏，用面包屑导航。
 - 英文复数仍沿用简单拼接（例如 `1 pages`），不影响功能。
 - 平铺按钮只对本地、多页、非压缩包文件夹显示；单页、CBZ 和远程书卡暂不提供该入口。缩略图网格一次性创建当前书的全部图片控件，超大单本（数百页以上）仍建议直接在阅读器内翻页。
-- Android 目录树、面包屑、长按操作表和平铺网格源码已同步，但当前环境没有 Android SDK/JDK，未构建 APK、未跑模拟器/真机测试。
+- Android 已构建 APK，目录树、长按操作表和平铺网格仍需模拟器或真机验收。
+
+
+## Android 补编译（2026-10-19）
+
+- JDK 17、Android SDK 35 / build-tools 35.0.0 构建通过；APK 版本 2.4.0，versionCode 20400，最低 Android 8.0。
+- 使用原私密发布证书，签名与官方 2.3.2 一致，可覆盖安装。生产 APK 未包含 instrumentation、测试目录提供器或 debuggable 标记。
+- 14 项模型测试和 16 项本机 HTTP 传输测试通过。
+- 仪器测试仍引用旧的 shelfGroup 字段，已将两处断言改为检查 shelfSource / shelfPath；测试 APK 编译通过。
+- 当前没有连接设备；未运行仪器测试，不把编译通过作为界面验收。
+- 本轮未修改 Android 生产 Java 代码，Windows EXE 与原交付包 SHA256 一致。

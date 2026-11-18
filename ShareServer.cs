@@ -17,10 +17,56 @@ namespace LeafReader {
  public sealed class ShareConfig {
   public string serverId=Guid.NewGuid().ToString("N");public int port=8765;
   public List<ShareRoot> roots=new List<ShareRoot>();public List<string> tokenHashes=new List<string>();
+  public List<string> dismissedRoots=new List<string>();
   public static string ConfigPath {get{return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Settings.StatePath),"sharing.json");}}
-  public static ShareConfig Load(){try{return Wire.Json.Deserialize<ShareConfig>(File.ReadAllText(ConfigPath));}catch{return new ShareConfig();}}
+  public static ShareConfig Load(){
+   try{
+    var cfg=Wire.Json.Deserialize<ShareConfig>(File.ReadAllText(ConfigPath))??new ShareConfig();
+    if(cfg.roots==null)cfg.roots=new List<ShareRoot>();
+    if(cfg.tokenHashes==null)cfg.tokenHashes=new List<string>();
+    if(cfg.dismissedRoots==null)cfg.dismissedRoots=new List<string>();
+    return cfg;
+   }catch{return new ShareConfig();}
+  }
   public void Save(){Directory.CreateDirectory(System.IO.Path.GetDirectoryName(ConfigPath));string temp=ConfigPath+".tmp";File.WriteAllText(temp,Wire.Json.Serialize(this));if(File.Exists(ConfigPath))File.Replace(temp,ConfigPath,null);else File.Move(temp,ConfigPath);}
-  public void AddRoot(string path){path=System.IO.Path.GetFullPath(path);if(string.Equals(path.TrimEnd('\\','/'),System.IO.Path.GetPathRoot(path).TrimEnd('\\','/'),StringComparison.OrdinalIgnoreCase))throw new IOException("请共享一个具体的图片文件夹，不允许共享整个磁盘。");path=path.TrimEnd(System.IO.Path.DirectorySeparatorChar);Boundary.ValidateRoot(path);if(!roots.Any(r=>string.Equals(r.path,path,StringComparison.OrdinalIgnoreCase)))roots.Add(new ShareRoot{id=Guid.NewGuid().ToString("N"),path=path,name=new DirectoryInfo(path).Name});Save();}
+  static string NormalizePath(string path){
+   string full=System.IO.Path.GetFullPath(path);
+   if(string.Equals(full.TrimEnd('\\','/'),System.IO.Path.GetPathRoot(full).TrimEnd('\\','/'),StringComparison.OrdinalIgnoreCase))throw new IOException("请共享一个具体的图片文件夹，不允许共享整个磁盘。");
+   return full.TrimEnd(System.IO.Path.DirectorySeparatorChar,System.IO.Path.AltDirectorySeparatorChar);
+  }
+  public void AddRoot(string path){
+   path=NormalizePath(path);Boundary.ValidateRoot(path);
+   if(dismissedRoots==null)dismissedRoots=new List<string>();
+   dismissedRoots.RemoveAll(p=>string.Equals(p,path,StringComparison.OrdinalIgnoreCase));
+   if(!roots.Any(r=>string.Equals(r.path,path,StringComparison.OrdinalIgnoreCase)))roots.Add(new ShareRoot{id=Guid.NewGuid().ToString("N"),path=path,name=new DirectoryInfo(path).Name});
+   Save();
+  }
+  public void RemoveRoot(string path){
+   if(string.IsNullOrEmpty(path))return;
+   string normalized=path;try{normalized=System.IO.Path.GetFullPath(path).TrimEnd(System.IO.Path.DirectorySeparatorChar,System.IO.Path.AltDirectorySeparatorChar);}catch{}
+   if(dismissedRoots==null)dismissedRoots=new List<string>();
+   bool changed=roots.RemoveAll(r=>string.Equals(r.path,path,StringComparison.OrdinalIgnoreCase)||string.Equals(r.path,normalized,StringComparison.OrdinalIgnoreCase))>0;
+   if(!dismissedRoots.Any(p=>string.Equals(p,normalized,StringComparison.OrdinalIgnoreCase))){dismissedRoots.Add(normalized);changed=true;}
+   if(changed)Save();
+  }
+  public void SyncDefaultRoots(IEnumerable<string> importedRoots){
+   if(importedRoots==null)return;
+   if(dismissedRoots==null)dismissedRoots=new List<string>();
+   bool changed=false;
+   foreach(string raw in importedRoots){
+    if(string.IsNullOrWhiteSpace(raw))continue;
+    try{
+     string path=NormalizePath(raw);
+     if(!Directory.Exists(path))continue;
+     if(roots.Any(r=>string.Equals(r.path,path,StringComparison.OrdinalIgnoreCase)))continue;
+     if(dismissedRoots.Any(p=>string.Equals(p,path,StringComparison.OrdinalIgnoreCase)))continue;
+     Boundary.ValidateRoot(path);
+     roots.Add(new ShareRoot{id=Guid.NewGuid().ToString("N"),path=path,name=new DirectoryInfo(path).Name});
+     changed=true;
+    }catch{}
+   }
+   if(changed)Save();
+  }
  }
  public static class Boundary {
   [DllImport("kernel32.dll",CharSet=CharSet.Unicode,SetLastError=true)] static extern uint GetFinalPathNameByHandle(SafeFileHandle handle,StringBuilder path,uint length,uint flags);
