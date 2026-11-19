@@ -167,23 +167,37 @@ namespace LeafReader {
     await window.OpenBook(window.ShelfItems.First(b=>b.Title=="Ch 01"));
     window.Reader.SetMode(0);window.Reader.Jump(2);
     Key(window,System.Windows.Input.Key.Right);
+    Check(window.Reader.Book.Id==arc1Ch1&&window.ReaderNoticeVisible&&window.ReaderNoticeText.Contains("Ch 02"),"first turn at end catches with visible next-book prompt");
+    Key(window,System.Windows.Input.Key.Right);
+    Check(window.Reader.Book.Id==arc1Ch1,"rapid repeat within cooldown stays caught at boundary");
+    await Task.Delay(300);
+    Key(window,System.Windows.Input.Key.Right);
     for(int i=0;i<50&&window.Reader.Book.Id!=arc1Ch2;i++)await Task.Delay(100);
-    Check(window.Reader.Book.Id==arc1Ch2&&window.Reader.Progress.Page==0,"turning past last page penetrates into next book in same folder at page 1");
+    Check(window.Reader.Book.Id==arc1Ch2&&window.Reader.Progress.Page==0&&window.ReaderNoticeVisible&&window.ReaderNoticeText.Contains("Ch 02"),"second turn after pause penetrates into next book and shows entered notice");
     window.Reader.SetMode(0);window.Reader.Jump(1);
     Key(window,System.Windows.Input.Key.Right);
+    Check(window.Reader.Book.Id==arc1Ch2,"first turn at folder boundary catches before crossing folder");
+    await Task.Delay(300);
+    Key(window,System.Windows.Input.Key.Right);
     for(int i=0;i<50&&window.Reader.Book.Id!=arc2Ch1;i++)await Task.Delay(100);
-    Check(window.Reader.Book.Id==arc2Ch1&&window.Reader.Progress.Page==0,"turning past last book in folder penetrates across sibling folder into next book");
+    Check(window.Reader.Book.Id==arc2Ch1&&window.Reader.Progress.Page==0,"second turn penetrates across sibling folder into next book");
+    Key(window,System.Windows.Input.Key.Left);
+    Check(window.Reader.Book.Id==arc2Ch1,"first backward turn at page 1 catches before returning to previous book");
+    await Task.Delay(300);
     Key(window,System.Windows.Input.Key.Left);
     for(int i=0;i<50&&window.Reader.Book.Id!=arc1Ch2;i++)await Task.Delay(100);
-    Check(window.Reader.Book.Id==arc1Ch2&&window.Reader.Progress.Page==1,"turning back before first page penetrates to previous book last page");
+    Check(window.Reader.Book.Id==arc1Ch2&&window.Reader.Progress.Page==1,"second backward turn penetrates to previous book last page");
     window.State.FolderPenetration=false;
     window.Reader.Turn(1);await Task.Delay(250);
     Check(window.Reader.Book.Id==arc1Ch2,"disabling folder penetration stays on current book at end");
     window.State.FolderPenetration=true;
     window.Reader.SetMode(3);window.UpdateLayout();window.Reader.SetOffset(double.MaxValue);
     window.Reader.Turn(1);
+    Check(window.Reader.Book.Id==arc1Ch2,"first webtoon bottom turn catches with prompt");
+    await Task.Delay(300);
+    window.Reader.Turn(1);
     for(int i=0;i<50&&window.Reader.Book.Id!=arc2Ch1;i++)await Task.Delay(100);
-    Check(window.Reader.Book.Id==arc2Ch1,"webtoon bottom turn penetrates into next book");
+    Check(window.Reader.Book.Id==arc2Ch1,"second webtoon bottom turn penetrates into next book");
     Key(window,System.Windows.Input.Key.Escape);await Task.Delay(150);
     window.SelectShelfNode("local:"+penRoot.ToUpperInvariant()+"|");await Task.Delay(150);
     var arc1Card=window.ShelfItems.First(b=>b.GroupId!=null&&b.Title=="Arc 1");
@@ -194,6 +208,16 @@ namespace LeafReader {
     window.SelectShelfNode("local:"+penRoot.ToUpperInvariant()+"|Arc 2");await Task.Delay(150);
     bool deletedBook=await window.DeleteBookTarget(window.ShelfItems[0],false);
     Check(deletedBook&&!Directory.Exists(arc2Ch1)&&window.ShelfItems.Count==0,"right-click delete removes leaf book folder from disk and shelf");
+    string scrollRoot=Path.Combine(directory,"scroll-delete-library");
+    for(int i=1;i<=45;i++){string d=Path.Combine(scrollRoot,"Book "+i.ToString("000"));Directory.CreateDirectory(d);Art(Path.Combine(d,"1.png"),i,600,900,Color.FromRgb(45,95,85));}
+    window.State.Roots.Clear();window.State.Roots.Add(scrollRoot);window.SetShelfGrouped(false);await window.Scan();
+    window.ShelfControl.Scroller.ScrollToVerticalOffset(600);await Task.Delay(200);
+    double offsetBeforeDelete=window.ShelfControl.Scroller.VerticalOffset;
+    Check(offsetBeforeDelete>400,"scrolled down shelf before deleting folder");
+    var targetToDelete=window.ShelfItems[20];
+    bool deletedMid=await window.DeleteBookTarget(targetToDelete,false);
+    await Task.Delay(100);
+    Check(deletedMid&&Math.Abs(window.ShelfControl.Scroller.VerticalOffset-offsetBeforeDelete)<5,"deleting folder preserves shelf scroll position instead of jumping to top");
     window.Close();window=null;lines.Add("RESULT: ALL TESTS PASSED");File.WriteAllLines(Path.Combine(directory,"test-results.txt"),lines);return 0;
    }catch(Exception e){lines.Add(e.ToString());File.WriteAllLines(Path.Combine(directory,"test-results.txt"),lines);if(window!=null)window.Close();return 1;}
   }

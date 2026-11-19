@@ -35,21 +35,41 @@ namespace LeafReader {
   }
   static string CoverKey(Book book){return book.Id+"|"+(book.Pages.Count>0?book.Pages[0].Key:"");}
   public void SetBooks(List<Book> items,bool reset){
-   bool same=books.Select(b=>b.Id).SequenceEqual(items.Select(b=>b.Id));
+   string anchorId=null;double anchorDelta=0,previousOffset=viewer.VerticalOffset;
+   if(!reset){
+    int anchor=Anchor();
+    if(anchor>=0&&anchor<books.Count){
+     for(int i=anchor;i<books.Count;i++){
+      if(items.Any(b=>b.Id==books[i].Id)){anchorId=books[i].Id;anchorDelta=previousOffset-slots[i].Top;break;}
+     }
+    }
+   }
    generation++;books=items;visible.Clear();canvas.Children.Clear();
-   if(reset||!same)viewer.ScrollToVerticalOffset(0);
-   LayoutCards(same&&!reset);
+   if(reset)viewer.ScrollToVerticalOffset(0);
+   LayoutCards(!reset,anchorId,anchorDelta,previousOffset);
   }
   public void ClearCoverCache(){generation++;cache.Clear();}
   int Anchor(){for(int i=0;i<slots.Length;i++)if(slots[i].Bottom>viewer.VerticalOffset&&slots[i].Top<viewer.VerticalOffset+Math.Max(1,viewer.ViewportHeight))return i;return -1;}
-  void LayoutCards(bool preserve){
-   if(refreshing)return;int anchor=preserve?Anchor():-1;double delta=anchor>=0?viewer.VerticalOffset-slots[anchor].Top:0;
+  void LayoutCards(bool preserve,string anchorId=null,double anchorDelta=0,double fallbackOffset=0){
+   if(refreshing)return;
+   double targetOffset=fallbackOffset;
+   if(preserve&&anchorId==null){
+    int anchor=Anchor();
+    if(anchor>=0&&anchor<slots.Length)targetOffset=slots[anchor].Top+(viewer.VerticalOffset-slots[anchor].Top);
+   }
    double width=Math.Max(180,viewer.ViewportWidth>0?viewer.ViewportWidth:ActualWidth);layoutWidth=viewer.ViewportWidth;
    int columns=Math.Max(1,(int)Math.Floor((width+GapX)/(CardWidth+GapX)));slots=new Rect[books.Count];
    for(int i=0;i<books.Count;i++)slots[i]=new Rect((i%columns)*(CardWidth+GapX),(i/columns)*(CardHeight+GapY),CardWidth,CardHeight);
    canvas.Height=books.Count==0?0:Math.Ceiling((double)books.Count/columns)*(CardHeight+GapY);canvas.Width=width;
    visible.Clear();canvas.Children.Clear();gridButtons=0;
-   if(anchor>=0&&anchor<slots.Length)viewer.ScrollToVerticalOffset(Math.Max(0,slots[anchor].Top+delta));
+   if(preserve){
+    if(anchorId!=null){
+     int found=books.FindIndex(b=>b.Id==anchorId);
+     if(found>=0&&found<slots.Length)targetOffset=slots[found].Top+anchorDelta;
+    }
+    double maxOffset=Math.Max(0,canvas.Height-Math.Max(0,viewer.ViewportHeight));
+    viewer.ScrollToVerticalOffset(Math.Max(0,Math.Min(maxOffset,targetOffset)));
+   }
    RefreshVisible();
   }
   void RefreshVisible(){

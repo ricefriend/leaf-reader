@@ -417,4 +417,10 @@ final class L10n {static volatile String language="zh";static String pick(String
  MAP.put("已经是最后一本","Already at the last book");
  MAP.put("已穿透至上一本：","Moved to previous book: ");
  MAP.put("已穿透至下一本：","Moved to next book: ");
+ MAP.put("已到本册末尾 · 再次翻页进入下一本：","Reached the end · turn again for next book: ");
+ MAP.put("已是本册第 1 页 · 再次翻页返回上一本：","At page 1 · turn again for previous book: ");
+ MAP.put("进入下一本","Next book");
+ MAP.put("返回上一本","Previous book");
+ MAP.put("已进入下一本 · ","Now reading next · ");
+ MAP.put("已进入上一本 · ","Now reading previous · ");
  }}
