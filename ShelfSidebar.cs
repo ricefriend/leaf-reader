@@ -11,6 +11,7 @@ namespace LeafReader {
   public Action<string> Selected;
   public Action ManageSources;
   public Action Refresh;
+  public Action<ShelfNode> DeleteNodeRequested;
   readonly StackPanel content=new StackPanel();
   readonly ScrollViewer scroll;
   readonly Border allRow;
@@ -88,6 +89,13 @@ namespace LeafReader {
    border.Margin=new Thickness(8+depth*14,0,8,0);
    border.MouseLeftButtonUp+=(s,e)=>{Choose(node.Key);};
    border.MouseEnter+=(s,e)=>Hover(border,false);border.MouseLeave+=(s,e)=>Hover(border,true);
+   if(node.SourceKey!=null&&node.SourceKey.StartsWith("local:",StringComparison.OrdinalIgnoreCase)&&DeleteNodeRequested!=null){
+    var menu=new ContextMenu();
+    var openItem=new MenuItem{Header=L10n.T("打开")};openItem.Click+=(s,e)=>Choose(node.Key);menu.Items.Add(openItem);
+    menu.Items.Add(new Separator());
+    var deleteItem=new MenuItem{Header=L10n.T("删除文件夹…")};deleteItem.Click+=(s,e)=>DeleteNodeRequested(node);menu.Items.Add(deleteItem);
+    border.ContextMenu=menu;
+   }
    parent.Children.Add(border);
    var children=new StackPanel{Visibility=Visibility.Collapsed};
    parent.Children.Add(children);

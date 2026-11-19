@@ -2,7 +2,7 @@
 
 A reader for the manga folders you already have. It runs on Windows and Android, and when the desktop is sharing a folder, your phone can read from it directly instead of downloading a whole book first.
 
-Current version: **2.4.1**.
+Current version: **2.4.2**.
 
 ![Windows bookshelf with folder tree, breadcrumbs and cover cards](docs/images/windows-bookshelf.png)
 
@@ -44,7 +44,12 @@ The reading controls now fade and move slightly when they hide, and fade back in
 
 Android now has the folder tree, breadcrumbs, flattened leaf folders, the long-press action sheet, the thumbnail grid, and a new adaptive launcher icon.
 
-Details and test notes are in [VALIDATION-2.4.md](VALIDATION-2.4.md) and [VALIDATION-2.4.1.md](VALIDATION-2.4.1.md).
+Details and test notes are in [VALIDATION-2.4.md](VALIDATION-2.4.md), [VALIDATION-2.4.1.md](VALIDATION-2.4.1.md) and [VALIDATION-2.4.2.md](VALIDATION-2.4.2.md).
+
+## What changed in 2.4.2
+
+- **Right-click delete in bookshelf**: Right-click any local folder card, book folder card, archive, or sidebar folder node on Windows to open it in Explorer or confirm moving it to the Recycle Bin, immediately updating the bookshelf and watch roots.
+- **Folder penetration reading**: Turning past the last page (or scrolling past the bottom in Webtoon mode) automatically continues directly into the next book or across nested subfolders without returning to the bookshelf; turning back before page 1 returns to the end of the previous book. Includes a toggle in the reader bar and Settings plus "Previous book" / "Next book" toolbar buttons.
 
 ## What changed in 2.4.1
 
@@ -56,9 +61,9 @@ Details and test notes are in [VALIDATION-2.4.md](VALIDATION-2.4.md) and [VALIDA
 
 ## Download
 
-The Windows build is on the [Releases](https://github.com/ricefriend/leaf-reader/releases) page as `LeafReader-2.4.1-preview.exe`. It runs on Windows 10 / 11 with .NET Framework 4.8 or newer.
+The Windows build is on the [Releases](https://github.com/ricefriend/leaf-reader/releases) page as `LeafReader-2.4.2-preview.exe`. It runs on Windows 10 / 11 with .NET Framework 4.8 or newer.
 
-The Android package is `LeafReader-Android-2.4.1-preview.apk`, for Android 8.0 or newer.
+The Android package is `LeafReader-Android-2.4.2-preview.apk`, for Android 8.0 or newer.
 
 ## Not there yet
 

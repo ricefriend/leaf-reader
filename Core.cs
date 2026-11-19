@@ -128,7 +128,7 @@ namespace LeafReader {
   [DataMember] public int DefaultMode=1;
   [DataMember] public bool Light;
   [DataMember] public string Language;
-  [DataMember] public bool? AutoHide,CoverDefault,WideDefault;
+  [DataMember] public bool? AutoHide,CoverDefault,WideDefault,FolderPenetration;
   [DataMember] public int ShelfSort;
   [DataMember] public bool ShelfGrouped;
   [DataMember] public List<ServerProfile> Servers=new List<ServerProfile>();

@@ -110,6 +110,40 @@ namespace LeafReader {
    view.ContinueBook=FindContinueBook(scope,progress);
    return view;
   }
+  public static List<Book> OrderedBooks(List<ShelfNode> roots,ShelfNode scope,int sort,Dictionary<string,Progress> progress){
+   var list=new List<Book>();sort=Math.Max(0,Math.Min(4,sort));
+   if(scope==null){
+    var sortedRoots=new List<ShelfNode>(roots??new List<ShelfNode>());
+    SortFolders(sortedRoots,sort,progress);
+    foreach(ShelfNode root in sortedRoots)CollectOrdered(root,sort,progress,list);
+    return list;
+   }
+   CollectOrdered(scope,sort,progress,list);
+   return list;
+  }
+  static void SortFolders(List<ShelfNode> folders,int sort,Dictionary<string,Progress> progress){
+   var latest=new Dictionary<string,string>();var read=new Dictionary<string,bool>();
+   foreach(ShelfNode folder in folders){
+    string last=null;bool any=false;
+    foreach(Book book in ShelfTree.Descendants(folder)){
+     string value=LastRead(book,progress);if(!string.IsNullOrEmpty(value)){any=true;if(last==null||string.CompareOrdinal(value,last)>0)last=value;}
+    }
+    latest[folder.Key]=last??"";read[folder.Key]=any;
+   }
+   folders.Sort((a,b)=>CompareFolders(a,b,sort,progress,latest,read));
+  }
+  static void CollectOrdered(ShelfNode node,int sort,Dictionary<string,Progress> progress,List<Book> output){
+   var folders=new List<ShelfNode>();
+   var direct=new List<Book>(node.Books);
+   foreach(ShelfNode child in node.Children){
+    if(child.Children.Count>0)folders.Add(child);
+    else direct.AddRange(child.Books);
+   }
+   SortFolders(folders,sort,progress);
+   direct.Sort((a,b)=>CompareBooks(a,b,sort,progress));
+   foreach(ShelfNode folder in folders)CollectOrdered(folder,sort,progress,output);
+   output.AddRange(direct);
+  }
   static Book FindContinueBook(IEnumerable<Book> books,Dictionary<string,Progress> progress){
    Book best=null;string bestRead=null;
    foreach(Book book in books){

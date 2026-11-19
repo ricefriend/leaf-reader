@@ -2,7 +2,7 @@
 
 把现成的漫画文件夹当书架用。Windows 和 Android 都有客户端；电脑开着共享时，手机也能直接翻电脑上的图，不用先把整本拷过去。
 
-当前版本 **2.4.1**。
+当前版本 **2.4.2**。
 
 ![Windows 书架：目录树、面包屑和封面卡片](docs/images/windows-bookshelf.png)
 
@@ -44,7 +44,12 @@ Windows 书架整体重做了一版：宽屏用自动收起的目录树侧栏，
 
 安卓端同步了目录树、面包屑、叶子目录还原、长按操作表、平铺网格和新的自适应启动图标。
 
-更细的测试记录在 [VALIDATION-2.4.md](VALIDATION-2.4.md) 与 [VALIDATION-2.4.1.md](VALIDATION-2.4.1.md)。
+更细的测试记录在 [VALIDATION-2.4.md](VALIDATION-2.4.md)、[VALIDATION-2.4.1.md](VALIDATION-2.4.1.md) 与 [VALIDATION-2.4.2.md](VALIDATION-2.4.2.md)。
+
+## 2.4.2 新增功能
+
+- **书库右键删除文件夹**：在 Windows 书架卡片及左侧目录树上右键本地文件夹或压缩包，可直接确认后移入系统回收站（同时更新来源与书架视图，不留残留），也支持直接在文件资源管理器中打开。
+- **文件夹穿透连续阅读**：在阅读器内看完一本书的最后一页（单页、双页翻页或 Webtoon 滚到底部再翻页/滚动）时，自动穿透到下一本或下一个子文件夹的第一页；往前翻越第一页也可回到上一本末尾。顶部阅读选项与设置提供“文件夹穿透”开关，底部工具栏新增“上一本 / 下一本”快捷按钮。
 
 ## 2.4.1 改进
 
@@ -56,9 +61,9 @@ Windows 书架整体重做了一版：宽屏用自动收起的目录树侧栏，
 
 ## 下载
 
-Windows 包在 [Releases](https://github.com/ricefriend/leaf-reader/releases) 里，文件名是 `LeafReader-2.4.1-preview.exe`，Windows 10 / 11，.NET Framework 4.8 以上，双击就能运行。
+Windows 包在 [Releases](https://github.com/ricefriend/leaf-reader/releases) 里，文件名是 `LeafReader-2.4.2-preview.exe`，Windows 10 / 11，.NET Framework 4.8 以上，双击就能运行。
 
-Android 包是 `LeafReader-Android-2.4.1-preview.apk`，Android 8.0 以上。
+Android 包是 `LeafReader-Android-2.4.2-preview.apk`，Android 8.0 以上。
 
 ## 目前还不支持
 

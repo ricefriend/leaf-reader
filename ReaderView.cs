@@ -14,10 +14,12 @@ namespace LeafReader {
   public double Zoom=1; public int Fit; public bool Light;
   public double Offset; public double Extent {get;private set;}
   public Action Changed,ToggleFullscreen;
+  public Action<int> BoundaryTurn;
   double[] tops=new double[0], heights=new double[0]; double imageWidth;
   Point dragStart,panStart,pan;double dragOffset;bool dragging,moved;
   readonly ReaderLoadPolicy loadPolicy=new ReaderLoadPolicy();
   readonly ReaderImageCache images;int travel=1;
+  double overscroll;
   internal ReaderImageCache ImageCache {get{return images;}}
   internal ReaderLoadPolicy LoadPolicy {get{return loadPolicy;}}
   public ReaderView(){images=new ReaderImageCache(Dispatcher,()=>InvalidateVisual(),loadPolicy);Focusable=true;ClipToBounds=true;RenderOptions.SetBitmapScalingMode(this,BitmapScalingMode.HighQuality);
@@ -27,17 +29,31 @@ namespace LeafReader {
   }
   public bool IsToon {get{return Book!=null&&Progress.Mode==3;}}
   public int VisibleCount {get{return Book==null?0:Paging.Count(Book,Progress.Page,Progress.Mode,Progress.Cover,Progress.Wide,Progress.PairAnchor);}}
-  public void Open(Book b,Progress p){images.Reset();loadPolicy.Open(b);travel=1;Book=b;Progress=p;Zoom=1;Fit=0;pan=new Point();LayoutToon();if(IsToon)Offset=tops[p.Page]+heights[p.Page]*p.Fraction;else Offset=0;ClampOffset();InvalidateVisual();Notify();}
+  public void Open(Book b,Progress p){images.Reset();loadPolicy.Open(b);travel=1;wheel=0;overscroll=0;Book=b;Progress=p;Zoom=1;Fit=0;pan=new Point();LayoutToon();if(IsToon)Offset=tops[p.Page]+heights[p.Page]*p.Fraction;else Offset=0;ClampOffset();InvalidateVisual();Notify();}
   public void ClearImages(){images.Reset();InvalidateVisual();}
-  public void CloseBook(){images.Reset();Book=null;Progress=null;tops=new double[0];heights=new double[0];InvalidateVisual();}
+  public void CloseBook(){images.Reset();Book=null;Progress=null;wheel=0;overscroll=0;tops=new double[0];heights=new double[0];InvalidateVisual();}
   public void RefreshLayout(){if(Book==null)return;Progress.PairAnchor=Progress.Page;pan=new Point();LayoutToon();if(IsToon)Offset=tops[Progress.Page]+heights[Progress.Page]*Progress.Fraction;ClampOffset();InvalidateVisual();Notify();}
   public void SetMode(int mode){if(Book==null)return;Progress.Mode=mode;Progress.PairAnchor=Progress.Page;Zoom=1;pan=new Point();Progress.Fraction=0;LayoutToon();Offset=IsToon?tops[Progress.Page]:0;InvalidateVisual();Notify();}
-  public void Jump(int page,bool newAnchor=true){if(Book==null)return;if(page!=Progress.Page)travel=page>Progress.Page?1:-1;Progress.Page=Math.Max(0,Math.Min(Book.Pages.Count-1,page));if(newAnchor)Progress.PairAnchor=Progress.Page;Progress.Fraction=0;pan=new Point();if(IsToon){LayoutToon();Offset=tops[Progress.Page];ClampOffset();SyncPage();}InvalidateVisual();Notify();}
+  public void Jump(int page,bool newAnchor=true){if(Book==null)return;if(page!=Progress.Page)travel=page>Progress.Page?1:-1;overscroll=0;Progress.Page=Math.Max(0,Math.Min(Book.Pages.Count-1,page));if(newAnchor)Progress.PairAnchor=Progress.Page;Progress.Fraction=0;pan=new Point();if(IsToon){LayoutToon();Offset=tops[Progress.Page];ClampOffset();SyncPage();}InvalidateVisual();Notify();}
   public void Turn(int direction){
    if(Book==null)return;
-   if(IsToon){Scroll(direction*Math.Max(100,ActualHeight*.86));return;}
+   if(IsToon){
+    double maxOffset=Math.Max(0,Extent-ActualHeight);
+    if(direction>0&&Offset>=maxOffset-0.5){if(BoundaryTurn!=null)BoundaryTurn(1);return;}
+    if(direction<0&&Offset<=0.5){if(BoundaryTurn!=null)BoundaryTurn(-1);return;}
+    Scroll(direction*Math.Max(100,ActualHeight*.86));return;
+   }
    int p=Progress.Page,n=direction>0?Paging.Next(Book,p,Progress.Mode,Progress.Cover,Progress.Wide,Progress.PairAnchor):Paging.Previous(Book,p,Progress.Mode,Progress.Cover,Progress.Wide,Progress.PairAnchor);
+   if(n==p){if(BoundaryTurn!=null)BoundaryTurn(direction);return;}
    Jump(n,false);
+  }
+  public void ScrollStep(int delta){
+   if(Book==null)return;
+   if(!IsToon){Turn(delta>0?1:-1);return;}
+   double maxOffset=Math.Max(0,Extent-ActualHeight);
+   if(delta>0&&Offset>=maxOffset-0.5){if(BoundaryTurn!=null)BoundaryTurn(1);return;}
+   if(delta<0&&Offset<=0.5){if(BoundaryTurn!=null)BoundaryTurn(-1);return;}
+   Scroll(delta);
   }
   public void Nudge(int delta){if(Book!=null&&(Progress.Mode==1||Progress.Mode==2))Jump(Progress.Page+delta);}
   public void Scroll(double delta){SetOffset(Offset+delta);}
@@ -54,7 +70,12 @@ namespace LeafReader {
   }
   void Wheel(object sender,MouseWheelEventArgs e){if(Book==null)return;e.Handled=true;
    if((Keyboard.Modifiers&ModifierKeys.Control)!=0){SetZoom(Zoom*(e.Delta>0?1.15:1/1.15));return;}
-   if(IsToon){Scroll(-e.Delta*1.1);return;}
+   if(IsToon){
+    double maxOffset=Math.Max(0,Extent-ActualHeight);
+    if(e.Delta<0&&Offset>=maxOffset-0.5){overscroll+=-e.Delta;if(overscroll>=120){overscroll=0;if(BoundaryTurn!=null)BoundaryTurn(1);}return;}
+    if(e.Delta>0&&Offset<=0.5){overscroll+=e.Delta;if(overscroll>=120){overscroll=0;if(BoundaryTurn!=null)BoundaryTurn(-1);}return;}
+    overscroll=0;Scroll(-e.Delta*1.1);return;
+   }
    wheel+=e.Delta;if(Math.Abs(wheel)>=120){int direction=wheel<0?1:-1;wheel=0;Turn(direction);}
   }
   int wheel;

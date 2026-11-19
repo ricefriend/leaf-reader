@@ -19,7 +19,7 @@ namespace LeafReader {
   readonly Dictionary<string,Cover> cache=new Dictionary<string,Cover>();
   bool loading,refreshing;int generation;int gridButtons;long clock;double layoutWidth;
   const double CardWidth=164,CardHeight=284,CoverHeight=220,GapX=14,GapY=18;
-  public Action<Book> BookOpened;public Action<Book> BookGridOpened;public Func<Book,string> Caption;
+  public Action<Book> BookOpened;public Action<Book> BookGridOpened;public Action<Book> BookDeleteRequested;public Action<Book> BookRevealRequested;public Func<Book,bool> CanDeleteBook;public Func<Book,string> Caption;
   public ScrollViewer Scroller {get{return viewer;}}
   internal int RealizedCount {get{return visible.Count;}}
   internal int BookCount {get{return books.Count;}}
@@ -27,6 +27,7 @@ namespace LeafReader {
   internal int[] RealizedIndices {get{return visible.Keys.OrderBy(i=>i).ToArray();}}
   internal bool VisibleCoversReady {get{return visible.Keys.All(i=>cache.ContainsKey(CoverKey(books[i])));}}
   internal Rect[] CardBounds {get{return slots;}}
+  internal ContextMenu CardContextMenu(int index){FrameworkElement host;if(!visible.TryGetValue(index,out host))return null;var grid=host as Grid;return grid!=null&&grid.Children.Count>0?((FrameworkElement)grid.Children[0]).ContextMenu:null;}
   public ShelfGrid(){
    viewer=new ScrollViewer{Content=canvas,VerticalScrollBarVisibility=ScrollBarVisibility.Visible,HorizontalScrollBarVisibility=ScrollBarVisibility.Disabled,CanContentScroll=false,Padding=new Thickness(0,0,8,10),VerticalContentAlignment=VerticalAlignment.Top,HorizontalContentAlignment=HorizontalAlignment.Left};
    Children.Add(viewer);viewer.ScrollChanged+=(s,e)=>{if(Math.Abs(viewer.ViewportWidth-layoutWidth)>1)LayoutCards(true);else RefreshVisible();};
@@ -116,6 +117,31 @@ namespace LeafReader {
    button.MouseEnter+=(s,e)=>{((TranslateTransform)button.RenderTransform).Y=-2;button.SetResourceReference(Control.BorderBrushProperty,"AccentLine");};
    button.MouseLeave+=(s,e)=>{((TranslateTransform)button.RenderTransform).Y=0;button.BorderBrush=Brushes.Transparent;};
    button.Click+=(s,e)=>{if(BookOpened!=null)BookOpened(book);};
+   var menu=new ContextMenu();
+   var openItem=new MenuItem{Header=folder?L10n.T("打开文件夹"):L10n.T("开始阅读")};
+   openItem.Click+=(s,e)=>{if(BookOpened!=null)BookOpened(book);};
+   menu.Items.Add(openItem);
+   if(HasGridButton(book)){
+    var gridItem=new MenuItem{Header=L10n.T("平铺查看")};
+    gridItem.Click+=(s,e)=>{if(BookGridOpened!=null)BookGridOpened(book);};
+    menu.Items.Add(gridItem);
+   }
+   bool deletable=CanDeleteBook!=null?CanDeleteBook(book):(book.RemoteId==null);
+   if(deletable){
+    if(BookRevealRequested!=null){
+     var revealItem=new MenuItem{Header=L10n.T("在资源管理器中打开")};
+     revealItem.Click+=(s,e)=>BookRevealRequested(book);
+     menu.Items.Add(revealItem);
+    }
+    if(BookDeleteRequested!=null){
+     menu.Items.Add(new Separator());
+     bool archive=!folder&&book.Pages.Count>0&&book.Pages[0].Entry!=null;
+     var deleteItem=new MenuItem{Header=archive?L10n.T("删除压缩包…"):L10n.T("删除文件夹…")};
+     deleteItem.Click+=(s,e)=>BookDeleteRequested(book);
+     menu.Items.Add(deleteItem);
+    }
+   }
+   button.ContextMenu=menu;
    var host=new Grid{Width=box.Width,Height=box.Height};host.Children.Add(button);
    if(HasGridButton(book)){
     var gridButton=new Button{Content="▦",Width=24,Height=24,FontSize=12,Padding=new Thickness(0),HorizontalAlignment=HorizontalAlignment.Right,VerticalAlignment=VerticalAlignment.Top,Margin=new Thickness(8),ToolTip=L10n.T("平铺查看"),Opacity=.9};

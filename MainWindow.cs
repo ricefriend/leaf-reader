@@ -22,8 +22,9 @@ namespace LeafReader {
   string shelfGroup;Button shelfUp,refreshButton;ToggleButton flatToggle,groupToggle;StackPanel breadcrumb;TextBlock heroEyebrow,heroTitle;Button continueButton;Book continueBook;
   bool sidebarOpen;
   DispatcherTimer sidebarHide;
-  TextBox search;ComboBox mode,fit,sort;CheckBox cover,wide;ScrollBar scroll;Slider pageSlider;Button bookmark,back,shiftBack,shiftNext;
-  List<Book> books=new List<Book>();List<string> warnings=new List<string>();List<string> localWarnings=new List<string>();List<ShelfNode> tree=new List<ShelfNode>();ShelfView view;bool treeDirty=true;
+  TextBox search;ComboBox mode,fit,sort;CheckBox cover,wide,penetrate;ScrollBar scroll;Slider pageSlider;Button bookmark,back,shiftBack,shiftNext,prevBook,nextBook;
+  List<Book> books=new List<Book>();List<Book> readingSequence=new List<Book>();List<string> warnings=new List<string>();List<string> localWarnings=new List<string>();List<ShelfNode> tree=new List<ShelfNode>();ShelfView view;bool treeDirty=true;
+  enum BookOpenPosition {Saved,Start,End}
   int operation;bool updating,busy,fullscreen;WindowState beforeFull;WindowStyle beforeStyle;ResizeMode beforeResize;
   DispatcherTimer saveTimer,idleTimer,watchTimer;bool testMode,uiHidden,progressDragging,pendingLocalRefresh,pendingFullScan,watcherDegraded,watchersEnabledInTest;string[] startup;Point? lastPointer;
   readonly List<FileSystemWatcher> watchers=new List<FileSystemWatcher>();
@@ -51,7 +52,7 @@ namespace LeafReader {
    PreviewMouseDown+=(s,e)=>ReadingActivity(false);PreviewMouseUp+=(s,e)=>ReadingActivity(false);
    Activated+=async(s,e)=>{ReadingActivity(true);if(!testMode&&Reader.Book==null&&!busy&&OwnedWindows.Count==0&&(pendingLocalRefresh||watcherDegraded)){pendingLocalRefresh=false;await RefreshLocal();}};
    Deactivated+=(s,e)=>{progressDragging=false;idleTimer.Stop();SetReadingUiHidden(false);};
-   Reader.Changed=ReadingChanged;Reader.ToggleFullscreen=ToggleFull;
+   Reader.Changed=ReadingChanged;Reader.ToggleFullscreen=ToggleFull;Reader.BoundaryTurn=async direction=>{if(State.FolderPenetration!=false)await OpenAdjacentBook(direction);};
    PreviewKeyDown+=Keys;AllowDrop=true;DragOver+=(s,e)=>{e.Effects=e.Data.GetDataPresent(DataFormats.FileDrop)?DragDropEffects.Copy:DragDropEffects.None;e.Handled=true;};
    Drop+=async(s,e)=>{if(e.Data.GetDataPresent(DataFormats.FileDrop))await Import((string[])e.Data.GetData(DataFormats.FileDrop));};
    Closing+=(s,e)=>{idleTimer.Stop();saveTimer.Stop();if(watchTimer!=null)watchTimer.Stop();ClearWatchers();if(sharing!=null)sharing.Dispose();Remember();if(!fullscreen&&WindowState==WindowState.Normal){State.Width=ActualWidth;State.Height=ActualHeight;}Save();};
@@ -89,7 +90,7 @@ namespace LeafReader {
    var handleIcon=Text("≡",17,"AccentInk");handleIcon.HorizontalAlignment=HorizontalAlignment.Center;handleStack.Children.Add(handleIcon);
    var handleLabel=Text(L10n.T("目录"),9.5,"AccentInk");handleLabel.HorizontalAlignment=HorizontalAlignment.Center;handleLabel.Margin=new Thickness(0,4,0,0);handleLabel.LayoutTransform=new RotateTransform(90);handleStack.Children.Add(handleLabel);
    sidebarHandle.Child=handleStack;sidebarHandle.MouseEnter+=(s,e)=>ShowSidebar();sidebarHandle.MouseLeftButtonUp+=(s,e)=>{ShowSidebar();e.Handled=true;};Panel.SetZIndex(sidebarHandle,28);body.Children.Add(sidebarHandle);
-   sidebar.Selected=key=>{shelfGroup=key;RenderShelf(true);};sidebar.ManageSources=ManageSources;sidebar.Refresh=ScanAfterSources;treeDirty=true;
+   sidebar.Selected=key=>{shelfGroup=key;RenderShelf(true);};sidebar.ManageSources=ManageSources;sidebar.Refresh=ScanAfterSources;sidebar.DeleteNodeRequested=async node=>await DeleteNodeTarget(node,true);treeDirty=true;
    shelfHead=new StackPanel();
    var toolbar=new Grid{Margin=new Thickness(0,0,0,10)};
    toolbar.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});toolbar.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});toolbar.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});
@@ -110,16 +111,18 @@ namespace LeafReader {
    summary=Text(L10n.T("导入一个文件夹，开始阅读"),11.5,"Muted");summary.Margin=new Thickness(0,7,0,0);heroStack.Children.Add(summary);hero.Children.Add(heroStack);
    continueButton=new Button{Content=L10n.T("继续阅读")+"  →",Style=(Style)FindResource("PrimaryButton"),Visibility=Visibility.Collapsed,VerticalAlignment=VerticalAlignment.Bottom,Margin=new Thickness(0,0,0,2)};continueButton.Click+=async(s,e)=>{if(continueBook!=null)await OpenBook(continueBook);};Grid.SetColumn(continueButton,1);hero.Children.Add(continueButton);
    shelfHead.Children.Add(hero);shelf.Children.Add(shelfHead);
-   shelfSurface=new Grid();cards=new ShelfGrid();cards.BookOpened=async b=>{if(b.GroupId!=null){shelfGroup=b.GroupId;RenderShelf(true);}else await OpenBook(b);};cards.BookGridOpened=b=>ShowPageGrid(b);cards.Caption=b=>{if(b.GroupId!=null)return b.GroupCount+L10n.T(" 本 · 点击进入");if(search!=null&&!string.IsNullOrEmpty(search.Text.Trim()))return (b.SourceName??"")+(string.IsNullOrEmpty(b.RelativePath)?"":" / "+b.RelativePath);Progress p;State.Books.TryGetValue(b.Id,out p);return b.PageCount+L10n.T(" 页")+(p!=null&&!string.IsNullOrEmpty(p.LastRead)?L10n.T("  ·  读至 ")+Math.Min(b.PageCount,p.Page+1):L10n.T("  ·  未读"));};shelfSurface.Children.Add(cards);Grid.SetRow(shelfSurface,1);shelf.Children.Add(shelfSurface);
+   shelfSurface=new Grid();cards=new ShelfGrid();cards.BookOpened=async b=>{if(b.GroupId!=null){shelfGroup=b.GroupId;RenderShelf(true);}else await OpenBook(b);};cards.BookGridOpened=b=>ShowPageGrid(b);cards.CanDeleteBook=b=>CanDeleteShelfItem(b);cards.BookRevealRequested=b=>RevealBookTarget(b);cards.BookDeleteRequested=async b=>await DeleteBookTarget(b,true);cards.Caption=b=>{if(b.GroupId!=null)return b.GroupCount+L10n.T(" 本 · 点击进入");if(search!=null&&!string.IsNullOrEmpty(search.Text.Trim()))return (b.SourceName??"")+(string.IsNullOrEmpty(b.RelativePath)?"":" / "+b.RelativePath);Progress p;State.Books.TryGetValue(b.Id,out p);return b.PageCount+L10n.T(" 页")+(p!=null&&!string.IsNullOrEmpty(p.LastRead)?L10n.T("  ·  读至 ")+Math.Min(b.PageCount,p.Page+1):L10n.T("  ·  未读"));};shelfSurface.Children.Add(cards);Grid.SetRow(shelfSurface,1);shelf.Children.Add(shelfSurface);
    readerHead=new StackPanel{Margin=new Thickness(22,0,15,12)};var titlebar=new DockPanel();back=Btn(L10n.T("‹ 书架"),Back,L10n.T("Esc · 返回书架"));titlebar.Children.Add(back);bookTitle=Text("",18);bookTitle.TextTrimming=TextTrimming.CharacterEllipsis;bookTitle.Margin=new Thickness(12,0,0,0);titlebar.Children.Add(bookTitle);readerHead.Children.Add(titlebar);
    var options=new StackPanel{Orientation=Orientation.Horizontal,Margin=new Thickness(0,12,0,0)};
    mode=new ComboBox{Width=156,ItemsSource=new[]{L10n.T("单页 · 标准看图"),L10n.T("双页 · 从左至右"),L10n.T("双页 · 从右至左"),L10n.T("Webtoon · 纵向")}};mode.SelectionChanged+=(s,e)=>{if(!updating&&Reader.Book!=null){Reader.SetMode(mode.SelectedIndex);Reader.Focus();}};options.Children.Add(mode);
    fit=new ComboBox{Width=112,ItemsSource=new[]{L10n.T("适应窗口"),L10n.T("适应宽度"),L10n.T("原始尺寸")},SelectedIndex=0};fit.SelectionChanged+=(s,e)=>{if(!updating){Reader.Fit=fit.SelectedIndex;Reader.Zoom=1;Reader.RefreshLayout();Reader.Focus();}};options.Children.Add(fit);
    cover=new CheckBox{Content=L10n.T("封面独页"),ToolTip=L10n.T("双页模式中让第一张图片单独显示")};wide=new CheckBox{Content=L10n.T("横图独页"),ToolTip=L10n.T("双页模式下，宽高比大于 1.18 的整张跨页图单独显示")};cover.Click+=(s,e)=>{if(Reader.Book!=null){Reader.Progress.Cover=cover.IsChecked==true;Reader.RefreshLayout();}};wide.Click+=(s,e)=>{if(Reader.Book!=null){Reader.Progress.Wide=wide.IsChecked==true;Reader.RefreshLayout();}};
+   options.Children.Add(cover);options.Children.Add(wide);
+   penetrate=new CheckBox{Content=L10n.T("文件夹穿透"),IsChecked=State.FolderPenetration!=false,ToolTip=L10n.T("看完当前文件夹后自动穿透到下一本，无需返回书架")};penetrate.Click+=(s,e)=>{State.FolderPenetration=penetrate.IsChecked==true;Save();Reader.Focus();};options.Children.Add(penetrate);
    options.Children.Add(Btn("−",()=>Reader.SetZoom(Reader.Zoom/1.2),L10n.T("缩小 · -")));zoomLabel=Text("100%");zoomLabel.Width=48;options.Children.Add(zoomLabel);options.Children.Add(Btn("+",()=>Reader.SetZoom(Reader.Zoom*1.2),L10n.T("放大 · +")));options.Children.Add(Btn(L10n.T("重置"),()=>{Reader.Zoom=1;Reader.Fit=0;fit.SelectedIndex=0;Reader.RefreshLayout();},L10n.T("0 · 重置缩放和位置")));options.Children.Add(Btn(L10n.T("全屏"),ToggleFull,L10n.T("F11 / 双击画面 · 全屏")));readerHead.Children.Add(options);readerHost.Children.Add(readerHead);
    var viewGrid=new Grid();viewGrid.ColumnDefinitions.Add(new ColumnDefinition{Width=new GridLength(1,GridUnitType.Star)});viewGrid.ColumnDefinitions.Add(new ColumnDefinition{Width=GridLength.Auto});viewGrid.Children.Add(Reader);scroll=new ScrollBar{Orientation=Orientation.Vertical,Width=14,SmallChange=80,Visibility=Visibility.Collapsed};scroll.ValueChanged+=(s,e)=>{if(!updating)Reader.SetOffset(scroll.Value);};Grid.SetColumn(scroll,1);viewGrid.Children.Add(scroll);Grid.SetRow(viewGrid,1);readerHost.Children.Add(viewGrid);
    readerFoot=new StackPanel{Margin=new Thickness(22,10,15,12)};var nav=new DockPanel();
-   var navleft=new StackPanel{Orientation=Orientation.Horizontal};navleft.Children.Add(Btn(L10n.T("上一页"),()=>Reader.Turn(-1),L10n.T("PageUp / 滚轮向上")));navleft.Children.Add(Btn(L10n.T("下一页"),()=>Reader.Turn(1),L10n.T("PageDown / 空格 / 滚轮向下")));shiftBack=Btn(L10n.T("配对 −1"),()=>Reader.Nudge(-1),L10n.T("[ 或 Shift+← · 起始页前移一张"));shiftNext=Btn(L10n.T("配对 +1"),()=>Reader.Nudge(1),L10n.T("] 或 Shift+→ · 起始页后移一张"));navleft.Children.Add(shiftBack);navleft.Children.Add(shiftNext);nav.Children.Add(navleft);
+   var navleft=new StackPanel{Orientation=Orientation.Horizontal};navleft.Children.Add(Btn(L10n.T("上一页"),()=>Reader.Turn(-1),L10n.T("PageUp / 滚轮向上")));navleft.Children.Add(Btn(L10n.T("下一页"),()=>Reader.Turn(1),L10n.T("PageDown / 空格 / 滚轮向下")));shiftBack=Btn(L10n.T("配对 −1"),()=>Reader.Nudge(-1),L10n.T("[ 或 Shift+← · 起始页前移一张"));shiftNext=Btn(L10n.T("配对 +1"),()=>Reader.Nudge(1),L10n.T("] 或 Shift+→ · 起始页后移一张"));navleft.Children.Add(shiftBack);navleft.Children.Add(shiftNext);prevBook=Btn(L10n.T("上一本"),async()=>await OpenAdjacentBook(-1),L10n.T("切换到上一本"));nextBook=Btn(L10n.T("下一本"),async()=>await OpenAdjacentBook(1),L10n.T("切换到下一本"));navleft.Children.Add(prevBook);navleft.Children.Add(nextBook);nav.Children.Add(navleft);
    var navright=new StackPanel{Orientation=Orientation.Horizontal};DockPanel.SetDock(navright,Dock.Right);bookmark=Btn(L10n.T("☆ 书签"),ToggleBookmark,L10n.T("B · 添加 / 取消当前页书签"));navright.Children.Add(bookmark);navright.Children.Add(Btn(L10n.T("书签列表"),Bookmarks));navright.Children.Add(Btn(L10n.T("跳页"),JumpDialog,L10n.T("Ctrl+G · 输入页码")));nav.Children.Add(navright);pageLabel=Text("");pageLabel.Margin=new Thickness(15,0,15,0);pageLabel.HorizontalAlignment=HorizontalAlignment.Center;nav.Children.Add(pageLabel);readerFoot.Children.Add(nav);
    pageSlider=new Slider{Minimum=1,TickFrequency=1,IsSnapToTickEnabled=true,Margin=new Thickness(3,11,8,0),ToolTip=L10n.T("拖动跳转页码")};pageSlider.ValueChanged+=(s,e)=>{if(!updating&&Reader.Book!=null)Reader.Jump((int)pageSlider.Value-1);};readerFoot.Children.Add(pageSlider);Grid.SetRow(readerFoot,2);readerHost.Children.Add(readerFoot);
    pageSlider.AddHandler(Thumb.DragStartedEvent,new DragStartedEventHandler((s,e)=>{progressDragging=true;ReadingActivity(false);}));pageSlider.AddHandler(Thumb.DragCompletedEvent,new DragCompletedEventHandler((s,e)=>{progressDragging=false;ReadingActivity(false);}));
@@ -346,16 +349,170 @@ namespace LeafReader {
    var dialog=new PageGrid(book,index=>chosen=index);dialog.Owner=this;dialog.ShowDialog();
    if(chosen>=0)OpenBookAt(book,chosen);
   }
+  static bool PathIsSameOrUnder(string candidate,string target){
+   if(string.IsNullOrEmpty(candidate)||string.IsNullOrEmpty(target))return false;
+   try{
+    string a=Path.GetFullPath(candidate).TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar);
+    string b=Path.GetFullPath(target).TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar);
+    return string.Equals(a,b,StringComparison.OrdinalIgnoreCase)||a.StartsWith(b+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase);
+   }catch{return false;}
+  }
+  string ResolveNodePath(ShelfNode node){
+   if(node==null||string.IsNullOrEmpty(node.SourceKey)||!node.SourceKey.StartsWith("local:",StringComparison.OrdinalIgnoreCase))return null;
+   string matchingRoot=State.Roots.Select(r=>{try{return Path.GetFullPath(r).TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar);}catch{return null;}})
+    .FirstOrDefault(r=>r!=null&&string.Equals("local:"+r.ToUpperInvariant(),node.SourceKey,StringComparison.OrdinalIgnoreCase));
+   if(matchingRoot==null){
+    var desc=ShelfTree.Descendants(node).FirstOrDefault(b=>b.RemoteId==null);
+    if(desc!=null){
+     string basePath=desc.Pages.Count>0&&desc.Pages[0].Entry!=null?desc.Folder:desc.Id;
+     if(!string.IsNullOrEmpty(basePath)){
+      if(string.IsNullOrEmpty(desc.RelativePath))return basePath;
+      int up=desc.RelativePath.Split('/').Length;
+      var dir=new DirectoryInfo(basePath);
+      for(int i=0;i<up&&dir!=null;i++)dir=dir.Parent;
+      if(dir!=null)matchingRoot=dir.FullName;
+     }
+    }
+   }
+   if(string.IsNullOrEmpty(matchingRoot))return null;
+   return string.IsNullOrEmpty(node.RelativePath)?matchingRoot:Path.Combine(matchingRoot,node.RelativePath.Replace('/',Path.DirectorySeparatorChar));
+  }
+  bool CanDeleteShelfItem(Book book){
+   if(book==null)return false;
+   return book.GroupId!=null?book.GroupId.StartsWith("local:",StringComparison.OrdinalIgnoreCase):book.RemoteId==null;
+  }
+  bool ResolveDeleteTarget(Book book,out string path,out bool isArchive,out string label,out int count){
+   path=null;isArchive=false;label="";count=1;
+   if(book==null)return false;
+   if(book.GroupId!=null){
+    if(treeDirty)RebuildTree();
+    ShelfNode node=ShelfTree.Find(tree,book.GroupId);
+    path=ResolveNodePath(node);label=book.Title;count=node!=null?node.Count:book.GroupCount;
+    return !string.IsNullOrEmpty(path)&&Directory.Exists(path);
+   }
+   if(book.RemoteId!=null)return false;
+   isArchive=book.Pages.Count>0&&book.Pages[0].Entry!=null;
+   path=book.Id;label=book.Title;
+   return !string.IsNullOrEmpty(path)&&(isArchive?File.Exists(path):Directory.Exists(path));
+  }
+  void RevealBookTarget(Book book){
+   string path;bool isArchive;string label;int count;
+   if(!ResolveDeleteTarget(book,out path,out isArchive,out label,out count))return;
+   try{
+    if(isArchive)System.Diagnostics.Process.Start("explorer.exe","/select,\""+path+"\"");
+    else System.Diagnostics.Process.Start("explorer.exe","\""+path+"\"");
+   }catch{}
+  }
+  void DeletePathFromDisk(string path,bool isArchive){
+   if(testMode){
+    if(isArchive)File.Delete(path);
+    else Directory.Delete(path,true);
+    return;
+   }
+   if(isArchive)Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(path,Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+   else Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(path,Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+  }
+  internal async Task<bool> DeleteBookTarget(Book book,bool confirm){
+   string path;bool isArchive;string label;int count;
+   if(!ResolveDeleteTarget(book,out path,out isArchive,out label,out count))return false;
+   return await DeleteTargetCore(path,isArchive,label,count,confirm);
+  }
+  internal async Task<bool> DeleteNodeTarget(ShelfNode node,bool confirm){
+   string path=ResolveNodePath(node);
+   if(string.IsNullOrEmpty(path)||!Directory.Exists(path))return false;
+   return await DeleteTargetCore(path,false,node.Name,node.Count,confirm);
+  }
+  async Task<bool> DeleteTargetCore(string path,bool isArchive,string label,int count,bool confirm){
+   if(busy)return false;
+   if(confirm){
+    string prompt=(isArchive?L10n.T("确定要删除压缩包“"):L10n.T("确定要删除文件夹“"))+label+(count>1?L10n.T("（内含 ")+count+L10n.T(" 本）"):"")+L10n.T("”吗？\n\n路径：")+path+L10n.T("\n\n将移入系统回收站。");
+    if(MessageBox.Show(this,prompt,L10n.T("确认删除"),MessageBoxButton.YesNo,MessageBoxImage.Warning,MessageBoxResult.No)!=MessageBoxResult.Yes)return false;
+   }
+   busy=true;
+   try{
+    await Task.Run(()=>DeletePathFromDisk(path,isArchive));
+    bool rootsChanged=State.Roots.RemoveAll(r=>PathIsSameOrUnder(r,path))>0;
+    if(rootsChanged)Save();
+    SyncWatchers();
+    books.RemoveAll(b=>b.RemoteId==null&&(PathIsSameOrUnder(b.Id,path)||PathIsSameOrUnder(b.Folder,path)));
+    treeDirty=true;cards.ClearCoverCache();RenderShelf(false);
+    Status(L10n.T("已删除：")+label);
+    return true;
+   }catch(Exception ex){
+    Status(L10n.T("删除失败：")+ex.Message);
+    return false;
+   }finally{busy=false;}
+  }
+  void CaptureReadingSequence(Book book){
+   if(treeDirty)RebuildTree();
+   bool flatOrSearch=!State.ShelfGrouped||(search!=null&&!string.IsNullOrEmpty(search.Text.Trim()));
+   List<Book> seq;
+   if(flatOrSearch&&view!=null){
+    seq=view.Items.Where(b=>b.GroupId==null).ToList();
+   }else if(State.ShelfGrouped){
+    ShelfNode scope=null;
+    if(!string.IsNullOrEmpty(shelfGroup)){
+     var path=ShelfTree.Path(tree,shelfGroup);
+     if(path.Count>0)scope=path[0];
+    }
+    if(scope==null&&book!=null&&!string.IsNullOrEmpty(book.SourceKey))scope=tree.FirstOrDefault(r=>string.Equals(r.SourceKey,book.SourceKey,StringComparison.OrdinalIgnoreCase));
+    seq=ShelfView.OrderedBooks(tree,scope,State.ShelfSort,State.Books);
+   }else{
+    seq=ShelfView.OrderedBooks(tree,null,State.ShelfSort,State.Books);
+   }
+   if(book!=null&&!seq.Any(b=>b.Id==book.Id))seq.Insert(0,book);
+   readingSequence=seq;
+  }
+  void UpdateReadingBookNav(){
+   if(prevBook==null||nextBook==null)return;
+   if(Reader.Book==null){prevBook.IsEnabled=nextBook.IsEnabled=false;return;}
+   int idx=readingSequence.FindIndex(b=>b.Id==Reader.Book.Id);
+   bool hasPrev=idx>0,hasNext=idx>=0&&idx+1<readingSequence.Count;
+   prevBook.IsEnabled=hasPrev;nextBook.IsEnabled=hasNext;
+   prevBook.ToolTip=hasPrev?L10n.T("上一本")+" · "+readingSequence[idx-1].Title:L10n.T("已经是第一本");
+   nextBook.ToolTip=hasNext?L10n.T("下一本")+" · "+readingSequence[idx+1].Title:L10n.T("已经是最后一本");
+  }
+  internal async Task OpenAdjacentBook(int direction){
+   if(busy||Reader.Book==null)return;
+   if(pendingLocalRefresh&&State.Roots.Count>0){
+    pendingLocalRefresh=false;
+    try{
+     var roots=State.Roots.ToArray();
+     var res=await Task.Run(()=>Library.Scan(roots));
+     books=res.Books.Concat(books.Where(b=>b.RemoteId!=null)).ToList();
+     warnings=res.Warnings;localWarnings=new List<string>(res.Warnings);
+     treeDirty=true;RebuildTree();
+     string currentId=Reader.Book.Id;
+     CaptureReadingSequence(books.FirstOrDefault(b=>b.Id==currentId)??Reader.Book);
+    }catch{}
+   }
+   int idx=readingSequence.FindIndex(b=>b.Id==Reader.Book.Id);
+   int targetIdx=idx+direction;
+   if(idx<0||targetIdx<0||targetIdx>=readingSequence.Count){
+    Status(direction>0?L10n.T("已经是最后一本"):L10n.T("已经是第一本"));
+    return;
+   }
+   Book target=readingSequence[targetIdx];
+   await OpenBook(target,direction>0?BookOpenPosition.Start:BookOpenPosition.End,false);
+   if(Reader.Book==target)Status((direction>0?L10n.T("已穿透至下一本："):L10n.T("已穿透至上一本："))+target.Title);
+  }
   async void OpenBookAt(Book book,int page){await OpenBook(book);if(Reader.Book==book)Reader.Jump(Math.Max(0,Math.Min(book.Pages.Count-1,page)));}
-  public async Task OpenBook(Book book){
-   if(busy)return;busy=true;Status(L10n.T("正在读取 “")+book.Title+L10n.T("” 的图片尺寸…"));int op=++operation;
-   try{await Task.Run(()=>{if(book.RemoteId!=null){var remoteSource=(RemoteImageSource)book.Pages[0].Source;var profile=State.Servers.First(p=>p.ServerId==remoteSource.Id);new RemoteApi(profile).LoadPages(book);}foreach(var page in book.Pages)page.ReadInfo();});if(op!=operation)return;Remember();var progress=State.Get(book);shelf.Visibility=Visibility.Collapsed;readerHost.Visibility=Visibility.Visible;UpdateResponsive();bookTitle.Text=book.Title+" · "+(book.SourceLabel??L10n.T("本地"));bookTitle.ToolTip=book.Id;Reader.Open(book,progress);Reader.Focus();ReadingActivity(true);Status(L10n.T("闲置 3 秒隐藏工具栏 · 鼠标移至上下边缘或按 Tab 显示 · F11 全屏"));if(book.Pages.Any(p=>p.Error!=null))Status(L10n.T("部分图片无法解码，可继续翻页；WebP 取决于 Windows 图像解码器。"));}catch(Exception e){Status(L10n.T("打开失败：")+e.Message);}finally{busy=false;}
+  public Task OpenBook(Book book){return OpenBook(book,BookOpenPosition.Saved,true);}
+  async Task OpenBook(Book book,BookOpenPosition openPos,bool captureSequence){
+   if(busy)return;if(captureSequence)CaptureReadingSequence(book);busy=true;Status(L10n.T("正在读取 “")+book.Title+L10n.T("” 的图片尺寸…"));int op=++operation;
+   try{await Task.Run(()=>{if(book.RemoteId!=null){var remoteSource=(RemoteImageSource)book.Pages[0].Source;var profile=State.Servers.First(p=>p.ServerId==remoteSource.Id);new RemoteApi(profile).LoadPages(book);}foreach(var page in book.Pages)page.ReadInfo();});if(op!=operation)return;Remember();var progress=State.Get(book);
+    if(openPos==BookOpenPosition.Start){progress.Page=0;progress.PairAnchor=0;progress.Fraction=0;}
+    else if(openPos==BookOpenPosition.End){
+     if(progress.Mode==3){progress.Page=Math.Max(0,book.Pages.Count-1);progress.Fraction=1;}
+     else{int last=0;while(true){int next=Paging.Next(book,last,progress.Mode,progress.Cover,progress.Wide,progress.PairAnchor);if(next==last)break;last=next;}progress.Page=last;progress.Fraction=0;}
+    }
+    shelf.Visibility=Visibility.Collapsed;readerHost.Visibility=Visibility.Visible;UpdateResponsive();bookTitle.Text=book.Title+" · "+(book.SourceLabel??L10n.T("本地"));bookTitle.ToolTip=book.Id;Reader.Open(book,progress);if(openPos==BookOpenPosition.End&&Reader.IsToon)Reader.SetOffset(double.MaxValue);Reader.Focus();UpdateReadingBookNav();ReadingActivity(true);Status(L10n.T("闲置 3 秒隐藏工具栏 · 鼠标移至上下边缘或按 Tab 显示 · F11 全屏"));if(book.Pages.Any(p=>p.Error!=null))Status(L10n.T("部分图片无法解码，可继续翻页；WebP 取决于 Windows 图像解码器。"));}catch(Exception e){Status(L10n.T("打开失败：")+e.Message);}finally{busy=false;}
    await DrainPendingRefresh();
   }
   public void SetTestBooks(List<Book> items){books=items;treeDirty=true;RenderShelf();}
   void Remember(){if(Reader.Book==null)return;Reader.Progress.LastRead=DateTime.UtcNow.ToString("o");Reader.Progress.PageId=Reader.Book.Pages[Reader.Progress.Page].Identity;Reader.Progress.PairAnchorId=Reader.Book.Pages[Math.Max(0,Math.Min(Reader.Book.Pages.Count-1,Reader.Progress.PairAnchor))].Identity;Reader.Progress.BookmarkIds=Reader.Progress.Bookmarks.Where(i=>i>=0&&i<Reader.Book.Pages.Count).Select(i=>Reader.Book.Pages[i].Identity).ToList();State.Books[Reader.Book.Id]=Reader.Progress;}
   void ReadingChanged(){
-   if(Reader.Book==null)return;updating=true;var p=Reader.Progress;mode.SelectedIndex=p.Mode;fit.SelectedIndex=Reader.Fit;cover.IsChecked=p.Cover;wide.IsChecked=p.Wide;bool spread=p.Mode==1||p.Mode==2;cover.IsEnabled=wide.IsEnabled=shiftBack.IsEnabled=shiftNext.IsEnabled=spread;fit.IsEnabled=!Reader.IsToon;
+   if(Reader.Book==null)return;updating=true;var p=Reader.Progress;mode.SelectedIndex=p.Mode;fit.SelectedIndex=Reader.Fit;cover.IsChecked=p.Cover;wide.IsChecked=p.Wide;if(penetrate!=null)penetrate.IsChecked=State.FolderPenetration!=false;bool spread=p.Mode==1||p.Mode==2;cover.IsEnabled=wide.IsEnabled=shiftBack.IsEnabled=shiftNext.IsEnabled=spread;fit.IsEnabled=!Reader.IsToon;UpdateReadingBookNav();
    int n=Reader.VisibleCount;pageLabel.Text=(p.Page+1)+(n==2?"–"+(p.Page+2):"")+" / "+Reader.Book.Pages.Count;zoomLabel.Text=Math.Round(Reader.Zoom*100)+"%";pageSlider.IsDirectionReversed=p.Mode==2;pageSlider.ToolTip=p.Mode==2?L10n.T("右端为第 1 页，向左推进 · 拖动跳页"):L10n.T("左端为第 1 页，向右推进 · 拖动跳页");pageSlider.Maximum=Reader.Book.Pages.Count;pageSlider.Value=p.Page+1;bookmark.Content=p.Bookmarks.Contains(p.Page)?L10n.T("★ 已标记"):L10n.T("☆ 书签");
    scroll.Visibility=Reader.IsToon&&!uiHidden?Visibility.Visible:Visibility.Collapsed;scroll.Maximum=Math.Max(0,Reader.Extent-Reader.ActualHeight);scroll.ViewportSize=Reader.ActualHeight;scroll.LargeChange=Math.Max(80,Reader.ActualHeight*.85);scroll.Value=Reader.Offset;updating=false;Remember();ScheduleSave();
   }
@@ -443,8 +600,8 @@ namespace LeafReader {
    switch(e.Key){
     case Key.Left:if(shift)Reader.Nudge(-1);else Reader.Turn(Reader.Progress.Mode==2?1:-1);break;
     case Key.Right:if(shift)Reader.Nudge(1);else Reader.Turn(Reader.Progress.Mode==2?-1:1);break;
-    case Key.Up:if(Reader.IsToon)Reader.Scroll(-80);else Reader.Turn(-1);break;
-    case Key.Down:if(Reader.IsToon)Reader.Scroll(80);else Reader.Turn(1);break;
+    case Key.Up:Reader.ScrollStep(-80);break;
+    case Key.Down:Reader.ScrollStep(80);break;
     case Key.PageUp:Reader.Turn(-1);break;case Key.PageDown:Reader.Turn(1);break;
     case Key.Space:Reader.Turn(shift?-1:1);break;case Key.Home:Reader.Jump(0);break;case Key.End:Reader.Jump(Reader.Book.Pages.Count-1);break;
     case Key.OemOpenBrackets:Reader.Nudge(-1);break;case Key.OemCloseBrackets:Reader.Nudge(1);break;
